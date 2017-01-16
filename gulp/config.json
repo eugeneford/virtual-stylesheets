@@ -1,0 +1,14 @@
+{
+  "js": {
+    "srcPath": "./src/",
+    "srcFile": "VirtualStyleSheet.es6",
+    "destPath": "./dist/",
+    "destFile": "VirtualStyleSheet.js"
+  },
+  "test": {
+    "srcPath": "./test/js/",
+    "srcFile": "suite.es6",
+    "destPath": "./test/build/",
+    "destFile": "suite.js"
+  }
+}
