@@ -21,7 +21,7 @@ import VirtualTypes from "./VirtualTypes.es6";
 
 const WHITESPACE =   ' '.charCodeAt(0);
 const NEW_LINE =     '\n'.charCodeAt(0);
-const SLASH =        '/'.charCodeAt(0);
+const SLASH =        '\\'.charCodeAt(0);
 const HASH =         '#'.charCodeAt(0);
 const ASTERISK =     '*'.charCodeAt(0);
 const DOT_SIGN =     '.'.charCodeAt(0);

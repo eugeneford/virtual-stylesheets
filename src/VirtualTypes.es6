@@ -32,24 +32,28 @@ export default {
   VIEWPORT_RULE:  15,
   UNKNOWN_RULE:   0,
 
-  // Lazy-parsing constants
-  LAZY_ACCEPT: 2,
-  LAZY_REJECT: 1,
-
   // Filter constants
-  FILTER_ACCEPT: 1,
-  FILTER_REJECT: 0,
+  FILTER_ACCEPT: 0,
+  FILTER_REJECT: 1,
+
+  // Lazy-parsing constants
+  LAZY_BODY_ACCEPT: -1,
+  LAZY_ALL_ACCEPT: -2,
 
   // Patch types and actions
   PATCH_HEAD: 1,
   PATCH_BODY: 2,
   PATCH_ALL:  0,
 
+  PATCH_UPDATE:  0,
   PATCH_APPEND:  1,
   PATCH_PREPEND: 2,
   PATCH_INSERT:  3,
   PATCH_REPLACE: 4,
   PATCH_DELETE:  5,
+
+  PATCH_ACCEPT: 0,
+  PATCH_REJECT: 1,
 
   // Token Types
   QUALIFIED_RULE_TOKEN: 1,

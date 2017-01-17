@@ -23,21 +23,22 @@ import VirtualRuleFactory from "./VirtualRuleFactory.es6";
 import VirtualTokenizer from "./VirtualTokenizer.es6";
 
 class VirtualStyleSheet {
-  constructor(cssText, hooks){
-    this.parseFromString(cssText, hooks);
+  constructor(hooks){
+    this.rules = [];
+    this._hooks = hooks;
   }
 
-  parseFromString(cssText, hooks){
-    let tokenizer = new VirtualTokenizer(), tokens, i, rule, rules, type, factory;
+  parseFromString(cssText){
+    let tokenizer = new VirtualTokenizer(), tokens, i, rule, rules, factory;
     tokens = tokenizer.tokenize(cssText);
 
     if (tokens.length) {
-      factory = new VirtualRuleFactory(hooks);
+      factory = new VirtualRuleFactory(this._hooks);
       rules = new VirtualRuleList();
 
       for (i = 0; i < tokens.length; i++){
-        rule = factory.createFromToken(tokens[i]);
-        rules.insert(rule, i);
+        rule = factory.createFromToken(tokens[i], this);
+        if (rule) rules.insert(rule, i);
       }
 
       this.rules = rules;

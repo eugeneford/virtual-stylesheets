@@ -21,6 +21,7 @@ import VirtualTypes from "./VirtualTypes.es6";
 import VirtualGrammar from "./VirtualGrammar.es6";
 import VirtualRuleList from "./VirtualRuleList.es6";
 import VirtualRule from "./VirtualRule.es6";
+import VirtualStyleRule from "./VirtualStyleRule.es6";
 import VirtualTokenizer from "./VirtualTokenizer.es6";
 
 export default class VirtualRuleFactory {
@@ -28,18 +29,21 @@ export default class VirtualRuleFactory {
     this._hooks = hooks;
   }
 
-  create(ruleInfo, parentRule = null, lazyParsing = false){
+  create(ruleInfo, parentRule = null){
     let filterResult;
 
     // Apply a pre parsing filter if was specified
     if (this._hooks.preParsingFilter){
       if ((filterResult = this._hooks.preParsingFilter(ruleInfo)) === VirtualTypes.FILTER_REJECT) return null;
+      filterResult = filterResult < 0 ? filterResult : 0;
     }
 
     // Create a VirtualRule based on type in ruleInfo
     switch (ruleInfo.type){
+      case VirtualTypes.STYLE_RULE:
+        return new VirtualStyleRule(ruleInfo, parentRule, this._hooks, filterResult);
       default:
-        return new VirtualRule(ruleInfo, parentRule, this._hooks, filterResult === VirtualTypes.LAZY_ACCEPT || false);
+        return new VirtualRule(ruleInfo, parentRule, this._hooks, filterResult);
     }
   }
 
@@ -47,6 +51,7 @@ export default class VirtualRuleFactory {
     let type, ruleInfo;
 
     type = VirtualGrammar.getRuleType(token.value);
+
     ruleInfo = {
       type: type,
       startOffset: token.startOffset,
@@ -54,6 +59,6 @@ export default class VirtualRuleFactory {
       cssText: token.value
     };
 
-    return this.create(ruleInfo, parentRule, lazyParsing);
+    return this.create(ruleInfo, parentRule);
   }
 }
