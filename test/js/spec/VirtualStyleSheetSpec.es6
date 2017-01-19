@@ -10,7 +10,8 @@ describe("Virtual StyleSheet", () => {
 
       let vss = new VirtualStyleSheet({
         preParsingFilter: function(ruleInfo){
-          //if (ruleInfo.type !== VirtualStyleSheet.STYLE_RULE) return VirtualStyleSheet.FILTER_REJECT;
+          if (ruleInfo.type !== VirtualStyleSheet.STYLE_RULE && ruleInfo.type !== VirtualStyleSheet.MEDIA_RULE )
+            return VirtualStyleSheet.FILTER_REJECT;
           return VirtualStyleSheet.LAZY_BODY_ACCEPT;
         },
 
@@ -34,6 +35,16 @@ describe("Virtual StyleSheet", () => {
       vss.rules.get(0).setSelector(".hello-fucking-world");
       t2 = performance.now();
       console.log(`TIME: ${t2-t1}`);
+
+      let elem = document.createElement("div");
+      let elem2 = document.createElement("div");
+      let matches = [];
+      let i, rule;
+
+      elem.setAttribute("class", "unit-inverse unit-horizontal");
+      elem2.setAttribute("class", "unit-xs");
+
+      elem.appendChild(elem2);
 
       expect(true).toEqual(true);
     });

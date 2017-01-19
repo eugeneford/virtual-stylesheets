@@ -17,37 +17,49 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import VirtualTypes from "./VirtualTypes.es6";
-import VirtualGrammar from "./VirtualGrammar.es6";
-import VirtualRuleList from "./VirtualRuleList.es6";
-import VirtualRule from "./VirtualRule.es6";
-import VirtualStyleRule from "./VirtualStyleRule.es6";
-import VirtualTokenizer from "./VirtualTokenizer.es6";
+import VirtualActions from "./VirtualActions";
+import VirtualGrammar from "./VirtualGrammar";
+import VirtualRuleList from "./VirtualRuleList";
+import VirtualRule from "./VirtualRule";
+import VirtualStyleRule from "./VirtualStyleRule";
+import VirtualTokenizer from "./VirtualTokenizer";
 
-export default class VirtualRuleFactory {
-  constructor(hooks = {}){
-    this._hooks = hooks;
+class VirtualRuleFactory {
+  constructor(){
+    this._types = {};
   }
 
-  create(ruleInfo, parentRule = null){
+  /**
+   * Create a new VirtualRule based on ruleInfo
+   * @param ruleInfo
+   * @param parentRule
+   * @param hooks
+   * @returns {null}
+   */
+  create(ruleInfo, parentRule = null, hooks = {}){
     let filterResult;
 
     // Apply a pre parsing filter if was specified
-    if (this._hooks.preParsingFilter){
-      if ((filterResult = this._hooks.preParsingFilter(ruleInfo)) === VirtualTypes.FILTER_REJECT) return null;
+    if (hooks.preParsingFilter){
+      if ((filterResult = hooks.preParsingFilter(ruleInfo)) === VirtualActions.FILTER_REJECT) return null;
       filterResult = filterResult < 0 ? filterResult : 0;
     }
 
     // Create a VirtualRule based on type in ruleInfo
-    switch (ruleInfo.type){
-      case VirtualTypes.STYLE_RULE:
-        return new VirtualStyleRule(ruleInfo, parentRule, this._hooks, filterResult);
-      default:
-        return new VirtualRule(ruleInfo, parentRule, this._hooks, filterResult);
-    }
+    if (this._types[ruleInfo.type])
+      return new this._types[ruleInfo.type](ruleInfo, parentRule, hooks, filterResult);
+    // Otherwise throw a TypeError
+    throw new TypeError(`There is no ruleClass associated with ${ruleInfo.type}`);
   }
 
-  createFromToken(token, parentRule = null, lazyParsing = false){
+  /**
+   * Create a new VirtualRule from token
+   * @param token
+   * @param parentRule
+   * @param hooks
+   * @returns {null}
+   */
+  createFromToken(token, parentRule, hooks){
     let type, ruleInfo;
 
     type = VirtualGrammar.getRuleType(token.value);
@@ -59,6 +71,25 @@ export default class VirtualRuleFactory {
       cssText: token.value
     };
 
-    return this.create(ruleInfo, parentRule);
+    return this.create(ruleInfo, parentRule, hooks);
+  }
+
+  /**
+   * Register new VirtualRule type
+   * @param ruleType
+   * @param ruleClass
+   */
+  register(ruleType, ruleClass){
+    if (typeof ruleType !== "number") throw TypeError("ruleType is not a number");
+    if (typeof ruleClass !== "function") throw TypeError("ruleClass is not a function");
+    this._types[ruleType] = ruleClass;
   }
 }
+
+const RuleFactory = new VirtualRuleFactory();
+
+RuleFactory.register(VirtualGrammar.UNKNOWN_RULE, VirtualRule);
+RuleFactory.register(VirtualGrammar.STYLE_RULE, VirtualStyleRule);
+RuleFactory.register(VirtualGrammar.MEDIA_RULE, VirtualRule);
+
+export default RuleFactory;

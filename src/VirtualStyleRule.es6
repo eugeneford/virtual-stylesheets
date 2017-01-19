@@ -17,8 +17,8 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import VirtualTypes from "./VirtualTypes.es6";
-import VirtualRule from "./VirtualRule.es6";
+import VirtualActions from "./VirtualActions";
+import VirtualRule from "./VirtualRule";
 
 export default class VirtualStyleRule extends VirtualRule{
   constructor(ruleInfo, parentRule = null, hooks, lazyParsing = 0){
@@ -34,7 +34,7 @@ export default class VirtualStyleRule extends VirtualRule{
     let selectorText, head;
 
     // Get head props
-    head = super._getHeadProps();
+    head = super.getHead();
 
     // Get raw selector text
     selectorText = this.cssText.substring(head.startOffset, head.endOffset);
@@ -46,49 +46,23 @@ export default class VirtualStyleRule extends VirtualRule{
   }
 
   /**
-   * Apply patch to head block of current rule
-   * @param patchInfo
-   * @private
+   * Parse additional VirtualStyleRule props
+   * @param parseType
    */
-  _patchHead(patchInfo){
-    this.selectorText = this._parseSelectorText();
+  parse(parseType){
+    if (parseType === VirtualActions.PARSE_HEAD || parseType == VirtualActions.PARSE_ALL)
+      this.selectorText = this._parseSelectorText();
   }
 
   /**
-   * Apply patch to current rule
-   * @param patchInfo
-   * @private
+   * Applies a new selectorText to current VirtualStyleRule
+   * @param selectorText
    */
-  _patchApply(patchInfo){
-    switch (patchInfo.type){
-      case VirtualTypes.PATCH_HEAD:
-      case VirtualTypes.PATCH_ALL:
-        this._patchHead(patchInfo);
-        break;
-    }
-  }
-
-  /**
-   * Patch current rule
-   * @param patchInfo
-   */
-  patch(patchInfo){
-    // Invoke pre patching hook
-    if (this._hooks.prePatchApply && this._hooks.prePatchApply(this, patchInfo) === VirtualTypes.PATCH_REJECT) return;
-
-    super._patchApply(patchInfo);
-    this._patchApply(patchInfo);
-
-    // Invoke post patching hook
-    if (this._hooks.postPatchApply) this._hooks.postPatchApply(this, patchInfo);
-  }
-
   setSelector(selectorText){
-    let head = super._getHeadProps();
+    let head = super.getHead();
 
     this.patch({
-      type: VirtualTypes.PATCH_HEAD,
-      action: VirtualTypes.PATCH_REPLACE,
+      action: VirtualActions.PATCH_REPLACE,
       start: head.startOffset,
       end: head.endOffset,
       value: selectorText,

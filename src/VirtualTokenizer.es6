@@ -17,11 +17,18 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import VirtualTypes from "./VirtualTypes.es6";
+const TYPES = {
+  QUALIFIED_RULE_TOKEN : 1,
+  AT_RULE_TOKEN :        2,
+  COMMENT_TOKEN :        3,
+  WHITESPACE_TOKEN :     4,
+  UNKNOWN_TOKEN :        5
+};
 
 const WHITESPACE =   ' '.charCodeAt(0);
 const NEW_LINE =     '\n'.charCodeAt(0);
 const SLASH =        '\\'.charCodeAt(0);
+const BACKSLASH =    '/'.charCodeAt(0);
 const HASH =         '#'.charCodeAt(0);
 const ASTERISK =     '*'.charCodeAt(0);
 const DOT_SIGN =     '.'.charCodeAt(0);
@@ -54,6 +61,7 @@ const CF_WORD = function (code) {
  */
 class VirtualTokenizer {
   constructor() {
+
   }
 
   /**
@@ -62,8 +70,8 @@ class VirtualTokenizer {
    * @param startIndex
    * @returns {*}
    */
-  getQualifiedRuleTokenLength(cssText, startIndex) {
-    let index = startIndex, length = 0, nextCode, prevCode, startCode = cssText.charCodeAt(startIndex), quotesCode;
+  getQualifiedRuleToken(cssText, startIndex) {
+    let index = startIndex, length = 0, fits, nextCode, prevCode, startCode = cssText.charCodeAt(startIndex), quotesCode;
 
     if (startCode === ASTERISK || startCode === DOT_SIGN || CF_WORD(startCode)
       || startCode === HASH || startCode === OPEN_SQUARE || startCode === COLON) {
@@ -82,12 +90,15 @@ class VirtualTokenizer {
         length++;
         index++;
 
+        if (!quotesCode && fits && nextCode === OPEN_CURLY) fits = false;
+        if (!quotesCode && !fits && nextCode === OPEN_CURLY) fits = true;
+        if (!quotesCode && !fits && nextCode === SEMICOLON) break;
         if (!quotesCode && nextCode === CLOSE_CURLY) break;
 
         prevCode = nextCode;
       }
 
-      return {type: VirtualTypes.QUALIFIED_RULE_TOKEN, startOffset: startIndex, length};
+      return {type: fits ? TYPES.QUALIFIED_RULE_TOKEN : TYPES.UNKNOWN_TOKEN, startOffset: startIndex, length};
     }
 
     return null;
@@ -99,8 +110,8 @@ class VirtualTokenizer {
    * @param startIndex
    * @returns {*}
    */
-  getAtRuleTokenLength(cssText, startIndex) {
-    let index = startIndex, nextCode, prevCode, length = 0, startCode = cssText.charCodeAt(startIndex), quotesCode, openCurlyCount = 0;
+  getAtRuleToken(cssText, startIndex) {
+    let index = startIndex, fits, nextCode, prevCode, length = 0, startCode = cssText.charCodeAt(startIndex), quotesCode, openCurlyCount = 0;
 
     if (startCode === AT_SIGN) {
       while (index < cssText.length) {
@@ -115,6 +126,7 @@ class VirtualTokenizer {
           }
         }
 
+        if (!quotesCode && !fits && (nextCode === OPEN_CURLY || nextCode === SEMICOLON)) fits = true;
         if (!quotesCode && nextCode === OPEN_CURLY) openCurlyCount++;
         if (!quotesCode && nextCode === CLOSE_CURLY) openCurlyCount--;
 
@@ -127,7 +139,7 @@ class VirtualTokenizer {
         prevCode = nextCode;
       }
 
-      return {type: VirtualTypes.AT_RULE_TOKEN, startOffset: startIndex, length};
+      return {type: fits ? TYPES.AT_RULE_TOKEN: TYPES.UNKNOWN_TOKEN, startOffset: startIndex, length};
     }
 
     return null;
@@ -139,17 +151,18 @@ class VirtualTokenizer {
    * @param startIndex
    * @returns {*}
    */
-  getCommentTokenLength(cssText, startIndex) {
+  getCommentToken(cssText, startIndex) {
     let startCode = cssText.charCodeAt(startIndex), prevCode, nextCode, length = 1;
 
-    if ((startCode === SLASH) && (nextCode = cssText.charCodeAt(startIndex + length++) === ASTERISK)) {
+    if ((startCode === BACKSLASH) && (nextCode = cssText.charCodeAt(startIndex + length++) === ASTERISK)) {
       while (nextCode) {
         prevCode = nextCode;
-        nextCode = cssText.charCodeAt(startIndex + length++);
+        nextCode = cssText.charCodeAt(startIndex + length);
 
-        if (prevCode === ASTERISK && nextCode === SLASH) break;
+        if (nextCode) length++;
+        if (prevCode === ASTERISK && nextCode === BACKSLASH) break;
       }
-      return {type: VirtualTypes.COMMENT_TOKEN, startOffset: startIndex, length};
+      return {type: TYPES.COMMENT_TOKEN, startOffset: startIndex, length};
     }
     return null;
   }
@@ -160,7 +173,7 @@ class VirtualTokenizer {
    * @param startIndex
    * @returns {*}
    */
-  getWhitespaceTokenLength(cssText, startIndex) {
+  getWhitespaceToken(cssText, startIndex) {
     let index = startIndex, nextCode, length = 0;
 
     while (index < cssText.length) {
@@ -173,7 +186,7 @@ class VirtualTokenizer {
     }
 
     if (length) {
-      return {type: VirtualTypes.WHITESPACE_TOKEN, startOffset: startIndex, length};
+      return {type: TYPES.WHITESPACE_TOKEN, startOffset: startIndex, length};
     }
 
     return null;
@@ -185,7 +198,7 @@ class VirtualTokenizer {
    * @param startIndex
    * @returns {*}
    */
-  getUnknownTokenLength(cssText, startIndex) {
+  getUnknownToken(cssText, startIndex) {
     let index = startIndex, nextCode, secondCode, thirdCode, length = 0, isNextTokenBounds;
 
     while (index < cssText.length) {
@@ -208,7 +221,7 @@ class VirtualTokenizer {
     }
 
     if (length) {
-      return {type: VirtualTypes.UNKNOWN_TOKEN, startOffset: startIndex, length};
+      return {type: TYPES.UNKNOWN_TOKEN, startOffset: startIndex, length};
     }
 
     return null;
@@ -225,23 +238,23 @@ class VirtualTokenizer {
 
     switch (startCode) {
       case AT_SIGN:
-        if (token = this.getAtRuleTokenLength(cssText, startIndex)) return token;
+        if (token = this.getAtRuleToken(cssText, startIndex)) return token;
         break;
 
       case NEW_LINE:
       case WHITESPACE:
-        if (token = this.getWhitespaceTokenLength(cssText, startIndex)) return token;
+        if (token = this.getWhitespaceToken(cssText, startIndex)) return token;
         break;
 
       case SLASH:
-        if (token = this.getCommentTokenLength(cssText, startIndex)) return token;
+        if (token = this.getCommentToken(cssText, startIndex)) return token;
         break;
 
       default:
-        if (token = this.getQualifiedRuleTokenLength(cssText, startIndex)) return token;
+        if (token = this.getQualifiedRuleToken(cssText, startIndex)) return token;
         break;
     }
-    return this.getUnknownTokenLength(cssText, startIndex);
+    return this.getUnknownToken(cssText, startIndex);
   }
 
   /**
@@ -277,5 +290,7 @@ class VirtualTokenizer {
     return tokens;
   }
 }
+
+Object.assign(VirtualTokenizer, TYPES);
 
 export default VirtualTokenizer;

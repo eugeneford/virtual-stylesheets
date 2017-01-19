@@ -1,3 +1,6 @@
-import "./spec/VirtualListSpec.es6";
-import "./spec/VirtualRuleListSpec.es6";
-import "./spec/VirtualStyleSheetSpec.es6";
+import "./spec/VSMExportSpec";
+import "./spec/VirtualRuleSpec";
+import "./spec/VirtualGrammarSpec";
+import "./spec/VirtualRuleListSpec";
+import "./spec/VirtualTokenizerSpec";
+import "./spec/VirtualStyleSheetSpec";

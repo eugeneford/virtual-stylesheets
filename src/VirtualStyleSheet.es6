@@ -17,10 +17,11 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import VirtualTypes from "./VirtualTypes.es6";
-import VirtualRuleList from "./VirtualRuleList.es6";
-import VirtualRuleFactory from "./VirtualRuleFactory.es6";
-import VirtualTokenizer from "./VirtualTokenizer.es6";
+import VirtualActions from "./VirtualActions";
+import VirtualGrammar from "./VirtualGrammar";
+import VirtualRuleList from "./VirtualRuleList";
+import VirtualRuleFactory from "./VirtualRuleFactory";
+import VirtualTokenizer from "./VirtualTokenizer";
 
 class VirtualStyleSheet {
   constructor(hooks){
@@ -29,16 +30,15 @@ class VirtualStyleSheet {
   }
 
   parseFromString(cssText){
-    let tokenizer = new VirtualTokenizer(), tokens, i, rule, rules, factory;
+    let tokenizer = new VirtualTokenizer(), tokens, i, rule, rules, id = 0;
     tokens = tokenizer.tokenize(cssText);
 
     if (tokens.length) {
-      factory = new VirtualRuleFactory(this._hooks);
       rules = new VirtualRuleList();
 
       for (i = 0; i < tokens.length; i++){
-        rule = factory.createFromToken(tokens[i], this);
-        if (rule) rules.insert(rule, i);
+        rule = VirtualRuleFactory.createFromToken(tokens[i], this, this._hooks);
+        if (rule) rules.insert(rule, id++);
       }
 
       this.rules = rules;
@@ -46,9 +46,7 @@ class VirtualStyleSheet {
   }
 }
 
-// Declare public VisualStyleSheet constants
-for (let i in VirtualTypes){
-  Object.defineProperty(VirtualStyleSheet, i, { value: VirtualTypes[i], writable : false });
-}
+Object.assign(VirtualStyleSheet, VirtualActions);
+Object.assign(VirtualStyleSheet, VirtualGrammar.getTypes());
 
 export default VirtualStyleSheet;

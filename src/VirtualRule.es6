@@ -17,7 +17,7 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import VirtualTypes from "./VirtualTypes.es6";
+import VirtualActions from "./VirtualActions";
 
 const SLASH =        '\\'.charCodeAt(0);
 const SEMICOLON =    ';'.charCodeAt(0);
@@ -27,7 +27,17 @@ const SINGLE_QUOTE = '\''.charCodeAt(0);
 const DOUBLE_QUOTE = '\"'.charCodeAt(0);
 
 export default class VirtualRule {
-  constructor(ruleInfo, parentRule = null, hooks = {}, lazyParsing = 0){
+  constructor(ruleInfo, parentRule = null, hooks = {}, lazyParsing = 0) {
+    if (!ruleInfo) throw new Error("ruleInfo is missing");
+    if (typeof  ruleInfo.type === "undefined"
+        || typeof  ruleInfo.startOffset === "undefined"
+        || typeof  ruleInfo.endOffset === "undefined"
+        || typeof  ruleInfo.cssText === "undefined"
+    ){
+      throw new Error("Bad input");
+    }
+
+
     this._hooks = hooks;
 
     this.type = ruleInfo.type;
@@ -36,34 +46,183 @@ export default class VirtualRule {
     this.cssText = ruleInfo.cssText;
     this.parentRule = parentRule;
     this.lazyParsing = lazyParsing;
+    this._parseInvoke();
+  }
 
-    switch (this.lazyParsing){
-      case VirtualTypes.LAZY_ALL_ACCEPT: break;
-      case VirtualTypes.LAZY_BODY_ACCEPT:
-        this.patch({
-          type: VirtualTypes.PATCH_HEAD,
-          action: VirtualTypes.PATCH_UPDATE
-        });
+  /**
+   * Force update patching for its child rules
+   * @param patchInfo
+   * @private
+   */
+  _forceChildChainUpdate(patchInfo) {
+    if (patchInfo.patchDelta && this.rules && this.rules.length) {
+      this.rules.get(0).patch({
+        action: VirtualActions.PATCH_UPDATE,
+        patchDelta: patchInfo.patchDelta
+      });
+    }
+  }
+
+  /**
+   * Force update patching for next sibling of this rule
+   * @param patchInfo
+   * @private
+   */
+  _forceChainUpdate(patchInfo) {
+    if (patchInfo.patchDelta && this.parentRule && this.parentRule.rules.get(this.id + 1)) {
+      this.parentRule.rules.get(this.id + 1).patch({
+        action: VirtualActions.PATCH_UPDATE,
+        patchDelta: patchInfo.patchDelta
+      });
+    }
+  }
+
+  /**
+   * Apply update action to current rule
+   * @param patchInfo
+   * @private
+   */
+  _patchUpdateApply(patchInfo) {
+    if (patchInfo.patchDelta) {
+      this.startOffset += patchInfo.patchDelta;
+      this.endOffset += patchInfo.patchDelta;
+      this._forceChildChainUpdate(patchInfo);
+    }
+  }
+
+  /**
+   * Apply append action to current rule
+   * @param patchInfo
+   * @private
+   */
+  _patchAppendApply(patchInfo) {
+    let oldText = this.cssText;
+    this.cssText = oldText + patchInfo.value;
+    this.endOffset = this.endOffset + this.cssText.length - oldText.length;
+    this._parseInvoke();
+  }
+
+  /**
+   * Apply prepend action to current rule
+   * @param patchInfo
+   * @private
+   */
+  _patchPrependApply(patchInfo) {
+    let oldText = this.cssText;
+    this.cssText = patchInfo.value + oldText;
+    this.endOffset = this.endOffset + this.cssText.length - oldText.length;
+    this._parseInvoke();
+  }
+
+  /**
+   * Apply insert action to current rule
+   * @param patchInfo
+   * @private
+   */
+  _patchInsertApply(patchInfo) {
+    let info = Object.assign({}, patchInfo, {end: patchInfo.start});
+    this._patchReplaceApply(info);
+    this._parseInvoke();
+  }
+
+  /**
+   * Apply replace action to current rule
+   * @param patchInfo
+   * @private
+   */
+  _patchReplaceApply(patchInfo) {
+    let head, trail, oldText = this.cssText;
+    head = this.cssText.substring(0, patchInfo.start);
+    trail = this.cssText.substring(patchInfo.end);
+    this.cssText = head + patchInfo.value + trail;
+    this.endOffset = this.endOffset + this.cssText.length - oldText.length;
+    this._parseInvoke();
+  }
+
+  /**
+   * Apply delete action to current rule
+   * @param patchInfo
+   * @private
+   */
+  _patchDeleteApply(patchInfo) {
+    let info = Object.assign({}, patchInfo, {value: ""});
+    this._patchReplaceApply(info);
+    this._parseInvoke();
+  }
+
+  /**
+   * Apply patch changes to current rule
+   * @param patchInfo
+   * @private
+   */
+  _patchApply(patchInfo) {
+    switch (patchInfo.action) {
+      case VirtualActions.PATCH_UPDATE:
+        this._patchUpdateApply(patchInfo);
         break;
-      default:
-        this.patch({
-          type: VirtualTypes.PATCH_ALL,
-          action: VirtualTypes.PATCH_UPDATE
-        });
+
+      case VirtualActions.PATCH_APPEND:
+        this._patchAppendApply(patchInfo);
+        break;
+
+      case VirtualActions.PATCH_PREPEND:
+        this._patchPrependApply(patchInfo);
+        break;
+
+      case VirtualActions.PATCH_INSERT:
+        this._patchInsertApply(patchInfo);
+        break;
+
+      case VirtualActions.PATCH_REPLACE:
+        this._patchReplaceApply(patchInfo);
+        break;
+
+      case VirtualActions.PATCH_DELETE:
+        this._patchDeleteApply(patchInfo);
+        break;
+    }
+
+    this._forceChainUpdate(patchInfo);
+  }
+
+  /**
+   * Invokes rule parsing basing on lazyParsing state
+   * @private
+   */
+  _parseInvoke(){
+    switch (this.lazyParsing) {
+      case VirtualActions.LAZY_BODY_ACCEPT:
+        this.parse(VirtualActions.PARSE_HEAD);
+        break;
+      case VirtualActions.LAZY_REJECT:
+        this.parse(VirtualActions.PARSE_ALL);
         break;
     }
   }
 
   /**
+   * Patch current rule props with patchInfo
+   * @param patchInfo
+   */
+  patch(patchInfo) {
+    // Invoke pre patching hook
+    if (this._hooks.prePatchApply && this._hooks.prePatchApply(this, patchInfo) === VirtualActions.PATCH_REJECT) return;
+
+    this._patchApply(patchInfo);
+
+    // Invoke post patching hook
+    if (this._hooks.postPatchApply) this._hooks.postPatchApply(this, patchInfo);
+  }
+
+  /**
    * Parse head props from current rule
    * @returns {{startOffset: number, endOffset: number}}
-   * @private
    */
-  _getHeadProps(){
+  getHead() {
     let i, length = 0, quotesCode, nextCode, prevCode;
 
     // Get rule's head block length
-    for (i = 0; i < this.cssText.length; i++){
+    for (i = 0; i < this.cssText.length; i++) {
       nextCode = this.cssText.charCodeAt(i);
 
       // Check if " or ' was spotted without escape \
@@ -84,57 +243,54 @@ export default class VirtualRule {
     // If there is no selectorText
     if (!length) throw SyntaxError("Bad input");
 
-    return {startOffset: 0, endOffset: length}
+    return {startOffset: 0, endOffset: length};
   }
 
-  // TODO optimize code
-  _patchApply(patchInfo){
-    let head, trail, oldText = this.cssText;
+  /**
+   * Parse body props from current rule
+   * @returns {{startOffset: number, endOffset: number}}
+   */
+  getBody(){
+    let i, quotesCode, nextCode, prevCode, startOffset, endOffset, openCurlyCount = 0;
 
-    switch (patchInfo.action){
-      case VirtualTypes.PATCH_UPDATE:
-        if (patchInfo.patchDelta) {
-          this.startOffset += patchInfo.patchDelta;
-          this.endOffset += patchInfo.patchDelta;
+    for (i = 0; i < this.cssText.length; i++) {
+      nextCode = this.cssText.charCodeAt(i);
+
+      // Check if " or ' was spotted without escape \
+      if (prevCode && prevCode !== SLASH && (nextCode === SINGLE_QUOTE || nextCode == DOUBLE_QUOTE)) {
+        if (!!quotesCode) {
+          if (nextCode === quotesCode) quotesCode = undefined;
+        } else {
+          quotesCode = nextCode;
         }
-        break;
-
-      case VirtualTypes.PATCH_REPLACE:
-        head = this.cssText.substring(0, patchInfo.start);
-        trail = this.cssText.substring(patchInfo.end);
-        this.cssText = head + patchInfo.value + trail;
-        this.endOffset = this.endOffset + this.cssText.length - oldText.length;
-        break;
-    }
-
-    // TODO Apply patch to child rules
-    if (patchInfo.patchDelta && this.rules){
-      let i;
-      for (i = 0; i < this.rules.length; i++){
-        this.rules.get(this.id + 1).patch({
-          type: VirtualTypes.PATCH_ALL,
-          action: VirtualTypes.PATCH_UPDATE,
-          patchDelta: patchInfo.patchDelta
-        });
       }
+
+      if (!startOffset && !quotesCode && i < this.cssText.length - 1 && nextCode === OPEN_CURLY){
+        startOffset = i + 1;
+      }
+
+      if (!quotesCode && nextCode === OPEN_CURLY) openCurlyCount++;
+      if (!quotesCode && nextCode === CLOSE_CURLY) openCurlyCount--;
+
+      if (!quotesCode && !openCurlyCount && nextCode === CLOSE_CURLY) {
+        endOffset = i;
+        break;
+      }
+
+      prevCode = nextCode;
     }
 
-    if (patchInfo.patchDelta && this.parentRule && this.parentRule.rules.get(this.id + 1)){
-      this.parentRule.rules.get(this.id + 1).patch({
-        type: VirtualTypes.PATCH_ALL,
-        action: VirtualTypes.PATCH_UPDATE,
-        patchDelta: patchInfo.patchDelta
-      });
-    }
+    if (!startOffset || !endOffset) throw SyntaxError("Bad input");
+
+    return {startOffset, endOffset};
   }
 
-  patch(patchInfo){
-    // Invoke pre patching hook
-    if (this._hooks.prePatchApply && this._hooks.prePatchApply(this, patchInfo) === VirtualTypes.PATCH_REJECT) return;
 
-    this._patchApply(patchInfo);
 
-    // Invoke post patching hook
-    if (this._hooks.postPatchApply) this._hooks.postPatchApply(this, patchInfo);
-  }
+  /**
+   * Parse specific props for current rule type basing on parseType
+   * @param parseType
+   * @interface
+   */
+  parse(parseType) {}
 }
