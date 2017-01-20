@@ -1,22 +1,3 @@
-/**
- * Copyright (c) 2017 Eugene Ford (stmechanus@gmail.com)
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
- * and associated documentation files (the "Software"), to deal in the Software without restriction,
- * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
- * subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial
- * portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
- * LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
- * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
- * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
-
 const HASH              = '#'.charCodeAt(0);
 const ASTERISK          = '*'.charCodeAt(0);
 const DOT_SIGN          = '.'.charCodeAt(0);
@@ -42,6 +23,7 @@ class VirtualGrammar {
     for (let i in this) {
       if (this._test[this[i]]) types[i] = this[i];
     }
+    types.UNKNOWN_RULE = this.UNKNOWN_RULE;
     return types;
   }
 
@@ -67,6 +49,7 @@ class VirtualGrammar {
     if (typeof ruleType.test !== "function") throw TypeError("Lexeme.test is not a function");
     this[ruleType.type] = ruleType.value;
     this._test[ruleType.value] = ruleType.test;
+    return true;
   }
 }
 
@@ -146,7 +129,7 @@ Grammar.define({
       if (i > 0 && codes[i] === 37) return true;
 
       // If code is not a digit
-      if (codes[i] < 48 && codes[i] > 57) return false;
+      if (codes[i] < 48 || codes[i] > 57) return false;
     }
 
     // Otherwise, codes refers to a number

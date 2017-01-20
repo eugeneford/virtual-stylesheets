@@ -1,22 +1,3 @@
-/**
- * Copyright (c) 2017 Eugene Ford (stmechanus@gmail.com)
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
- * and associated documentation files (the "Software"), to deal in the Software without restriction,
- * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
- * subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial
- * portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
- * LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
- * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
- * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
-
 const TYPES = {
   QUALIFIED_RULE_TOKEN : 1,
   AT_RULE_TOKEN :        2,
@@ -61,7 +42,7 @@ const CF_WORD = function (code) {
  */
 class VirtualTokenizer {
   constructor() {
-
+    throw new Error("Attempt to create a copy of static class");
   }
 
   /**
@@ -70,8 +51,8 @@ class VirtualTokenizer {
    * @param startIndex
    * @returns {*}
    */
-  getQualifiedRuleToken(cssText, startIndex) {
-    let index = startIndex, length = 0, fits, nextCode, prevCode, startCode = cssText.charCodeAt(startIndex), quotesCode;
+  static getQualifiedRuleToken(cssText, startIndex) {
+    let index = startIndex, length = 0, fits, nextCode, hasAt, prevCode, startCode = cssText.charCodeAt(startIndex), quotesCode;
 
     if (startCode === ASTERISK || startCode === DOT_SIGN || CF_WORD(startCode)
       || startCode === HASH || startCode === OPEN_SQUARE || startCode === COLON) {
@@ -90,7 +71,9 @@ class VirtualTokenizer {
         length++;
         index++;
 
-        if (!quotesCode && fits && nextCode === OPEN_CURLY) fits = false;
+
+        if (!quotesCode && nextCode === AT_SIGN) hasAt = true;
+        if (!quotesCode && fits && nextCode === OPEN_CURLY) { fits = false; break; }
         if (!quotesCode && !fits && nextCode === OPEN_CURLY) fits = true;
         if (!quotesCode && !fits && nextCode === SEMICOLON) break;
         if (!quotesCode && nextCode === CLOSE_CURLY) break;
@@ -98,7 +81,7 @@ class VirtualTokenizer {
         prevCode = nextCode;
       }
 
-      return {type: fits ? TYPES.QUALIFIED_RULE_TOKEN : TYPES.UNKNOWN_TOKEN, startOffset: startIndex, length};
+      return {type: fits && !hasAt ? TYPES.QUALIFIED_RULE_TOKEN : TYPES.UNKNOWN_TOKEN, startOffset: startIndex, length};
     }
 
     return null;
@@ -110,7 +93,7 @@ class VirtualTokenizer {
    * @param startIndex
    * @returns {*}
    */
-  getAtRuleToken(cssText, startIndex) {
+  static getAtRuleToken(cssText, startIndex) {
     let index = startIndex, fits, nextCode, prevCode, length = 0, startCode = cssText.charCodeAt(startIndex), quotesCode, openCurlyCount = 0;
 
     if (startCode === AT_SIGN) {
@@ -151,7 +134,7 @@ class VirtualTokenizer {
    * @param startIndex
    * @returns {*}
    */
-  getCommentToken(cssText, startIndex) {
+  static getCommentToken(cssText, startIndex) {
     let startCode = cssText.charCodeAt(startIndex), prevCode, nextCode, length = 1;
 
     if ((startCode === BACKSLASH) && (nextCode = cssText.charCodeAt(startIndex + length++) === ASTERISK)) {
@@ -173,7 +156,7 @@ class VirtualTokenizer {
    * @param startIndex
    * @returns {*}
    */
-  getWhitespaceToken(cssText, startIndex) {
+  static getWhitespaceToken(cssText, startIndex) {
     let index = startIndex, nextCode, length = 0;
 
     while (index < cssText.length) {
@@ -198,19 +181,30 @@ class VirtualTokenizer {
    * @param startIndex
    * @returns {*}
    */
-  getUnknownToken(cssText, startIndex) {
-    let index = startIndex, nextCode, secondCode, thirdCode, length = 0, isNextTokenBounds;
+  static getUnknownToken(cssText, startIndex) {
+    let index = startIndex, nextCode, secondCode, thirdCode, length = 0, isNextTokenBounds, hypothesis;
 
     while (index < cssText.length) {
       switch (nextCode = cssText.charCodeAt(index)) {
-        case SLASH:
+        case BACKSLASH:
           if (secondCode = cssText.charCodeAt(index + 1) === ASTERISK)
             isNextTokenBounds = true;
+          break;
+
+        case AT_SIGN:
+          if ((hypothesis = VirtualTokenizer.getAtRuleToken(cssText, index)) && hypothesis.type === TYPES.AT_RULE_TOKEN) isNextTokenBounds = true;
           break;
 
         case NEW_LINE:
         case WHITESPACE:
           isNextTokenBounds = true;
+          break;
+
+        default:
+          if (nextCode === ASTERISK || nextCode === DOT_SIGN || CF_WORD(nextCode)
+            || nextCode === HASH || nextCode === OPEN_SQUARE || nextCode === COLON) {
+            if ((hypothesis = VirtualTokenizer.getQualifiedRuleToken(cssText, index)) && hypothesis.type === TYPES.QUALIFIED_RULE_TOKEN) isNextTokenBounds = true;
+          }
           break;
       }
 
@@ -233,28 +227,25 @@ class VirtualTokenizer {
    * @param startIndex
    * @returns {object}
    */
-  getToken(cssText, startIndex) {
+  static getToken(cssText, startIndex) {
     let token, startCode = cssText.charCodeAt(startIndex);
 
     switch (startCode) {
       case AT_SIGN:
-        if (token = this.getAtRuleToken(cssText, startIndex)) return token;
-        break;
+        return VirtualTokenizer.getAtRuleToken(cssText, startIndex);
 
       case NEW_LINE:
       case WHITESPACE:
-        if (token = this.getWhitespaceToken(cssText, startIndex)) return token;
-        break;
+        return VirtualTokenizer.getWhitespaceToken(cssText, startIndex);
 
-      case SLASH:
-        if (token = this.getCommentToken(cssText, startIndex)) return token;
+      case BACKSLASH:
+        if (token = VirtualTokenizer.getCommentToken(cssText, startIndex)) return token;
         break;
 
       default:
-        if (token = this.getQualifiedRuleToken(cssText, startIndex)) return token;
-        break;
+        return VirtualTokenizer.getQualifiedRuleToken(cssText, startIndex);
     }
-    return this.getUnknownToken(cssText, startIndex);
+    return VirtualTokenizer.getUnknownToken(cssText, startIndex);
   }
 
   /**
@@ -265,17 +256,17 @@ class VirtualTokenizer {
    * 3 - include qualified, at-rules and comments
    * 4 - include qualified, at-rules, comments and whitespaces
    * 5 - include any kind of data
-   * @param cssText - source css text
+   * @param cssText - source css  text
    * @param level - level of tokenization ( 1 to 5 )
    * @returns {Array}
    */
-  tokenize(cssText, level = 2) {
+  static tokenize(cssText, level = 2) {
     let tokens = [], token, index = 0, i;
 
     while (index < cssText.length) {
 
       // Create a token
-      token = this.getToken(cssText, index);
+      token = VirtualTokenizer.getToken(cssText, index);
 
       // Shift loop pointer by token size
       index = index + token.length;

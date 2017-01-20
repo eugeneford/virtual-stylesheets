@@ -1,22 +1,3 @@
-/**
- * Copyright (c) 2017 Eugene Ford (stmechanus@gmail.com)
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
- * and associated documentation files (the "Software"), to deal in the Software without restriction,
- * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
- * subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial
- * portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
- * LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
- * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
- * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
-
 import VirtualActions from "./VirtualActions";
 
 const SLASH =        '\\'.charCodeAt(0);
@@ -27,7 +8,7 @@ const SINGLE_QUOTE = '\''.charCodeAt(0);
 const DOUBLE_QUOTE = '\"'.charCodeAt(0);
 
 export default class VirtualRule {
-  constructor(ruleInfo, parentRule = null, hooks = {}, lazyParsing = 0) {
+  constructor(ruleInfo, parentRule = null, opts = {}) {
     if (!ruleInfo) throw new Error("ruleInfo is missing");
     if (typeof  ruleInfo.type === "undefined"
         || typeof  ruleInfo.startOffset === "undefined"
@@ -37,15 +18,14 @@ export default class VirtualRule {
       throw new Error("Bad input");
     }
 
-
-    this._hooks = hooks;
+    this._opts = opts;
 
     this.type = ruleInfo.type;
     this.startOffset = ruleInfo.startOffset;
     this.endOffset = ruleInfo.endOffset;
     this.cssText = ruleInfo.cssText;
     this.parentRule = parentRule;
-    this.lazyParsing = lazyParsing;
+    this.lazyParsing = opts.lazyParsing || 0;
     this._parseInvoke();
   }
 
@@ -54,26 +34,33 @@ export default class VirtualRule {
    * @param patchInfo
    * @private
    */
-  _forceChildChainUpdate(patchInfo) {
+  _forceChildRulesUpdate(patchInfo) {
     if (patchInfo.patchDelta && this.rules && this.rules.length) {
-      this.rules.get(0).patch({
-        action: VirtualActions.PATCH_UPDATE,
-        patchDelta: patchInfo.patchDelta
-      });
+      let start = patchInfo.startFrom;
+      for (let i = start; i < this.rules.length; i++){
+        this.rules.get(i).patch({
+          action: VirtualActions.PATCH_UPDATE,
+          patchDelta: patchInfo.patchDelta
+        });
+      }
     }
   }
 
   /**
-   * Force update patching for next sibling of this rule
+   * Force parent rule update
    * @param patchInfo
    * @private
    */
-  _forceChainUpdate(patchInfo) {
-    if (patchInfo.patchDelta && this.parentRule && this.parentRule.rules.get(this.id + 1)) {
-      this.parentRule.rules.get(this.id + 1).patch({
+  _forceParentRuleUpdate(patchInfo){
+    if (this.parentRule) {
+
+      let parentPatch = Object.assign({}, patchInfo, {
         action: VirtualActions.PATCH_UPDATE,
-        patchDelta: patchInfo.patchDelta
+        initialAction: patchInfo.action,
+        startFrom: this.id !== undefined ? this.id + 1 : 0
       });
+
+      this.parentRule.patch(parentPatch);
     }
   }
 
@@ -83,10 +70,24 @@ export default class VirtualRule {
    * @private
    */
   _patchUpdateApply(patchInfo) {
-    if (patchInfo.patchDelta) {
+    if (!!patchInfo.startFrom) {
+      let body = this.getBody();
+
+      patchInfo.start += body.startOffset;
+      patchInfo.end += body.startOffset;
+
+      this._patchThis(Object.assign({}, patchInfo, {
+        action: patchInfo.initialAction,
+        initialAction: void 0
+      }));
+    }
+    else if (patchInfo.patchDelta){
       this.startOffset += patchInfo.patchDelta;
       this.endOffset += patchInfo.patchDelta;
-      this._forceChildChainUpdate(patchInfo);
+    }
+
+    if (patchInfo.patchDelta) {
+      this._forceChildRulesUpdate(patchInfo);
     }
   }
 
@@ -151,11 +152,11 @@ export default class VirtualRule {
   }
 
   /**
-   * Apply patch changes to current rule
+   * Apply patch changes to this rule
    * @param patchInfo
    * @private
    */
-  _patchApply(patchInfo) {
+  _patchThis(patchInfo) {
     switch (patchInfo.action) {
       case VirtualActions.PATCH_UPDATE:
         this._patchUpdateApply(patchInfo);
@@ -181,8 +182,31 @@ export default class VirtualRule {
         this._patchDeleteApply(patchInfo);
         break;
     }
+  }
 
-    this._forceChainUpdate(patchInfo);
+  /**
+   * Apply patch to parent rule
+   * @param patchInfo
+   * @private
+   */
+  _patchParent(patchInfo){
+    switch (patchInfo.action) {
+      case VirtualActions.PATCH_UPDATE: break;
+
+      default:
+        this._forceParentRuleUpdate(patchInfo);
+        break;
+    }
+  }
+
+  /**
+   * Apply patch changes
+   * @param patchInfo
+   * @private
+   */
+  _patchApply(patchInfo) {
+    this._patchThis(patchInfo);
+    this._patchParent(patchInfo);
   }
 
   /**
@@ -206,12 +230,12 @@ export default class VirtualRule {
    */
   patch(patchInfo) {
     // Invoke pre patching hook
-    if (this._hooks.prePatchApply && this._hooks.prePatchApply(this, patchInfo) === VirtualActions.PATCH_REJECT) return;
+    if (this._opts.prePatchApply && this._opts.prePatchApply(this, patchInfo) === VirtualActions.PATCH_REJECT) return;
 
     this._patchApply(patchInfo);
 
     // Invoke post patching hook
-    if (this._hooks.postPatchApply) this._hooks.postPatchApply(this, patchInfo);
+    if (this._opts.postPatchApply) this._opts.postPatchApply(this, patchInfo);
   }
 
   /**

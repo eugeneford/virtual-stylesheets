@@ -39,7 +39,6 @@ export default class VirtualRuleList {
   insert(rule, index){
     let id;
     if (!rule) throw new Error("rule is not defined");
-    if (!rule instanceof VirtualRule) throw new Error("rule is not a type of VirtualRule");
     if (index < 0) throw new Error("index should be a positive int");
 
     if (typeof index === "undefined" || index > this._rules.length) {

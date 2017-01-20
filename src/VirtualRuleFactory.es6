@@ -1,22 +1,3 @@
-/**
- * Copyright (c) 2017 Eugene Ford (stmechanus@gmail.com)
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
- * and associated documentation files (the "Software"), to deal in the Software without restriction,
- * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
- * subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial
- * portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
- * LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
- * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
- * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
-
 import VirtualActions from "./VirtualActions";
 import VirtualGrammar from "./VirtualGrammar";
 import VirtualRuleList from "./VirtualRuleList";
@@ -33,21 +14,24 @@ class VirtualRuleFactory {
    * Create a new VirtualRule based on ruleInfo
    * @param ruleInfo
    * @param parentRule
-   * @param hooks
+   * @param opts
    * @returns {null}
    */
-  create(ruleInfo, parentRule = null, hooks = {}){
+  create(ruleInfo, parentRule = null, opts = {}){
+    if (ruleInfo === undefined) throw Error("ruleInfo is missing");
+    if (ruleInfo.type === VirtualGrammar.UNKNOWN_RULE && !opts.assertUnknown) return null;
+
     let filterResult;
 
     // Apply a pre parsing filter if was specified
-    if (hooks.preParsingFilter){
-      if ((filterResult = hooks.preParsingFilter(ruleInfo)) === VirtualActions.FILTER_REJECT) return null;
+    if (opts.preParsingFilter){
+      if ((filterResult = opts.preParsingFilter(ruleInfo)) === VirtualActions.FILTER_REJECT) return null;
       filterResult = filterResult < 0 ? filterResult : 0;
     }
 
     // Create a VirtualRule based on type in ruleInfo
-    if (this._types[ruleInfo.type])
-      return new this._types[ruleInfo.type](ruleInfo, parentRule, hooks, filterResult);
+    if (!!this._types[ruleInfo.type])
+      return new this._types[ruleInfo.type](ruleInfo, parentRule, Object.assign({}, opts, {lazyParsing: filterResult}));
     // Otherwise throw a TypeError
     throw new TypeError(`There is no ruleClass associated with ${ruleInfo.type}`);
   }
@@ -56,11 +40,13 @@ class VirtualRuleFactory {
    * Create a new VirtualRule from token
    * @param token
    * @param parentRule
-   * @param hooks
+   * @param opts
    * @returns {null}
    */
-  createFromToken(token, parentRule, hooks){
+  createFromToken(token, parentRule, opts){
     let type, ruleInfo;
+
+    if (token === undefined) throw new Error("Token  is missing");
 
     type = VirtualGrammar.getRuleType(token.value);
 
@@ -71,7 +57,7 @@ class VirtualRuleFactory {
       cssText: token.value
     };
 
-    return this.create(ruleInfo, parentRule, hooks);
+    return this.create(ruleInfo, parentRule, opts);
   }
 
   /**
@@ -83,6 +69,7 @@ class VirtualRuleFactory {
     if (typeof ruleType !== "number") throw TypeError("ruleType is not a number");
     if (typeof ruleClass !== "function") throw TypeError("ruleClass is not a function");
     this._types[ruleType] = ruleClass;
+    return true;
   }
 }
 

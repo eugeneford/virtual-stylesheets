@@ -68,27 +68,27 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _VirtualStyleSheet2 = _interopRequireDefault(_VirtualStyleSheet);
 
+	var _VirtualRuleList = __webpack_require__(4);
+
+	var _VirtualRuleList2 = _interopRequireDefault(_VirtualRuleList);
+
+	var _VirtualTokenizer = __webpack_require__(7);
+
+	var _VirtualTokenizer2 = _interopRequireDefault(_VirtualTokenizer);
+
+	var _VirtualRule = __webpack_require__(5);
+
+	var _VirtualRule2 = _interopRequireDefault(_VirtualRule);
+
+	var _VirtualGroupingRule = __webpack_require__(10);
+
+	var _VirtualGroupingRule2 = _interopRequireDefault(_VirtualGroupingRule);
+
+	var _VirtualStyleRule = __webpack_require__(6);
+
+	var _VirtualStyleRule2 = _interopRequireDefault(_VirtualStyleRule);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	module.exports = {
-	  VirtualGrammar: _VirtualGrammar2.default,
-	  VirtualRuleFactory: _VirtualRuleFactory2.default,
-	  VirtualStyleSheet: _VirtualStyleSheet2.default
-	};
-
-/***/ },
-/* 1 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	/**
 	 * Copyright (c) 2017 Eugene Ford (stmechanus@gmail.com)
@@ -108,6 +108,31 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
 	 * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	 */
+
+	module.exports = {
+	  VirtualGrammar: _VirtualGrammar2.default,
+	  VirtualRuleFactory: _VirtualRuleFactory2.default,
+	  VirtualRule: _VirtualRule2.default,
+	  VirtualGroupingRule: _VirtualGroupingRule2.default,
+	  VirtualStyleRule: _VirtualStyleRule2.default,
+	  VirtualRuleList: _VirtualRuleList2.default,
+	  VirtualTokenizer: _VirtualTokenizer2.default,
+	  VirtualStyleSheet: _VirtualStyleSheet2.default
+	};
+
+/***/ },
+/* 1 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var HASH = '#'.charCodeAt(0);
 	var ASTERISK = '*'.charCodeAt(0);
@@ -140,6 +165,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      for (var i in this) {
 	        if (this._test[this[i]]) types[i] = this[i];
 	      }
+	      types.UNKNOWN_RULE = this.UNKNOWN_RULE;
 	      return types;
 	    }
 
@@ -171,6 +197,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      if (typeof ruleType.test !== "function") throw TypeError("Lexeme.test is not a function");
 	      this[ruleType.type] = ruleType.value;
 	      this._test[ruleType.value] = ruleType.test;
+	      return true;
 	    }
 	  }]);
 
@@ -249,7 +276,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      if (i > 0 && codes[i] === 37) return true;
 
 	      // If code is not a digit
-	      if (codes[i] < 48 && codes[i] > 57) return false;
+	      if (codes[i] < 48 || codes[i] > 57) return false;
 	    }
 
 	    // Otherwise, codes refers to a number
@@ -293,24 +320,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  value: true
 	});
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Copyright (c) 2017 Eugene Ford (stmechanus@gmail.com)
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * and associated documentation files (the "Software"), to deal in the Software without restriction,
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * subject to the following conditions:
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * The above copyright notice and this permission notice shall be included in all copies or substantial
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * portions of the Software.
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _VirtualActions = __webpack_require__(3);
 
@@ -351,7 +361,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * Create a new VirtualRule based on ruleInfo
 	   * @param ruleInfo
 	   * @param parentRule
-	   * @param hooks
+	   * @param opts
 	   * @returns {null}
 	   */
 
@@ -360,18 +370,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: "create",
 	    value: function create(ruleInfo) {
 	      var parentRule = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-	      var hooks = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+	      var opts = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+	      if (ruleInfo === undefined) throw Error("ruleInfo is missing");
+	      if (ruleInfo.type === _VirtualGrammar2.default.UNKNOWN_RULE && !opts.assertUnknown) return null;
 
 	      var filterResult = void 0;
 
 	      // Apply a pre parsing filter if was specified
-	      if (hooks.preParsingFilter) {
-	        if ((filterResult = hooks.preParsingFilter(ruleInfo)) === _VirtualActions2.default.FILTER_REJECT) return null;
+	      if (opts.preParsingFilter) {
+	        if ((filterResult = opts.preParsingFilter(ruleInfo)) === _VirtualActions2.default.FILTER_REJECT) return null;
 	        filterResult = filterResult < 0 ? filterResult : 0;
 	      }
 
 	      // Create a VirtualRule based on type in ruleInfo
-	      if (this._types[ruleInfo.type]) return new this._types[ruleInfo.type](ruleInfo, parentRule, hooks, filterResult);
+	      if (!!this._types[ruleInfo.type]) return new this._types[ruleInfo.type](ruleInfo, parentRule, Object.assign({}, opts, { lazyParsing: filterResult }));
 	      // Otherwise throw a TypeError
 	      throw new TypeError("There is no ruleClass associated with " + ruleInfo.type);
 	    }
@@ -380,15 +393,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * Create a new VirtualRule from token
 	     * @param token
 	     * @param parentRule
-	     * @param hooks
+	     * @param opts
 	     * @returns {null}
 	     */
 
 	  }, {
 	    key: "createFromToken",
-	    value: function createFromToken(token, parentRule, hooks) {
+	    value: function createFromToken(token, parentRule, opts) {
 	      var type = void 0,
 	          ruleInfo = void 0;
+
+	      if (token === undefined) throw new Error("Token  is missing");
 
 	      type = _VirtualGrammar2.default.getRuleType(token.value);
 
@@ -399,7 +414,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        cssText: token.value
 	      };
 
-	      return this.create(ruleInfo, parentRule, hooks);
+	      return this.create(ruleInfo, parentRule, opts);
 	    }
 
 	    /**
@@ -414,6 +429,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      if (typeof ruleType !== "number") throw TypeError("ruleType is not a number");
 	      if (typeof ruleClass !== "function") throw TypeError("ruleClass is not a function");
 	      this._types[ruleType] = ruleClass;
+	      return true;
 	    }
 	  }]);
 
@@ -530,7 +546,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function insert(rule, index) {
 	      var id = void 0;
 	      if (!rule) throw new Error("rule is not defined");
-	      if (!rule instanceof _VirtualRule2.default) throw new Error("rule is not a type of VirtualRule");
 	      if (index < 0) throw new Error("index should be a positive int");
 
 	      if (typeof index === "undefined" || index > this._rules.length) {
@@ -611,24 +626,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  value: true
 	});
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Copyright (c) 2017 Eugene Ford (stmechanus@gmail.com)
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * and associated documentation files (the "Software"), to deal in the Software without restriction,
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * subject to the following conditions:
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * The above copyright notice and this permission notice shall be included in all copies or substantial
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * portions of the Software.
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _VirtualActions = __webpack_require__(3);
 
@@ -648,8 +646,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var VirtualRule = function () {
 	  function VirtualRule(ruleInfo) {
 	    var parentRule = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-	    var hooks = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-	    var lazyParsing = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
+	    var opts = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
 	    _classCallCheck(this, VirtualRule);
 
@@ -658,14 +655,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	      throw new Error("Bad input");
 	    }
 
-	    this._hooks = hooks;
+	    this._opts = opts;
 
 	    this.type = ruleInfo.type;
 	    this.startOffset = ruleInfo.startOffset;
 	    this.endOffset = ruleInfo.endOffset;
 	    this.cssText = ruleInfo.cssText;
 	    this.parentRule = parentRule;
-	    this.lazyParsing = lazyParsing;
+	    this.lazyParsing = opts.lazyParsing || 0;
 	    this._parseInvoke();
 	  }
 
@@ -677,30 +674,37 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	  _createClass(VirtualRule, [{
-	    key: '_forceChildChainUpdate',
-	    value: function _forceChildChainUpdate(patchInfo) {
+	    key: '_forceChildRulesUpdate',
+	    value: function _forceChildRulesUpdate(patchInfo) {
 	      if (patchInfo.patchDelta && this.rules && this.rules.length) {
-	        this.rules.get(0).patch({
-	          action: _VirtualActions2.default.PATCH_UPDATE,
-	          patchDelta: patchInfo.patchDelta
-	        });
+	        var start = patchInfo.startFrom;
+	        for (var i = start; i < this.rules.length; i++) {
+	          this.rules.get(i).patch({
+	            action: _VirtualActions2.default.PATCH_UPDATE,
+	            patchDelta: patchInfo.patchDelta
+	          });
+	        }
 	      }
 	    }
 
 	    /**
-	     * Force update patching for next sibling of this rule
+	     * Force parent rule update
 	     * @param patchInfo
 	     * @private
 	     */
 
 	  }, {
-	    key: '_forceChainUpdate',
-	    value: function _forceChainUpdate(patchInfo) {
-	      if (patchInfo.patchDelta && this.parentRule && this.parentRule.rules.get(this.id + 1)) {
-	        this.parentRule.rules.get(this.id + 1).patch({
+	    key: '_forceParentRuleUpdate',
+	    value: function _forceParentRuleUpdate(patchInfo) {
+	      if (this.parentRule) {
+
+	        var parentPatch = Object.assign({}, patchInfo, {
 	          action: _VirtualActions2.default.PATCH_UPDATE,
-	          patchDelta: patchInfo.patchDelta
+	          initialAction: patchInfo.action,
+	          startFrom: this.id !== undefined ? this.id + 1 : 0
 	        });
+
+	        this.parentRule.patch(parentPatch);
 	      }
 	    }
 
@@ -713,10 +717,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: '_patchUpdateApply',
 	    value: function _patchUpdateApply(patchInfo) {
-	      if (patchInfo.patchDelta) {
+	      if (!!patchInfo.startFrom) {
+	        var body = this.getBody();
+
+	        patchInfo.start += body.startOffset;
+	        patchInfo.end += body.startOffset;
+
+	        this._patchThis(Object.assign({}, patchInfo, {
+	          action: patchInfo.initialAction,
+	          initialAction: void 0
+	        }));
+	      } else if (patchInfo.patchDelta) {
 	        this.startOffset += patchInfo.patchDelta;
 	        this.endOffset += patchInfo.patchDelta;
-	        this._forceChildChainUpdate(patchInfo);
+	      }
+
+	      if (patchInfo.patchDelta) {
+	        this._forceChildRulesUpdate(patchInfo);
 	      }
 	    }
 
@@ -798,14 +815,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    /**
-	     * Apply patch changes to current rule
+	     * Apply patch changes to this rule
 	     * @param patchInfo
 	     * @private
 	     */
 
 	  }, {
-	    key: '_patchApply',
-	    value: function _patchApply(patchInfo) {
+	    key: '_patchThis',
+	    value: function _patchThis(patchInfo) {
 	      switch (patchInfo.action) {
 	        case _VirtualActions2.default.PATCH_UPDATE:
 	          this._patchUpdateApply(patchInfo);
@@ -831,8 +848,38 @@ return /******/ (function(modules) { // webpackBootstrap
 	          this._patchDeleteApply(patchInfo);
 	          break;
 	      }
+	    }
 
-	      this._forceChainUpdate(patchInfo);
+	    /**
+	     * Apply patch to parent rule
+	     * @param patchInfo
+	     * @private
+	     */
+
+	  }, {
+	    key: '_patchParent',
+	    value: function _patchParent(patchInfo) {
+	      switch (patchInfo.action) {
+	        case _VirtualActions2.default.PATCH_UPDATE:
+	          break;
+
+	        default:
+	          this._forceParentRuleUpdate(patchInfo);
+	          break;
+	      }
+	    }
+
+	    /**
+	     * Apply patch changes
+	     * @param patchInfo
+	     * @private
+	     */
+
+	  }, {
+	    key: '_patchApply',
+	    value: function _patchApply(patchInfo) {
+	      this._patchThis(patchInfo);
+	      this._patchParent(patchInfo);
 	    }
 
 	    /**
@@ -862,12 +909,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'patch',
 	    value: function patch(patchInfo) {
 	      // Invoke pre patching hook
-	      if (this._hooks.prePatchApply && this._hooks.prePatchApply(this, patchInfo) === _VirtualActions2.default.PATCH_REJECT) return;
+	      if (this._opts.prePatchApply && this._opts.prePatchApply(this, patchInfo) === _VirtualActions2.default.PATCH_REJECT) return;
 
 	      this._patchApply(patchInfo);
 
 	      // Invoke post patching hook
-	      if (this._hooks.postPatchApply) this._hooks.postPatchApply(this, patchInfo);
+	      if (this._opts.postPatchApply) this._opts.postPatchApply(this, patchInfo);
 	    }
 
 	    /**
@@ -991,9 +1038,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _VirtualActions2 = _interopRequireDefault(_VirtualActions);
 
-	var _VirtualRule2 = __webpack_require__(5);
+	var _VirtualStyleDeclarationRule = __webpack_require__(9);
 
-	var _VirtualRule3 = _interopRequireDefault(_VirtualRule2);
+	var _VirtualStyleDeclarationRule2 = _interopRequireDefault(_VirtualStyleDeclarationRule);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1001,36 +1048,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Copyright (c) 2017 Eugene Ford (stmechanus@gmail.com)
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * and associated documentation files (the "Software"), to deal in the Software without restriction,
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * subject to the following conditions:
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * The above copyright notice and this permission notice shall be included in all copies or substantial
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * portions of the Software.
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var VirtualStyleRule = function (_VirtualRule) {
-	  _inherits(VirtualStyleRule, _VirtualRule);
+	var VirtualStyleRule = function (_VirtualStyleDeclarat) {
+	  _inherits(VirtualStyleRule, _VirtualStyleDeclarat);
 
-	  function VirtualStyleRule(ruleInfo) {
-	    var parentRule = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-	    var hooks = arguments[2];
-	    var lazyParsing = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
-
+	  function VirtualStyleRule(ruleInfo, parentRule, opts) {
 	    _classCallCheck(this, VirtualStyleRule);
 
-	    return _possibleConstructorReturn(this, (VirtualStyleRule.__proto__ || Object.getPrototypeOf(VirtualStyleRule)).call(this, ruleInfo, parentRule, hooks, lazyParsing));
+	    return _possibleConstructorReturn(this, (VirtualStyleRule.__proto__ || Object.getPrototypeOf(VirtualStyleRule)).call(this, ruleInfo, parentRule, opts));
 	  }
 
 	  /**
@@ -1090,7 +1116,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }]);
 
 	  return VirtualStyleRule;
-	}(_VirtualRule3.default);
+	}(_VirtualStyleDeclarationRule2.default);
 
 	exports.default = VirtualStyleRule;
 
@@ -1107,25 +1133,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	/**
-	 * Copyright (c) 2017 Eugene Ford (stmechanus@gmail.com)
-	 *
-	 * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
-	 * and associated documentation files (the "Software"), to deal in the Software without restriction,
-	 * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
-	 * and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
-	 * subject to the following conditions:
-	 *
-	 * The above copyright notice and this permission notice shall be included in all copies or substantial
-	 * portions of the Software.
-	 *
-	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
-	 * LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-	 * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-	 * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
-	 * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-	 */
 
 	var TYPES = {
 	  QUALIFIED_RULE_TOKEN: 1,
@@ -1173,6 +1180,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	var VirtualTokenizer = function () {
 	  function VirtualTokenizer() {
 	    _classCallCheck(this, VirtualTokenizer);
+
+	    throw new Error("Attempt to create a copy of static class");
 	  }
 
 	  /**
@@ -1183,13 +1192,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	   */
 
 
-	  _createClass(VirtualTokenizer, [{
+	  _createClass(VirtualTokenizer, null, [{
 	    key: 'getQualifiedRuleToken',
 	    value: function getQualifiedRuleToken(cssText, startIndex) {
 	      var index = startIndex,
 	          length = 0,
 	          fits = void 0,
 	          nextCode = void 0,
+	          hasAt = void 0,
 	          prevCode = void 0,
 	          startCode = cssText.charCodeAt(startIndex),
 	          quotesCode = void 0;
@@ -1210,7 +1220,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	          length++;
 	          index++;
 
-	          if (!quotesCode && fits && nextCode === OPEN_CURLY) fits = false;
+	          if (!quotesCode && nextCode === AT_SIGN) hasAt = true;
+	          if (!quotesCode && fits && nextCode === OPEN_CURLY) {
+	            fits = false;break;
+	          }
 	          if (!quotesCode && !fits && nextCode === OPEN_CURLY) fits = true;
 	          if (!quotesCode && !fits && nextCode === SEMICOLON) break;
 	          if (!quotesCode && nextCode === CLOSE_CURLY) break;
@@ -1218,7 +1231,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          prevCode = nextCode;
 	        }
 
-	        return { type: fits ? TYPES.QUALIFIED_RULE_TOKEN : TYPES.UNKNOWN_TOKEN, startOffset: startIndex, length: length };
+	        return { type: fits && !hasAt ? TYPES.QUALIFIED_RULE_TOKEN : TYPES.UNKNOWN_TOKEN, startOffset: startIndex, length: length };
 	      }
 
 	      return null;
@@ -1348,17 +1361,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	          secondCode = void 0,
 	          thirdCode = void 0,
 	          length = 0,
-	          isNextTokenBounds = void 0;
+	          isNextTokenBounds = void 0,
+	          hypothesis = void 0;
 
 	      while (index < cssText.length) {
 	        switch (nextCode = cssText.charCodeAt(index)) {
-	          case SLASH:
+	          case BACKSLASH:
 	            if (secondCode = cssText.charCodeAt(index + 1) === ASTERISK) isNextTokenBounds = true;
+	            break;
+
+	          case AT_SIGN:
+	            if ((hypothesis = VirtualTokenizer.getAtRuleToken(cssText, index)) && hypothesis.type === TYPES.AT_RULE_TOKEN) isNextTokenBounds = true;
 	            break;
 
 	          case NEW_LINE:
 	          case WHITESPACE:
 	            isNextTokenBounds = true;
+	            break;
+
+	          default:
+	            if (nextCode === ASTERISK || nextCode === DOT_SIGN || CF_WORD(nextCode) || nextCode === HASH || nextCode === OPEN_SQUARE || nextCode === COLON) {
+	              if ((hypothesis = VirtualTokenizer.getQualifiedRuleToken(cssText, index)) && hypothesis.type === TYPES.QUALIFIED_RULE_TOKEN) isNextTokenBounds = true;
+	            }
 	            break;
 	        }
 
@@ -1390,23 +1414,20 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      switch (startCode) {
 	        case AT_SIGN:
-	          if (token = this.getAtRuleToken(cssText, startIndex)) return token;
-	          break;
+	          return VirtualTokenizer.getAtRuleToken(cssText, startIndex);
 
 	        case NEW_LINE:
 	        case WHITESPACE:
-	          if (token = this.getWhitespaceToken(cssText, startIndex)) return token;
-	          break;
+	          return VirtualTokenizer.getWhitespaceToken(cssText, startIndex);
 
-	        case SLASH:
-	          if (token = this.getCommentToken(cssText, startIndex)) return token;
+	        case BACKSLASH:
+	          if (token = VirtualTokenizer.getCommentToken(cssText, startIndex)) return token;
 	          break;
 
 	        default:
-	          if (token = this.getQualifiedRuleToken(cssText, startIndex)) return token;
-	          break;
+	          return VirtualTokenizer.getQualifiedRuleToken(cssText, startIndex);
 	      }
-	      return this.getUnknownToken(cssText, startIndex);
+	      return VirtualTokenizer.getUnknownToken(cssText, startIndex);
 	    }
 
 	    /**
@@ -1417,7 +1438,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * 3 - include qualified, at-rules and comments
 	     * 4 - include qualified, at-rules, comments and whitespaces
 	     * 5 - include any kind of data
-	     * @param cssText - source css text
+	     * @param cssText - source css  text
 	     * @param level - level of tokenization ( 1 to 5 )
 	     * @returns {Array}
 	     */
@@ -1435,7 +1456,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      while (index < cssText.length) {
 
 	        // Create a token
-	        token = this.getToken(cssText, index);
+	        token = VirtualTokenizer.getToken(cssText, index);
 
 	        // Shift loop pointer by token size
 	        index = index + token.length;
@@ -1468,24 +1489,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  value: true
 	});
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Copyright (c) 2017 Eugene Ford (stmechanus@gmail.com)
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * and associated documentation files (the "Software"), to deal in the Software without restriction,
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * subject to the following conditions:
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * The above copyright notice and this permission notice shall be included in all copies or substantial
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * portions of the Software.
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _VirtualActions = __webpack_require__(3);
 
@@ -1516,7 +1520,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    _classCallCheck(this, VirtualStyleSheet);
 
 	    this.rules = [];
-	    this._hooks = hooks;
+	    this._opts = hooks;
 	  }
 
 	  _createClass(VirtualStyleSheet, [{
@@ -1528,13 +1532,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	          rule = void 0,
 	          rules = void 0,
 	          id = 0;
-	      tokens = tokenizer.tokenize(cssText);
+	      tokens = _VirtualTokenizer2.default.tokenize(cssText);
 
 	      if (tokens.length) {
 	        rules = new _VirtualRuleList2.default();
 
 	        for (i = 0; i < tokens.length; i++) {
-	          rule = _VirtualRuleFactory2.default.createFromToken(tokens[i], this, this._hooks);
+	          rule = _VirtualRuleFactory2.default.createFromToken(tokens[i], this, this._opts);
 	          if (rule) rules.insert(rule, id++);
 	        }
 
@@ -1550,6 +1554,139 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.assign(VirtualStyleSheet, _VirtualGrammar2.default.getTypes());
 
 	exports.default = VirtualStyleSheet;
+
+/***/ },
+/* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _VirtualActions = __webpack_require__(3);
+
+	var _VirtualActions2 = _interopRequireDefault(_VirtualActions);
+
+	var _VirtualRule2 = __webpack_require__(5);
+
+	var _VirtualRule3 = _interopRequireDefault(_VirtualRule2);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var VirtualStyleDeclarationRule = function (_VirtualRule) {
+	  _inherits(VirtualStyleDeclarationRule, _VirtualRule);
+
+	  function VirtualStyleDeclarationRule(ruleInfo) {
+	    var parentRule = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+	    var opts = arguments[2];
+
+	    _classCallCheck(this, VirtualStyleDeclarationRule);
+
+	    return _possibleConstructorReturn(this, (VirtualStyleDeclarationRule.__proto__ || Object.getPrototypeOf(VirtualStyleDeclarationRule)).call(this, ruleInfo, parentRule, opts));
+	  }
+
+	  return VirtualStyleDeclarationRule;
+	}(_VirtualRule3.default);
+
+	exports.default = VirtualStyleDeclarationRule;
+
+/***/ },
+/* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _VirtualActions = __webpack_require__(3);
+
+	var _VirtualActions2 = _interopRequireDefault(_VirtualActions);
+
+	var _VirtualRule2 = __webpack_require__(5);
+
+	var _VirtualRule3 = _interopRequireDefault(_VirtualRule2);
+
+	var _VirtualRuleList = __webpack_require__(4);
+
+	var _VirtualRuleList2 = _interopRequireDefault(_VirtualRuleList);
+
+	var _VirtualTokenizer = __webpack_require__(7);
+
+	var _VirtualTokenizer2 = _interopRequireDefault(_VirtualTokenizer);
+
+	var _VirtualRuleFactory = __webpack_require__(2);
+
+	var _VirtualRuleFactory2 = _interopRequireDefault(_VirtualRuleFactory);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var VirtualGroupingRule = function (_VirtualRule) {
+	  _inherits(VirtualGroupingRule, _VirtualRule);
+
+	  function VirtualGroupingRule(ruleInfo, parentRule, hooks, lazyParsing) {
+	    _classCallCheck(this, VirtualGroupingRule);
+
+	    return _possibleConstructorReturn(this, (VirtualGroupingRule.__proto__ || Object.getPrototypeOf(VirtualGroupingRule)).call(this, ruleInfo, parentRule, hooks, lazyParsing));
+	  }
+
+	  _createClass(VirtualGroupingRule, [{
+	    key: "parse",
+	    value: function parse(parseType) {
+	      // If we parsing rule body all entire rule
+	      if (parseType === _VirtualActions2.default.PARSE_BODY || parseType === _VirtualActions2.default.PARSE_ALL) {
+	        var bounds = void 0,
+	            body = void 0,
+	            tokens = void 0,
+	            rules = void 0,
+	            rule = void 0,
+	            i = void 0,
+	            id = 0;
+
+	        // Get Rule body bounds (startOffset and endOffset)
+	        bounds = this.getBody();
+	        body = this.cssText.substring(bounds.startOffset, bounds.endOffset);
+
+	        // Get a set of tokens to work with
+	        tokens = _VirtualTokenizer2.default.tokenize(body);
+
+	        if (tokens.length) {
+	          rules = new _VirtualRuleList2.default();
+
+	          for (i = 0; i < tokens.length; i++) {
+	            rule = _VirtualRuleFactory2.default.createFromToken(tokens[i], this, this._opts);
+	            if (rule) rules.insert(rule, id++);
+	          }
+
+	          this.rules = rules;
+	          return;
+	        }
+	      }
+	      this.rules = null;
+	    }
+	  }]);
+
+	  return VirtualGroupingRule;
+	}(_VirtualRule3.default);
+
+	exports.default = VirtualGroupingRule;
 
 /***/ }
 /******/ ])

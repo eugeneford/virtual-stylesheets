@@ -8,10 +8,8 @@
     "url": "https://github.com/eugeneford/virtual-stylesheets.git"
   },
   "scripts": {
-    "webpack": "webpack --config bundle.config.js",
-    "watch": "webpack --watch --config bundle.config.js",
-    "test": "webpack --config suite.config.js",
-    "test-watch": "webpack --watch --config suite.config.js"
+    "webpack": "webpack",
+    "watch": "webpack --watch"
   },
   "keywords": [
     "css",
@@ -35,6 +33,12 @@
     "babel-preset-es2015": "^6.18.0",
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
+    "jasmine-core": "^2.5.2",
+    "karma": "^1.4.0",
+    "karma-chrome-launcher": "^2.0.0",
+    "karma-coverage": "^1.1.1",
+    "karma-jasmine": "^1.1.0",
+    "karma-jasmine-html-reporter": "^0.2.2",
     "object-assign": "^4.1.1",
     "require-dir": "^0.3.1",
     "webpack": "^1.14.0",
@@ -45,5 +49,7 @@
       "es2015"
     ]
   },
-  "dependencies": {}
+  "dependencies": {
+    "phantomjs": "^2.1.7"
+  }
 }
