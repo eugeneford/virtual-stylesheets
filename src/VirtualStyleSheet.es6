@@ -11,7 +11,8 @@ class VirtualStyleSheet {
   }
 
   parseFromString(cssText){
-    let tokenizer = new VirtualTokenizer(), tokens, i, rule, rules, id = 0;
+    if (typeof cssText !== "string") throw TypeError("cssText is not a string");
+    let tokens, i, rule, rules, id = 0;
     tokens = VirtualTokenizer.tokenize(cssText);
 
     if (tokens.length) {
@@ -23,7 +24,10 @@ class VirtualStyleSheet {
       }
 
       this.rules = rules;
+      return;
     }
+
+    this.rules = new VirtualRuleList();
   }
 }
 

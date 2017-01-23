@@ -1,16 +1,17 @@
 var VirtualRule = VSM.VirtualRule;
+var VirtualStyleSheet = VSM.VirtualStyleSheet;
 
 describe("Virtual Rule", function() {
   describe("constructor()", function() {
-    it("new VirtualRule() ==> Error", function() {
+    it("Threw an Error when ruleInfo was not passed", function() {
       expect(function() { new VirtualRule()}).toThrowError(Error);
     });
 
-    it("new VirtualRule({}) ==> Error", function() {
+    it("Threw an Error when one of props of ruleInfo was missing", function() {
       expect(function() { new VirtualRule({})}).toThrowError(Error);
     });
 
-    it(`new VirtualRule({type: 1, startOffset:0, endOffset:11, cssText: ".example {}"}) ==> Success`, function() {
+    it(`Successfuly created new VirtualRule with passed ruleInfo`, function() {
       var rule = new VirtualRule({type: 1, startOffset:0, endOffset:11, cssText: ".example {}"});
       expect(rule instanceof VirtualRule).toEqual(true);
       expect(rule.parentRule).toEqual(null);
@@ -20,7 +21,18 @@ describe("Virtual Rule", function() {
   });
 
   describe("getHead()", function() {
-    it(".selector { prop: value } ==> [0, 10]", function() {
+    it("Threw a SyntaxError with not valid rule", function() {
+      var rule = new VirtualRule({
+        type: 1,
+        startOffset:0,
+        endOffset:15,
+        cssText: "{ prop: value }"
+      });
+
+      expect(function() { rule.getHead() }).toThrowError(SyntaxError);
+    });
+
+    it("Returned correct head block properties from valid rule {}", function() {
       var rule = new VirtualRule({
         type: 1,
         startOffset:0,
@@ -36,18 +48,23 @@ describe("Virtual Rule", function() {
       });
     });
 
-    it("{ prop: value } ==> SyntaxError", function() {
+    it("Returned correct head block properties with escaped { and } chars", function() {
       var rule = new VirtualRule({
         type: 1,
         startOffset:0,
-        endOffset:15,
-        cssText: "{ prop: value }"
+        endOffset:36,
+        cssText: "[class=\"'{'\"]:after { content: \"}\" }"
       });
 
-      expect(function() { rule.getHead() }).toThrowError(SyntaxError);
+      var head = rule.getHead();
+
+      expect(head).toEqual({
+        startOffset: 0,
+        endOffset: 20
+      });
     });
 
-    it(`@charset "UTF-8"; ==> [0,16]`, function() {
+    it(`Returned correct head block properties from valid @rule;`, function() {
       var rule = new VirtualRule({
         type: 1,
         startOffset:0,
@@ -63,7 +80,18 @@ describe("Virtual Rule", function() {
   });
 
   describe("getBody()", function() {
-    it(".selector { prop: value } ==> [10, 15]", function() {
+    it("Threw a SyntaxError with not valid rule", function() {
+      var rule = new VirtualRule({
+        type: 1,
+        startOffset:0,
+        endOffset:14,
+        cssText: "@media print {"
+      });
+
+      expect(function() { rule.getBody() }).toThrowError(SyntaxError);
+    });
+
+    it("Returned correct body block props with rule {}", function() {
       var rule = new VirtualRule({
         type: 1,
         startOffset:0,
@@ -79,7 +107,7 @@ describe("Virtual Rule", function() {
       });
     });
 
-    it("@media print { .test { prop: value } } ==> [14, 37]", function() {
+    it("Returned correct body block props with @rule {}", function() {
       var rule = new VirtualRule({
         type: 1,
         startOffset:0,
@@ -95,16 +123,50 @@ describe("Virtual Rule", function() {
       });
     });
 
-
-    it("@media print { ==> SyntaxError", function() {
+    it("Returned null with @rule;", function() {
       var rule = new VirtualRule({
         type: 1,
         startOffset:0,
-        endOffset:14,
-        cssText: "@media print {"
+        endOffset:19,
+        cssText: "@charset \"UTF-8\";"
       });
 
-      expect(function() { rule.getBody() }).toThrowError(SyntaxError);
+      var body = rule.getBody();
+
+      expect(body).toEqual(null);
+    });
+
+    it("Returned correct body block props with escaped { and } chars", function() {
+      var rule = new VirtualRule({
+        type: 1,
+        startOffset:0,
+        endOffset:41,
+        cssText: "[class=\"'{'\"]:before { content: \"}\" }"
+      });
+
+      var body = rule.getBody();
+
+      expect(body).toEqual({
+        startOffset: 22,
+        endOffset: 36
+      });
+    });
+  });
+
+  describe("patch()", function(){
+    it("Successfully applied PATCH_APPEND", function(){
+      var rule = new VirtualRule({
+        type: 1,
+        startOffset:0,
+        endOffset:26,
+        cssText: ".selector { width: 30px; }"
+      });
+
+      rule.patch({
+        action: VirtualStyleSheet.PATCH_APPEND,
+        value: "test",
+        patchDelta: 4
+      })
     });
   });
 });

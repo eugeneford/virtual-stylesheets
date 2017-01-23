@@ -29,40 +29,6 @@ export default class VirtualRule {
     this._parseInvoke();
   }
 
-  /**
-   * Force update patching for its child rules
-   * @param patchInfo
-   * @private
-   */
-  _forceChildRulesUpdate(patchInfo) {
-    if (patchInfo.patchDelta && this.rules && this.rules.length) {
-      let start = patchInfo.startFrom;
-      for (let i = start; i < this.rules.length; i++){
-        this.rules.get(i).patch({
-          action: VirtualActions.PATCH_UPDATE,
-          patchDelta: patchInfo.patchDelta
-        });
-      }
-    }
-  }
-
-  /**
-   * Force parent rule update
-   * @param patchInfo
-   * @private
-   */
-  _forceParentRuleUpdate(patchInfo){
-    if (this.parentRule) {
-
-      let parentPatch = Object.assign({}, patchInfo, {
-        action: VirtualActions.PATCH_UPDATE,
-        initialAction: patchInfo.action,
-        startFrom: this.id !== undefined ? this.id + 1 : 0
-      });
-
-      this.parentRule.patch(parentPatch);
-    }
-  }
 
   /**
    * Apply update action to current rule
@@ -70,26 +36,12 @@ export default class VirtualRule {
    * @private
    */
   _patchUpdateApply(patchInfo) {
-    if (!!patchInfo.startFrom) {
-      let body = this.getBody();
-
-      patchInfo.start += body.startOffset;
-      patchInfo.end += body.startOffset;
-
-      this._patchThis(Object.assign({}, patchInfo, {
-        action: patchInfo.initialAction,
-        initialAction: void 0
-      }));
-    }
-    else if (patchInfo.patchDelta){
+    if (patchInfo.patchDelta){
       this.startOffset += patchInfo.patchDelta;
       this.endOffset += patchInfo.patchDelta;
     }
-
-    if (patchInfo.patchDelta) {
-      this._forceChildRulesUpdate(patchInfo);
-    }
   }
+
 
   /**
    * Apply append action to current rule
@@ -103,6 +55,7 @@ export default class VirtualRule {
     this._parseInvoke();
   }
 
+
   /**
    * Apply prepend action to current rule
    * @param patchInfo
@@ -115,6 +68,7 @@ export default class VirtualRule {
     this._parseInvoke();
   }
 
+
   /**
    * Apply insert action to current rule
    * @param patchInfo
@@ -125,6 +79,7 @@ export default class VirtualRule {
     this._patchReplaceApply(info);
     this._parseInvoke();
   }
+
 
   /**
    * Apply replace action to current rule
@@ -140,6 +95,7 @@ export default class VirtualRule {
     this._parseInvoke();
   }
 
+
   /**
    * Apply delete action to current rule
    * @param patchInfo
@@ -151,12 +107,13 @@ export default class VirtualRule {
     this._parseInvoke();
   }
 
+
   /**
-   * Apply patch changes to this rule
+   * Apply patch changes
    * @param patchInfo
    * @private
    */
-  _patchThis(patchInfo) {
+  _patchApply(patchInfo) {
     switch (patchInfo.action) {
       case VirtualActions.PATCH_UPDATE:
         this._patchUpdateApply(patchInfo);
@@ -184,30 +141,6 @@ export default class VirtualRule {
     }
   }
 
-  /**
-   * Apply patch to parent rule
-   * @param patchInfo
-   * @private
-   */
-  _patchParent(patchInfo){
-    switch (patchInfo.action) {
-      case VirtualActions.PATCH_UPDATE: break;
-
-      default:
-        this._forceParentRuleUpdate(patchInfo);
-        break;
-    }
-  }
-
-  /**
-   * Apply patch changes
-   * @param patchInfo
-   * @private
-   */
-  _patchApply(patchInfo) {
-    this._patchThis(patchInfo);
-    this._patchParent(patchInfo);
-  }
 
   /**
    * Invokes rule parsing basing on lazyParsing state
@@ -224,6 +157,7 @@ export default class VirtualRule {
     }
   }
 
+
   /**
    * Patch current rule props with patchInfo
    * @param patchInfo
@@ -237,6 +171,7 @@ export default class VirtualRule {
     // Invoke post patching hook
     if (this._opts.postPatchApply) this._opts.postPatchApply(this, patchInfo);
   }
+
 
   /**
    * Parse head props from current rule
@@ -270,9 +205,10 @@ export default class VirtualRule {
     return {startOffset: 0, endOffset: length};
   }
 
+
   /**
    * Parse body props from current rule
-   * @returns {{startOffset: number, endOffset: number}}
+   * @returns {object}
    */
   getBody(){
     let i, quotesCode, nextCode, prevCode, startOffset, endOffset, openCurlyCount = 0;
@@ -293,6 +229,7 @@ export default class VirtualRule {
         startOffset = i + 1;
       }
 
+      if (!quotesCode && openCurlyCount === 0 && nextCode === SEMICOLON) return null;
       if (!quotesCode && nextCode === OPEN_CURLY) openCurlyCount++;
       if (!quotesCode && nextCode === CLOSE_CURLY) openCurlyCount--;
 
@@ -308,7 +245,6 @@ export default class VirtualRule {
 
     return {startOffset, endOffset};
   }
-
 
 
   /**
