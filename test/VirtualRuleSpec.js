@@ -157,8 +157,8 @@ describe("Virtual Rule", function() {
     it("Successfully applied PATCH_APPEND", function(){
       var rule = new VirtualRule({
         type: 1,
-        startOffset:0,
-        endOffset:26,
+        startOffset:10,
+        endOffset:36,
         cssText: ".selector { width: 30px; }"
       });
 
@@ -166,7 +166,177 @@ describe("Virtual Rule", function() {
         action: VirtualStyleSheet.PATCH_APPEND,
         value: "test",
         patchDelta: 4
-      })
+      });
+
+      expect(rule.cssText).toEqual(".selector { width: 30px; }test");
+      expect(rule.startOffset).toEqual(10);
+      expect(rule.endOffset).toEqual(40);
+    });
+
+    it("Successfully applied PATCH_PREPEND", function(){
+      var rule = new VirtualRule({
+        type: 1,
+        startOffset:0,
+        endOffset:26,
+        cssText: ".selector { width: 30px; }"
+      });
+
+      rule.patch({
+        action: VirtualStyleSheet.PATCH_PREPEND,
+        value: "test",
+        patchDelta: 4
+      });
+
+      expect(rule.cssText).toEqual("test.selector { width: 30px; }");
+      expect(rule.startOffset).toEqual(0);
+      expect(rule.endOffset).toEqual(30);
+    });
+
+    it("Successfully applied PATCH_INSERT", function(){
+      var rule = new VirtualRule({
+        type: 1,
+        startOffset:0,
+        endOffset:26,
+        cssText: ".selector { width: 30px; }"
+      });
+
+      rule.patch({
+        action: VirtualStyleSheet.PATCH_INSERT,
+        start: 25,
+        value: "height: 30px;",
+        patchDelta: 13
+      });
+
+      expect(rule.cssText).toEqual(".selector { width: 30px; height: 30px;}");
+      expect(rule.startOffset).toEqual(0);
+      expect(rule.endOffset).toEqual(39);
+    });
+
+    it("Successfully applied PATCH_REPLACE", function(){
+      var rule = new VirtualRule({
+        type: 1,
+        startOffset:0,
+        endOffset:26,
+        cssText: ".selector { width: 30px; }"
+      });
+
+      rule.patch({
+        action: VirtualStyleSheet.PATCH_REPLACE,
+        start: 12,
+        end: 24,
+        value: "width: 270px;",
+        patchDelta: 13
+      });
+
+      expect(rule.cssText).toEqual(".selector { width: 270px; }");
+      expect(rule.startOffset).toEqual(0);
+      expect(rule.endOffset).toEqual(27);
+    });
+
+
+    it("Successfully applied PATCH_DELETE", function(){
+      var rule = new VirtualRule({
+        type: 1,
+        startOffset:0,
+        endOffset:26,
+        cssText: ".selector { width: 30px; }"
+      });
+
+      rule.patch({
+        action: VirtualStyleSheet.PATCH_DELETE,
+        start: 12,
+        end: 24,
+        patchDelta: 13
+      });
+
+      expect(rule.cssText).toEqual(".selector {  }");
+      expect(rule.startOffset).toEqual(0);
+      expect(rule.endOffset).toEqual(14);
+    });
+
+    it("Successfully applied PATCH_UPDATE", function(){
+      var rule = new VirtualRule({
+        type: 1,
+        startOffset:0,
+        endOffset:26,
+        cssText: ".selector { width: 30px; }"
+      });
+
+      rule.patch({
+        action: VirtualStyleSheet.PATCH_UPDATE,
+        patchDelta: 10
+      });
+
+      expect(rule.cssText).toEqual(".selector { width: 30px; }");
+      expect(rule.startOffset).toEqual(10);
+      expect(rule.endOffset).toEqual(36);
+    });
+
+    it("Ignored applied PATCH_UPDATE if patchDelta was not passed", function(){
+      var rule = new VirtualRule({
+        type: 1,
+        startOffset:0,
+        endOffset:26,
+        cssText: ".selector { width: 30px; }"
+      });
+
+      rule.patch({
+        action: VirtualStyleSheet.PATCH_UPDATE
+      });
+
+      expect(rule.cssText).toEqual(".selector { width: 30px; }");
+      expect(rule.startOffset).toEqual(0);
+      expect(rule.endOffset).toEqual(26);
+    });
+
+    it("Successfully ignored target patch if prePatchApply hook returned PATH_REJECT flag", function(){
+      var rule = new VirtualRule({
+        type: 1,
+        startOffset:0,
+        endOffset:26,
+        cssText: ".selector { width: 30px; }"
+      }, null, {
+        prePatchApply: function (){
+          return VirtualStyleSheet.PATCH_REJECT
+        }
+      });
+
+      rule.patch({
+        action: VirtualStyleSheet.PATCH_DELETE,
+        start: 12,
+        end: 24,
+        patchDelta: 13
+      });
+
+      expect(rule.cssText).toEqual(".selector { width: 30px; }");
+      expect(rule.startOffset).toEqual(0);
+      expect(rule.endOffset).toEqual(26);
+    });
+
+    it("Successfully applied postPatchApply hook", function(){
+      var hookRule;
+
+      var rule = new VirtualRule({
+        type: 1,
+        startOffset:0,
+        endOffset:26,
+        cssText: ".selector { width: 30px; }"
+      }, null, {
+        postPatchApply: function (rule, patchInfo){
+          hookRule = rule;
+        }
+      });
+
+      var patch = {
+        action: VirtualStyleSheet.PATCH_DELETE,
+        start: 12,
+        end: 24,
+        patchDelta: 13
+      };
+
+      rule.patch(patch);
+
+      expect(rule).toEqual(hookRule);
     });
   });
 });

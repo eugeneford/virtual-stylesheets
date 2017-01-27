@@ -88,26 +88,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _VirtualStyleRule2 = _interopRequireDefault(_VirtualStyleRule);
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	var _VirtualViewportRule = __webpack_require__(11);
 
-	/**
-	 * Copyright (c) 2017 Eugene Ford (stmechanus@gmail.com)
-	 *
-	 * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
-	 * and associated documentation files (the "Software"), to deal in the Software without restriction,
-	 * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
-	 * and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
-	 * subject to the following conditions:
-	 *
-	 * The above copyright notice and this permission notice shall be included in all copies or substantial
-	 * portions of the Software.
-	 *
-	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
-	 * LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-	 * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-	 * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
-	 * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-	 */
+	var _VirtualViewportRule2 = _interopRequireDefault(_VirtualViewportRule);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	module.exports = {
 	  VirtualGrammar: _VirtualGrammar2.default,
@@ -115,10 +100,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	  VirtualRule: _VirtualRule2.default,
 	  VirtualGroupingRule: _VirtualGroupingRule2.default,
 	  VirtualStyleRule: _VirtualStyleRule2.default,
+	  VirtualViewportRule: _VirtualViewportRule2.default,
 	  VirtualRuleList: _VirtualRuleList2.default,
 	  VirtualTokenizer: _VirtualTokenizer2.default,
 	  VirtualStyleSheet: _VirtualStyleSheet2.default
-	};
+	}; /**
+	    * Copyright (c) 2017 Eugene Ford (stmechanus@gmail.com)
+	    *
+	    * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+	    * and associated documentation files (the "Software"), to deal in the Software without restriction,
+	    * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+	    * and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+	    * subject to the following conditions:
+	    *
+	    * The above copyright notice and this permission notice shall be included in all copies or substantial
+	    * portions of the Software.
+	    *
+	    * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+	    * LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+	    * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+	    * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
+	    * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+	    */
 
 /***/ },
 /* 1 */
@@ -342,6 +345,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _VirtualStyleRule2 = _interopRequireDefault(_VirtualStyleRule);
 
+	var _VirtualViewportRule = __webpack_require__(11);
+
+	var _VirtualViewportRule2 = _interopRequireDefault(_VirtualViewportRule);
+
+	var _VirtualGroupingRule = __webpack_require__(10);
+
+	var _VirtualGroupingRule2 = _interopRequireDefault(_VirtualGroupingRule);
+
 	var _VirtualTokenizer = __webpack_require__(8);
 
 	var _VirtualTokenizer2 = _interopRequireDefault(_VirtualTokenizer);
@@ -373,7 +384,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var opts = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
 	      if (ruleInfo === undefined) throw Error("ruleInfo is missing");
-	      if (ruleInfo.type === _VirtualGrammar2.default.UNKNOWN_RULE && !opts.assertUnknown) return null;
+	      if (ruleInfo.type === _VirtualGrammar2.default.UNKNOWN_RULE && !opts.acceptUnknown) return null;
 
 	      var filterResult = void 0;
 
@@ -440,7 +451,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	RuleFactory.register(_VirtualGrammar2.default.UNKNOWN_RULE, _VirtualRule2.default);
 	RuleFactory.register(_VirtualGrammar2.default.STYLE_RULE, _VirtualStyleRule2.default);
-	RuleFactory.register(_VirtualGrammar2.default.MEDIA_RULE, _VirtualRule2.default);
+	RuleFactory.register(_VirtualGrammar2.default.CHARSET_RULE, _VirtualRule2.default);
+	RuleFactory.register(_VirtualGrammar2.default.IMPORT_RULE, _VirtualRule2.default);
+	RuleFactory.register(_VirtualGrammar2.default.MEDIA_RULE, _VirtualGroupingRule2.default);
+	RuleFactory.register(_VirtualGrammar2.default.FONT_FACE_RULE, _VirtualRule2.default);
+	RuleFactory.register(_VirtualGrammar2.default.PAGE_RULE, _VirtualRule2.default);
+	RuleFactory.register(_VirtualGrammar2.default.KEYFRAME_RULE, _VirtualRule2.default);
+	RuleFactory.register(_VirtualGrammar2.default.KEYFRAMES_RULE, _VirtualGroupingRule2.default);
+	RuleFactory.register(_VirtualGrammar2.default.NAMESPACE_RULE, _VirtualRule2.default);
+	RuleFactory.register(_VirtualGrammar2.default.SUPPORTS_RULE, _VirtualRule2.default);
+	RuleFactory.register(_VirtualGrammar2.default.VIEWPORT_RULE, _VirtualViewportRule2.default);
 
 	exports.default = RuleFactory;
 
@@ -694,7 +714,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var oldText = this.cssText;
 	      this.cssText = oldText + patchInfo.value;
 	      this.endOffset = this.endOffset + this.cssText.length - oldText.length;
-	      this._parseInvoke();
+	      if (patchInfo.reparse) this._parseInvoke();
 	    }
 
 	    /**
@@ -709,7 +729,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var oldText = this.cssText;
 	      this.cssText = patchInfo.value + oldText;
 	      this.endOffset = this.endOffset + this.cssText.length - oldText.length;
-	      this._parseInvoke();
+	      if (patchInfo.reparse) this._parseInvoke();
 	    }
 
 	    /**
@@ -723,7 +743,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function _patchInsertApply(patchInfo) {
 	      var info = Object.assign({}, patchInfo, { end: patchInfo.start });
 	      this._patchReplaceApply(info);
-	      this._parseInvoke();
+	      if (patchInfo.reparse) this._parseInvoke();
 	    }
 
 	    /**
@@ -742,7 +762,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      trail = this.cssText.substring(patchInfo.end);
 	      this.cssText = head + patchInfo.value + trail;
 	      this.endOffset = this.endOffset + this.cssText.length - oldText.length;
-	      this._parseInvoke();
+	      if (patchInfo.reparse) this._parseInvoke();
 	    }
 
 	    /**
@@ -756,7 +776,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function _patchDeleteApply(patchInfo) {
 	      var info = Object.assign({}, patchInfo, { value: "" });
 	      this._patchReplaceApply(info);
-	      this._parseInvoke();
+	      if (patchInfo.reparse) this._parseInvoke();
 	    }
 
 	    /**
@@ -823,6 +843,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function patch(patchInfo) {
 	      // Invoke pre patching hook
 	      if (this._opts.prePatchApply && this._opts.prePatchApply(this, patchInfo) === _VirtualActions2.default.PATCH_REJECT) return;
+
+	      // Accept rule reparse as default postPatch behavior
+	      if (patchInfo.reparse === undefined) {
+	        patchInfo = Object.assign({}, patchInfo, { reparse: true });
+	      }
 
 	      this._patchApply(patchInfo);
 
@@ -1558,10 +1583,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	var VirtualGroupingRule = function (_VirtualRule) {
 	  _inherits(VirtualGroupingRule, _VirtualRule);
 
-	  function VirtualGroupingRule(ruleInfo, parentRule, hooks, lazyParsing) {
+	  function VirtualGroupingRule(ruleInfo, parentRule, opts) {
 	    _classCallCheck(this, VirtualGroupingRule);
 
-	    return _possibleConstructorReturn(this, (VirtualGroupingRule.__proto__ || Object.getPrototypeOf(VirtualGroupingRule)).call(this, ruleInfo, parentRule, hooks, lazyParsing));
+	    return _possibleConstructorReturn(this, (VirtualGroupingRule.__proto__ || Object.getPrototypeOf(VirtualGroupingRule)).call(this, ruleInfo, parentRule, opts));
 	  }
 
 	  /**
@@ -1572,37 +1597,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	  _createClass(VirtualGroupingRule, [{
-	    key: "_forceChildRulesUpdate",
-	    value: function _forceChildRulesUpdate(patchInfo) {
+	    key: "_patchChildRules",
+	    value: function _patchChildRules(patchInfo, startFrom) {
+	      /*istanbul ignore else*/
 	      if (patchInfo.patchDelta && this.rules && this.rules.length) {
-	        var start = patchInfo.startFrom;
+	        var start = startFrom || 0;
 	        for (var i = start; i < this.rules.length; i++) {
-	          this.rules.get(i).patch({
-	            action: _VirtualActions2.default.PATCH_UPDATE,
-	            patchDelta: patchInfo.patchDelta
-	          });
+	          this.rules.get(i).patch(patchInfo);
 	        }
-	      }
-	    }
-
-	    /**
-	     * Force parent rule update
-	     * @param patchInfo
-	     * @private
-	     */
-
-	  }, {
-	    key: "_forceParentRuleUpdate",
-	    value: function _forceParentRuleUpdate(patchInfo) {
-	      if (this.parentRule) {
-
-	        var parentPatch = Object.assign({}, patchInfo, {
-	          action: _VirtualActions2.default.PATCH_UPDATE,
-	          initialAction: patchInfo.action,
-	          startFrom: this.id !== undefined ? this.id + 1 : 0
-	        });
-
-	        this.parentRule.patch(parentPatch);
 	      }
 	    }
 
@@ -1615,49 +1617,37 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: "_patchParent",
 	    value: function _patchParent(patchInfo) {
-	      switch (patchInfo.action) {
-	        case _VirtualActions2.default.PATCH_UPDATE:
-	          break;
+	      if (patchInfo && patchInfo.action !== _VirtualActions2.default.PATCH_UPDATE) {
+	        var parentRule = void 0;
+	        /*istanbul ignore else*/
+	        if (parentRule = this.parentRule) {
+	          var parentPatch = void 0,
+	              siblingPatch = void 0,
+	              body = void 0,
+	              i = void 0;
 
-	        default:
-	          this._forceParentRuleUpdate(patchInfo);
-	          break;
-	      }
-	    }
+	          // Get Parent Rule body bounds (startOffset and endOffset)
+	          body = parentRule.getBody();
 
-	    /**
-	     * Apply patch changes
-	     * @param patchInfo
-	     * @private
-	     */
+	          // Create parent patch excluding default reparse behavior
+	          parentPatch = Object.assign({}, patchInfo, {
+	            start: body.startOffset + this.startOffset + patchInfo.start,
+	            end: body.startOffset + this.startOffset + patchInfo.end,
+	            reparse: false
+	          });
 
-	  }, {
-	    key: "_patchApply",
-	    value: function _patchApply(patchInfo) {
-	      this._patchParent(patchInfo);
-	    }
+	          this.parentRule.patch(parentPatch);
 
-	    /**
-	     * Apply update action to current rule
-	     * @param patchInfo
-	     * @private
-	     */
+	          // Simply update the position of next rule's sibling if it has changed its length
+	          if (patchInfo.patchDelta) {
+	            siblingPatch = {
+	              action: _VirtualActions2.default.PATCH_UPDATE,
+	              patchDelta: patchInfo.patchDelta
+	            };
 
-	  }, {
-	    key: "_patchUpdateApply",
-	    value: function _patchUpdateApply(patchInfo) {
-	      if (patchInfo.startFrom !== undefined) {
-	        var body = this.getBody();
-
-	        patchInfo.start += body.startOffset;
-	        patchInfo.end += body.startOffset;
-
-	        this._patchThis(Object.assign({}, patchInfo, {
-	          action: patchInfo.initialAction,
-	          initialAction: void 0
-	        }));
-	      } else if (patchInfo.patchDelta) {
-	        this._forceChildRulesUpdate(patchInfo);
+	            this.parentRule._patchChildRules(siblingPatch, this.id + 1);
+	          }
+	        }
 	      }
 	    }
 	  }, {
@@ -1685,7 +1675,21 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	          for (i = 0; i < tokens.length; i++) {
 	            rule = _VirtualRuleFactory2.default.createFromToken(tokens[i], this, this._opts);
-	            if (rule) rules.insert(rule, id++);
+
+	            if (rule) {
+	              // Inject grouping rule to _patchApply function
+	              rule._patchApply = function (rule, _patchApply) {
+	                function call(patchInfo) {
+	                  _patchApply.bind(rule)(patchInfo);
+	                  rule.parentRule._patchParent.bind(rule)(patchInfo);
+	                }
+
+	                return call;
+	              }(rule, rule._patchApply);
+
+	              // Add injected rule to list
+	              rules.insert(rule, id++);
+	            }
 	          }
 
 	          this.rules = rules;
@@ -1700,6 +1704,42 @@ return /******/ (function(modules) { // webpackBootstrap
 	}(_VirtualRule3.default);
 
 	exports.default = VirtualGroupingRule;
+
+/***/ },
+/* 11 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _VirtualStyleDeclarationRule = __webpack_require__(7);
+
+	var _VirtualStyleDeclarationRule2 = _interopRequireDefault(_VirtualStyleDeclarationRule);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var VirtualViewportRule = function (_VirtualStyleDeclarat) {
+	  _inherits(VirtualViewportRule, _VirtualStyleDeclarat);
+
+	  function VirtualViewportRule(ruleInfo, parentRule, opts) {
+	    _classCallCheck(this, VirtualViewportRule);
+
+	    return _possibleConstructorReturn(this, (VirtualViewportRule.__proto__ || Object.getPrototypeOf(VirtualViewportRule)).call(this, ruleInfo, parentRule, opts));
+	  }
+
+	  return VirtualViewportRule;
+	}(_VirtualStyleDeclarationRule2.default);
+
+	exports.default = VirtualViewportRule;
 
 /***/ }
 /******/ ])

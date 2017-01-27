@@ -52,7 +52,7 @@ export default class VirtualRule {
     let oldText = this.cssText;
     this.cssText = oldText + patchInfo.value;
     this.endOffset = this.endOffset + this.cssText.length - oldText.length;
-    this._parseInvoke();
+    if (patchInfo.reparse) this._parseInvoke();
   }
 
 
@@ -65,7 +65,7 @@ export default class VirtualRule {
     let oldText = this.cssText;
     this.cssText = patchInfo.value + oldText;
     this.endOffset = this.endOffset + this.cssText.length - oldText.length;
-    this._parseInvoke();
+    if (patchInfo.reparse) this._parseInvoke();
   }
 
 
@@ -77,7 +77,7 @@ export default class VirtualRule {
   _patchInsertApply(patchInfo) {
     let info = Object.assign({}, patchInfo, {end: patchInfo.start});
     this._patchReplaceApply(info);
-    this._parseInvoke();
+    if (patchInfo.reparse) this._parseInvoke();
   }
 
 
@@ -92,7 +92,7 @@ export default class VirtualRule {
     trail = this.cssText.substring(patchInfo.end);
     this.cssText = head + patchInfo.value + trail;
     this.endOffset = this.endOffset + this.cssText.length - oldText.length;
-    this._parseInvoke();
+    if (patchInfo.reparse) this._parseInvoke();
   }
 
 
@@ -104,7 +104,7 @@ export default class VirtualRule {
   _patchDeleteApply(patchInfo) {
     let info = Object.assign({}, patchInfo, {value: ""});
     this._patchReplaceApply(info);
-    this._parseInvoke();
+    if (patchInfo.reparse) this._parseInvoke();
   }
 
 
@@ -165,6 +165,11 @@ export default class VirtualRule {
   patch(patchInfo) {
     // Invoke pre patching hook
     if (this._opts.prePatchApply && this._opts.prePatchApply(this, patchInfo) === VirtualActions.PATCH_REJECT) return;
+
+    // Accept rule reparse as default postPatch behavior
+    if (patchInfo.reparse === undefined) {
+      patchInfo = Object.assign({}, patchInfo, {reparse: true});
+    }
 
     this._patchApply(patchInfo);
 

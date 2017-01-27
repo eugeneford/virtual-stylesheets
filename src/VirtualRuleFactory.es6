@@ -3,6 +3,8 @@ import VirtualGrammar from "./VirtualGrammar";
 import VirtualRuleList from "./VirtualRuleList";
 import VirtualRule from "./VirtualRule";
 import VirtualStyleRule from "./VirtualStyleRule";
+import VirtualViewportRule from "./VirtualViewportRule";
+import VirtualGroupingRule from "./VirtualGroupingRule";
 import VirtualTokenizer from "./VirtualTokenizer";
 
 class VirtualRuleFactory {
@@ -19,7 +21,7 @@ class VirtualRuleFactory {
    */
   create(ruleInfo, parentRule = null, opts = {}){
     if (ruleInfo === undefined) throw Error("ruleInfo is missing");
-    if (ruleInfo.type === VirtualGrammar.UNKNOWN_RULE && !opts.assertUnknown) return null;
+    if (ruleInfo.type === VirtualGrammar.UNKNOWN_RULE && !opts.acceptUnknown) return null;
 
     let filterResult;
 
@@ -77,6 +79,15 @@ const RuleFactory = new VirtualRuleFactory();
 
 RuleFactory.register(VirtualGrammar.UNKNOWN_RULE, VirtualRule);
 RuleFactory.register(VirtualGrammar.STYLE_RULE, VirtualStyleRule);
-RuleFactory.register(VirtualGrammar.MEDIA_RULE, VirtualRule);
+RuleFactory.register(VirtualGrammar.CHARSET_RULE, VirtualRule);
+RuleFactory.register(VirtualGrammar.IMPORT_RULE, VirtualRule);
+RuleFactory.register(VirtualGrammar.MEDIA_RULE, VirtualGroupingRule);
+RuleFactory.register(VirtualGrammar.FONT_FACE_RULE, VirtualRule);
+RuleFactory.register(VirtualGrammar.PAGE_RULE, VirtualRule);
+RuleFactory.register(VirtualGrammar.KEYFRAME_RULE, VirtualRule);
+RuleFactory.register(VirtualGrammar.KEYFRAMES_RULE, VirtualGroupingRule);
+RuleFactory.register(VirtualGrammar.NAMESPACE_RULE, VirtualRule);
+RuleFactory.register(VirtualGrammar.SUPPORTS_RULE, VirtualRule);
+RuleFactory.register(VirtualGrammar.VIEWPORT_RULE, VirtualViewportRule);
 
 export default RuleFactory;

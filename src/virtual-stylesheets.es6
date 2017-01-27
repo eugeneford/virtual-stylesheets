@@ -17,14 +17,15 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import VirtualGrammar from "./VirtualGrammar.es6";
-import VirtualRuleFactory from "./VirtualRuleFactory.es6";
-import VirtualStyleSheet from "./VirtualStyleSheet.es6";
-import VirtualRuleList from "./VirtualRuleList.es6";
-import VirtualTokenizer from "./VirtualTokenizer.es6";
-import VirtualRule from "./VirtualRule.es6";
-import VirtualGroupingRule from "./VirtualGroupingRule.es6";
-import VirtualStyleRule from "./VirtualStyleRule.es6";
+import VirtualGrammar from "./VirtualGrammar";
+import VirtualRuleFactory from "./VirtualRuleFactory";
+import VirtualStyleSheet from "./VirtualStyleSheet";
+import VirtualRuleList from "./VirtualRuleList";
+import VirtualTokenizer from "./VirtualTokenizer";
+import VirtualRule from "./VirtualRule";
+import VirtualGroupingRule from "./VirtualGroupingRule";
+import VirtualStyleRule from "./VirtualStyleRule";
+import VirtualViewportRule from "./VirtualViewportRule";
 
 module.exports = {
   VirtualGrammar : VirtualGrammar,
@@ -32,6 +33,7 @@ module.exports = {
   VirtualRule : VirtualRule,
   VirtualGroupingRule : VirtualGroupingRule,
   VirtualStyleRule : VirtualStyleRule,
+  VirtualViewportRule : VirtualViewportRule,
   VirtualRuleList : VirtualRuleList,
   VirtualTokenizer : VirtualTokenizer,
   VirtualStyleSheet : VirtualStyleSheet

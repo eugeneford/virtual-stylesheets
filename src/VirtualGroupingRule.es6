@@ -5,8 +5,8 @@ import VirtualTokenizer from "./VirtualTokenizer";
 import VirtualRuleFactory from "./VirtualRuleFactory";
 
 export default class VirtualGroupingRule extends VirtualRule {
-  constructor(ruleInfo, parentRule, hooks, lazyParsing){
-    super(ruleInfo, parentRule, hooks, lazyParsing);
+  constructor(ruleInfo, parentRule, opts){
+    super(ruleInfo, parentRule, opts);
   }
 
   /**
@@ -14,33 +14,13 @@ export default class VirtualGroupingRule extends VirtualRule {
    * @param patchInfo
    * @private
    */
-  _forceChildRulesUpdate(patchInfo) {
+  _patchChildRules(patchInfo, startFrom) {
+    /*istanbul ignore else*/
     if (patchInfo.patchDelta && this.rules && this.rules.length) {
-      let start = patchInfo.startFrom;
+      let start = startFrom || 0;
       for (let i = start; i < this.rules.length; i++){
-        this.rules.get(i).patch({
-          action: VirtualActions.PATCH_UPDATE,
-          patchDelta: patchInfo.patchDelta
-        });
+        this.rules.get(i).patch(patchInfo);
       }
-    }
-  }
-
-  /**
-   * Force parent rule update
-   * @param patchInfo
-   * @private
-   */
-  _forceParentRuleUpdate(patchInfo){
-    if (this.parentRule) {
-
-      let parentPatch = Object.assign({}, patchInfo, {
-        action: VirtualActions.PATCH_UPDATE,
-        initialAction: patchInfo.action,
-        startFrom: this.id !== undefined ? this.id + 1 : 0
-      });
-
-      this.parentRule.patch(parentPatch);
     }
   }
 
@@ -50,43 +30,34 @@ export default class VirtualGroupingRule extends VirtualRule {
    * @private
    */
   _patchParent(patchInfo){
-    switch (patchInfo.action) {
-      case VirtualActions.PATCH_UPDATE: break;
+    if (patchInfo && patchInfo.action !== VirtualActions.PATCH_UPDATE) {
+      let parentRule;
+      /*istanbul ignore else*/
+      if (parentRule = this.parentRule){
+        let parentPatch, siblingPatch, body, i;
 
-      default:
-        this._forceParentRuleUpdate(patchInfo);
-        break;
-    }
-  }
+        // Get Parent Rule body bounds (startOffset and endOffset)
+        body = parentRule.getBody();
 
-  /**
-   * Apply patch changes
-   * @param patchInfo
-   * @private
-   */
-  _patchApply(patchInfo) {
-    this._patchParent(patchInfo);
-  }
+        // Create parent patch excluding default reparse behavior
+        parentPatch = Object.assign({}, patchInfo, {
+          start: body.startOffset + this.startOffset + patchInfo.start,
+          end: body.startOffset + this.startOffset + patchInfo.end,
+          reparse: false
+        });
 
-  /**
-   * Apply update action to current rule
-   * @param patchInfo
-   * @private
-   */
-  _patchUpdateApply(patchInfo) {
-    if (patchInfo.startFrom !== undefined) {
-      let body = this.getBody();
+        this.parentRule.patch(parentPatch);
 
-      patchInfo.start += body.startOffset;
-      patchInfo.end += body.startOffset;
+        // Simply update the position of next rule's sibling if it has changed its length
+        if (patchInfo.patchDelta){
+          siblingPatch = {
+            action: VirtualActions.PATCH_UPDATE,
+            patchDelta: patchInfo.patchDelta
+          };
 
-      this._patchThis(Object.assign({}, patchInfo, {
-        action: patchInfo.initialAction,
-        initialAction: void 0
-      }));
-    }
-    else if (patchInfo.patchDelta){
-      this._forceChildRulesUpdate(patchInfo);
+          this.parentRule._patchChildRules(siblingPatch, this.id + 1);
+        }
+      }
     }
   }
 
@@ -107,7 +78,21 @@ export default class VirtualGroupingRule extends VirtualRule {
 
         for (i = 0; i < tokens.length; i++){
           rule = VirtualRuleFactory.createFromToken(tokens[i], this, this._opts);
-          if (rule) rules.insert(rule, id++);
+
+          if (rule) {
+            // Inject grouping rule to _patchApply function
+            rule._patchApply = (function(rule, _patchApply) {
+              function call(patchInfo){
+                _patchApply.bind(rule)(patchInfo);
+                rule.parentRule._patchParent.bind(rule)(patchInfo);
+              }
+
+              return call;
+            })(rule, rule._patchApply);
+
+            // Add injected rule to list
+            rules.insert(rule, id++);
+          }
         }
 
         this.rules = rules;
