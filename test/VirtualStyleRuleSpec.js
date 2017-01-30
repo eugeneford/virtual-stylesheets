@@ -41,11 +41,26 @@ describe("VirtualStyleRule", function(){
 
       rule.parse(VirtualStyleSheet.PARSE_BODY);
 
-      expect(rule.selectorText).toEqual(undefined);
+      expect(rule.selectorText).toEqual(null);
     });
   });
 
   describe("setSelector()", function(){
+    it("Threw a TypeError when selectorText was not a String", function(){
+      var rule;
+
+      rule = new VirtualStyleRule({
+        type: 1,
+        startOffset:0,
+        endOffset:48,
+        cssText: "* > .test + [attr='value'] > h1 { width: 30px; }"
+      });
+
+      expect(function(){
+        rule.setSelector(12321);
+      }).toThrowError(TypeError);
+    });
+
     it("Correctly changed selector of the rule", function(){
       var rule;
 

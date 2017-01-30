@@ -1,4 +1,4 @@
-/**
+ /**
  * Copyright (c) 2017 Eugene Ford (stmechanus@gmail.com)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
@@ -7,10 +7,10 @@
  * and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
  * subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all copies or substantial
+ * The above copyright notice  and this permission notice shall be included in all copies or substantial
  * portions of the Software.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY  OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
  * LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
  * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
  * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
@@ -24,17 +24,23 @@ import VirtualRuleList from "./VirtualRuleList";
 import VirtualTokenizer from "./VirtualTokenizer";
 import VirtualRule from "./VirtualRule";
 import VirtualGroupingRule from "./VirtualGroupingRule";
+import VirtualCharsetRule from "./VirtualCharsetRule";
 import VirtualStyleRule from "./VirtualStyleRule";
+import VirtualImportRule from "./VirtualImportRule";
 import VirtualViewportRule from "./VirtualViewportRule";
+import VirtualMediaRule from "./VirtualMediaRule";
 
 module.exports = {
   VirtualGrammar : VirtualGrammar,
   VirtualRuleFactory : VirtualRuleFactory,
   VirtualRule : VirtualRule,
   VirtualGroupingRule : VirtualGroupingRule,
+  VirtualCharsetRule : VirtualCharsetRule,
   VirtualStyleRule : VirtualStyleRule,
   VirtualViewportRule : VirtualViewportRule,
+  VirtualMediaRule : VirtualMediaRule,
   VirtualRuleList : VirtualRuleList,
   VirtualTokenizer : VirtualTokenizer,
+  VirtualImportRule : VirtualImportRule,
   VirtualStyleSheet : VirtualStyleSheet
 };

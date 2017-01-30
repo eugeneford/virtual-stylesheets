@@ -2,9 +2,12 @@ import VirtualActions from "./VirtualActions";
 import VirtualGrammar from "./VirtualGrammar";
 import VirtualRuleList from "./VirtualRuleList";
 import VirtualRule from "./VirtualRule";
+import VirtualCharsetRule from "./VirtualCharsetRule";
 import VirtualStyleRule from "./VirtualStyleRule";
+import VirtualImportRule from "./VirtualImportRule";
 import VirtualViewportRule from "./VirtualViewportRule";
 import VirtualGroupingRule from "./VirtualGroupingRule";
+import VirtualMediaRule from "./VirtualMediaRule";
 import VirtualTokenizer from "./VirtualTokenizer";
 
 class VirtualRuleFactory {
@@ -79,15 +82,15 @@ const RuleFactory = new VirtualRuleFactory();
 
 RuleFactory.register(VirtualGrammar.UNKNOWN_RULE, VirtualRule);
 RuleFactory.register(VirtualGrammar.STYLE_RULE, VirtualStyleRule);
-RuleFactory.register(VirtualGrammar.CHARSET_RULE, VirtualRule);
-RuleFactory.register(VirtualGrammar.IMPORT_RULE, VirtualRule);
-RuleFactory.register(VirtualGrammar.MEDIA_RULE, VirtualGroupingRule);
+RuleFactory.register(VirtualGrammar.CHARSET_RULE, VirtualCharsetRule);
+RuleFactory.register(VirtualGrammar.IMPORT_RULE, VirtualImportRule);
+RuleFactory.register(VirtualGrammar.MEDIA_RULE, VirtualMediaRule);
 RuleFactory.register(VirtualGrammar.FONT_FACE_RULE, VirtualRule);
 RuleFactory.register(VirtualGrammar.PAGE_RULE, VirtualRule);
 RuleFactory.register(VirtualGrammar.KEYFRAME_RULE, VirtualRule);
 RuleFactory.register(VirtualGrammar.KEYFRAMES_RULE, VirtualGroupingRule);
 RuleFactory.register(VirtualGrammar.NAMESPACE_RULE, VirtualRule);
-RuleFactory.register(VirtualGrammar.SUPPORTS_RULE, VirtualRule);
+RuleFactory.register(VirtualGrammar.SUPPORTS_RULE, VirtualGroupingRule);
 RuleFactory.register(VirtualGrammar.VIEWPORT_RULE, VirtualViewportRule);
 
 export default RuleFactory;

@@ -10,7 +10,7 @@ module.exports = function(config) {
       'test/*.js'
     ],
     preprocessors: {
-      //'dist/virtual-stylesheets.js': ['coverage']
+      'dist/virtual-stylesheets.js': ['coverage']
     },
     reporters: ['kjhtml', 'coverage'],
     port: 9876,

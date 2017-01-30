@@ -64,7 +64,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _VirtualRuleFactory2 = _interopRequireDefault(_VirtualRuleFactory);
 
-	var _VirtualStyleSheet = __webpack_require__(9);
+	var _VirtualStyleSheet = __webpack_require__(13);
 
 	var _VirtualStyleSheet2 = _interopRequireDefault(_VirtualStyleSheet);
 
@@ -72,7 +72,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _VirtualRuleList2 = _interopRequireDefault(_VirtualRuleList);
 
-	var _VirtualTokenizer = __webpack_require__(8);
+	var _VirtualTokenizer = __webpack_require__(11);
 
 	var _VirtualTokenizer2 = _interopRequireDefault(_VirtualTokenizer);
 
@@ -84,44 +84,61 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _VirtualGroupingRule2 = _interopRequireDefault(_VirtualGroupingRule);
 
-	var _VirtualStyleRule = __webpack_require__(6);
+	var _VirtualCharsetRule = __webpack_require__(6);
+
+	var _VirtualCharsetRule2 = _interopRequireDefault(_VirtualCharsetRule);
+
+	var _VirtualStyleRule = __webpack_require__(7);
 
 	var _VirtualStyleRule2 = _interopRequireDefault(_VirtualStyleRule);
 
-	var _VirtualViewportRule = __webpack_require__(11);
+	var _VirtualImportRule = __webpack_require__(14);
+
+	var _VirtualImportRule2 = _interopRequireDefault(_VirtualImportRule);
+
+	var _VirtualViewportRule = __webpack_require__(9);
 
 	var _VirtualViewportRule2 = _interopRequireDefault(_VirtualViewportRule);
 
+	var _VirtualMediaRule = __webpack_require__(12);
+
+	var _VirtualMediaRule2 = _interopRequireDefault(_VirtualMediaRule);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	/**
+	* Copyright (c) 2017 Eugene Ford (stmechanus@gmail.com)
+	*
+	* Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+	* and associated documentation files (the "Software"), to deal in the Software without restriction,
+	* including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+	* and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+	* subject to the following conditions:
+	*
+	* The above copyright notice  and this permission notice shall be included in all copies or substantial
+	* portions of the Software.
+	*
+	* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY  OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+	* LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+	* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+	* WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
+	* OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+	*/
 
 	module.exports = {
 	  VirtualGrammar: _VirtualGrammar2.default,
 	  VirtualRuleFactory: _VirtualRuleFactory2.default,
 	  VirtualRule: _VirtualRule2.default,
 	  VirtualGroupingRule: _VirtualGroupingRule2.default,
+	  VirtualCharsetRule: _VirtualCharsetRule2.default,
 	  VirtualStyleRule: _VirtualStyleRule2.default,
 	  VirtualViewportRule: _VirtualViewportRule2.default,
+	  VirtualMediaRule: _VirtualMediaRule2.default,
 	  VirtualRuleList: _VirtualRuleList2.default,
 	  VirtualTokenizer: _VirtualTokenizer2.default,
+	  VirtualImportRule: _VirtualImportRule2.default,
 	  VirtualStyleSheet: _VirtualStyleSheet2.default
-	}; /**
-	    * Copyright (c) 2017 Eugene Ford (stmechanus@gmail.com)
-	    *
-	    * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
-	    * and associated documentation files (the "Software"), to deal in the Software without restriction,
-	    * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
-	    * and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
-	    * subject to the following conditions:
-	    *
-	    * The above copyright notice and this permission notice shall be included in all copies or substantial
-	    * portions of the Software.
-	    *
-	    * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
-	    * LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-	    * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-	    * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
-	    * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-	    */
+	};
 
 /***/ },
 /* 1 */
@@ -341,11 +358,19 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _VirtualRule2 = _interopRequireDefault(_VirtualRule);
 
-	var _VirtualStyleRule = __webpack_require__(6);
+	var _VirtualCharsetRule = __webpack_require__(6);
+
+	var _VirtualCharsetRule2 = _interopRequireDefault(_VirtualCharsetRule);
+
+	var _VirtualStyleRule = __webpack_require__(7);
 
 	var _VirtualStyleRule2 = _interopRequireDefault(_VirtualStyleRule);
 
-	var _VirtualViewportRule = __webpack_require__(11);
+	var _VirtualImportRule = __webpack_require__(14);
+
+	var _VirtualImportRule2 = _interopRequireDefault(_VirtualImportRule);
+
+	var _VirtualViewportRule = __webpack_require__(9);
 
 	var _VirtualViewportRule2 = _interopRequireDefault(_VirtualViewportRule);
 
@@ -353,7 +378,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _VirtualGroupingRule2 = _interopRequireDefault(_VirtualGroupingRule);
 
-	var _VirtualTokenizer = __webpack_require__(8);
+	var _VirtualMediaRule = __webpack_require__(12);
+
+	var _VirtualMediaRule2 = _interopRequireDefault(_VirtualMediaRule);
+
+	var _VirtualTokenizer = __webpack_require__(11);
 
 	var _VirtualTokenizer2 = _interopRequireDefault(_VirtualTokenizer);
 
@@ -451,15 +480,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	RuleFactory.register(_VirtualGrammar2.default.UNKNOWN_RULE, _VirtualRule2.default);
 	RuleFactory.register(_VirtualGrammar2.default.STYLE_RULE, _VirtualStyleRule2.default);
-	RuleFactory.register(_VirtualGrammar2.default.CHARSET_RULE, _VirtualRule2.default);
-	RuleFactory.register(_VirtualGrammar2.default.IMPORT_RULE, _VirtualRule2.default);
-	RuleFactory.register(_VirtualGrammar2.default.MEDIA_RULE, _VirtualGroupingRule2.default);
+	RuleFactory.register(_VirtualGrammar2.default.CHARSET_RULE, _VirtualCharsetRule2.default);
+	RuleFactory.register(_VirtualGrammar2.default.IMPORT_RULE, _VirtualImportRule2.default);
+	RuleFactory.register(_VirtualGrammar2.default.MEDIA_RULE, _VirtualMediaRule2.default);
 	RuleFactory.register(_VirtualGrammar2.default.FONT_FACE_RULE, _VirtualRule2.default);
 	RuleFactory.register(_VirtualGrammar2.default.PAGE_RULE, _VirtualRule2.default);
 	RuleFactory.register(_VirtualGrammar2.default.KEYFRAME_RULE, _VirtualRule2.default);
 	RuleFactory.register(_VirtualGrammar2.default.KEYFRAMES_RULE, _VirtualGroupingRule2.default);
 	RuleFactory.register(_VirtualGrammar2.default.NAMESPACE_RULE, _VirtualRule2.default);
-	RuleFactory.register(_VirtualGrammar2.default.SUPPORTS_RULE, _VirtualRule2.default);
+	RuleFactory.register(_VirtualGrammar2.default.SUPPORTS_RULE, _VirtualGroupingRule2.default);
 	RuleFactory.register(_VirtualGrammar2.default.VIEWPORT_RULE, _VirtualViewportRule2.default);
 
 	exports.default = RuleFactory;
@@ -714,6 +743,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var oldText = this.cssText;
 	      this.cssText = oldText + patchInfo.value;
 	      this.endOffset = this.endOffset + this.cssText.length - oldText.length;
+	      /*istanbul ignore else*/
 	      if (patchInfo.reparse) this._parseInvoke();
 	    }
 
@@ -729,6 +759,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var oldText = this.cssText;
 	      this.cssText = patchInfo.value + oldText;
 	      this.endOffset = this.endOffset + this.cssText.length - oldText.length;
+	      /*istanbul ignore else*/
 	      if (patchInfo.reparse) this._parseInvoke();
 	    }
 
@@ -743,6 +774,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function _patchInsertApply(patchInfo) {
 	      var info = Object.assign({}, patchInfo, { end: patchInfo.start });
 	      this._patchReplaceApply(info);
+	      /*istanbul ignore else*/
 	      if (patchInfo.reparse) this._parseInvoke();
 	    }
 
@@ -762,6 +794,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      trail = this.cssText.substring(patchInfo.end);
 	      this.cssText = head + patchInfo.value + trail;
 	      this.endOffset = this.endOffset + this.cssText.length - oldText.length;
+	      /*istanbul ignore else*/
 	      if (patchInfo.reparse) this._parseInvoke();
 	    }
 
@@ -776,6 +809,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function _patchDeleteApply(patchInfo) {
 	      var info = Object.assign({}, patchInfo, { value: "" });
 	      this._patchReplaceApply(info);
+	      /*istanbul ignore else*/
 	      if (patchInfo.reparse) this._parseInvoke();
 	    }
 
@@ -977,7 +1011,129 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _VirtualActions2 = _interopRequireDefault(_VirtualActions);
 
-	var _VirtualStyleDeclarationRule = __webpack_require__(7);
+	var _VirtualRule2 = __webpack_require__(5);
+
+	var _VirtualRule3 = _interopRequireDefault(_VirtualRule2);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var SINGLE_QUOTE = "\'".charCodeAt(0);
+	var DOUBLE_QUOTE = "\"".charCodeAt(0);
+	var SLASH = "\\".charCodeAt(0);
+
+	var VirtualCharsetRule = function (_VirtualRule) {
+	  _inherits(VirtualCharsetRule, _VirtualRule);
+
+	  function VirtualCharsetRule(ruleInfo, parentRule, opts) {
+	    _classCallCheck(this, VirtualCharsetRule);
+
+	    return _possibleConstructorReturn(this, (VirtualCharsetRule.__proto__ || Object.getPrototypeOf(VirtualCharsetRule)).call(this, ruleInfo, parentRule, opts));
+	  }
+
+	  /**
+	   * Parse encoding prop from current cssText
+	   * @private
+	   */
+
+
+	  _createClass(VirtualCharsetRule, [{
+	    key: "_parseEncoding",
+	    value: function _parseEncoding() {
+	      var i = void 0,
+	          nextCode = void 0,
+	          prevCode = void 0,
+	          quotesCode = void 0,
+	          startOffset = void 0,
+	          endOffset = void 0;
+
+	      // Skip @charset definition, starting at 8
+	      for (i = 8; i < this.cssText.length; i++) {
+	        nextCode = this.cssText.charCodeAt(i);
+
+	        // Check if " or ' was spotted without escape \
+	        if (prevCode && prevCode !== SLASH && (nextCode === SINGLE_QUOTE || nextCode == DOUBLE_QUOTE)) {
+	          if (!!quotesCode) {
+	            if (nextCode === quotesCode) {
+	              endOffset = i;
+	              break;
+	            }
+	          } else {
+	            quotesCode = nextCode;
+	            startOffset = i + 1;
+	          }
+	        }
+
+	        prevCode = nextCode;
+	      }
+
+	      // Return null if encoding bounds wasnt found
+	      if (startOffset === undefined || endOffset === undefined) return null;
+
+	      return this.cssText.substring(startOffset, endOffset);
+	    }
+	  }, {
+	    key: "parse",
+	    value: function parse(parseType) {
+	      _get(VirtualCharsetRule.prototype.__proto__ || Object.getPrototypeOf(VirtualCharsetRule.prototype), "parse", this).call(this, parseType);
+	      if (parseType === _VirtualActions2.default.PARSE_HEAD || parseType == _VirtualActions2.default.PARSE_ALL) {
+	        this.encoding = this._parseEncoding();
+	      } else {
+	        this.encoding = null;
+	      }
+	    }
+
+	    /**
+	     * Applies new encoding to current rule
+	     * @param encoding
+	     */
+
+	  }, {
+	    key: "setEncoding",
+	    value: function setEncoding(encoding) {
+	      if (typeof encoding !== "string") throw new TypeError("Encoding is not a string");
+
+	      var newCharset = "@charset \"" + encoding + "\";";
+
+	      this.patch({
+	        action: _VirtualActions2.default.PATCH_REPLACE,
+	        start: 0,
+	        end: this.cssText.length,
+	        value: newCharset,
+	        patchDelta: newCharset.length - this.cssText.length
+	      });
+	    }
+	  }]);
+
+	  return VirtualCharsetRule;
+	}(_VirtualRule3.default);
+
+	exports.default = VirtualCharsetRule;
+
+/***/ },
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+	var _VirtualActions = __webpack_require__(3);
+
+	var _VirtualActions2 = _interopRequireDefault(_VirtualActions);
+
+	var _VirtualStyleDeclarationRule = __webpack_require__(8);
 
 	var _VirtualStyleDeclarationRule2 = _interopRequireDefault(_VirtualStyleDeclarationRule);
 
@@ -1031,7 +1187,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: "parse",
 	    value: function parse(parseType) {
-	      if (parseType === _VirtualActions2.default.PARSE_HEAD || parseType == _VirtualActions2.default.PARSE_ALL) this.selectorText = this._parseSelectorText();
+	      _get(VirtualStyleRule.prototype.__proto__ || Object.getPrototypeOf(VirtualStyleRule.prototype), "parse", this).call(this, parseType);
+	      if (parseType === _VirtualActions2.default.PARSE_HEAD || parseType == _VirtualActions2.default.PARSE_ALL) {
+	        this.selectorText = this._parseSelectorText();
+	      } else {
+	        this.selectorText = null;
+	      }
 	    }
 
 	    /**
@@ -1042,6 +1203,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: "setSelector",
 	    value: function setSelector(selectorText) {
+	      if (typeof selectorText !== "string") throw new TypeError("Your selectorText is not a string");
 	      var head = _get(VirtualStyleRule.prototype.__proto__ || Object.getPrototypeOf(VirtualStyleRule.prototype), "getHead", this).call(this);
 
 	      this.patch({
@@ -1060,7 +1222,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = VirtualStyleRule;
 
 /***/ },
-/* 7 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1103,7 +1265,208 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = VirtualStyleDeclarationRule;
 
 /***/ },
-/* 8 */
+/* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _VirtualStyleDeclarationRule = __webpack_require__(8);
+
+	var _VirtualStyleDeclarationRule2 = _interopRequireDefault(_VirtualStyleDeclarationRule);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var VirtualViewportRule = function (_VirtualStyleDeclarat) {
+	  _inherits(VirtualViewportRule, _VirtualStyleDeclarat);
+
+	  function VirtualViewportRule(ruleInfo, parentRule, opts) {
+	    _classCallCheck(this, VirtualViewportRule);
+
+	    return _possibleConstructorReturn(this, (VirtualViewportRule.__proto__ || Object.getPrototypeOf(VirtualViewportRule)).call(this, ruleInfo, parentRule, opts));
+	  }
+
+	  return VirtualViewportRule;
+	}(_VirtualStyleDeclarationRule2.default);
+
+	exports.default = VirtualViewportRule;
+
+/***/ },
+/* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _VirtualActions = __webpack_require__(3);
+
+	var _VirtualActions2 = _interopRequireDefault(_VirtualActions);
+
+	var _VirtualRule2 = __webpack_require__(5);
+
+	var _VirtualRule3 = _interopRequireDefault(_VirtualRule2);
+
+	var _VirtualRuleList = __webpack_require__(4);
+
+	var _VirtualRuleList2 = _interopRequireDefault(_VirtualRuleList);
+
+	var _VirtualTokenizer = __webpack_require__(11);
+
+	var _VirtualTokenizer2 = _interopRequireDefault(_VirtualTokenizer);
+
+	var _VirtualRuleFactory = __webpack_require__(2);
+
+	var _VirtualRuleFactory2 = _interopRequireDefault(_VirtualRuleFactory);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var VirtualGroupingRule = function (_VirtualRule) {
+	  _inherits(VirtualGroupingRule, _VirtualRule);
+
+	  function VirtualGroupingRule(ruleInfo, parentRule, opts) {
+	    _classCallCheck(this, VirtualGroupingRule);
+
+	    return _possibleConstructorReturn(this, (VirtualGroupingRule.__proto__ || Object.getPrototypeOf(VirtualGroupingRule)).call(this, ruleInfo, parentRule, opts));
+	  }
+
+	  /**
+	   * Force update patching for its child rules
+	   * @param patchInfo
+	   * @private
+	   */
+
+
+	  _createClass(VirtualGroupingRule, [{
+	    key: "_patchChildRules",
+	    value: function _patchChildRules(patchInfo, startFrom) {
+	      /*istanbul ignore else*/
+	      if (patchInfo.patchDelta && this.rules && this.rules.length) {
+	        var start = startFrom || 0;
+	        for (var i = start; i < this.rules.length; i++) {
+	          this.rules.get(i).patch(patchInfo);
+	        }
+	      }
+	    }
+
+	    /**
+	     * Apply patch to parent rule
+	     * @param patchInfo
+	     * @private
+	     */
+
+	  }, {
+	    key: "_patchParent",
+	    value: function _patchParent(patchInfo) {
+	      if (patchInfo && patchInfo.action !== _VirtualActions2.default.PATCH_UPDATE) {
+	        var parentRule = void 0;
+	        /*istanbul ignore else*/
+	        if (parentRule = this.parentRule) {
+	          var parentPatch = void 0,
+	              siblingPatch = void 0,
+	              body = void 0,
+	              i = void 0;
+
+	          // Get Parent Rule body bounds (startOffset and endOffset)
+	          body = parentRule.getBody();
+
+	          // Create parent patch excluding default reparse behavior
+	          parentPatch = Object.assign({}, patchInfo, {
+	            start: body.startOffset + this.startOffset + patchInfo.start,
+	            end: body.startOffset + this.startOffset + patchInfo.end,
+	            reparse: false
+	          });
+
+	          this.parentRule.patch(parentPatch);
+
+	          // Simply update the position of next rule's sibling if it has changed its length
+	          if (patchInfo.patchDelta) {
+	            siblingPatch = {
+	              action: _VirtualActions2.default.PATCH_UPDATE,
+	              patchDelta: patchInfo.patchDelta
+	            };
+
+	            this.parentRule._patchChildRules(siblingPatch, this.id + 1);
+	          }
+	        }
+	      }
+	    }
+	  }, {
+	    key: "parse",
+	    value: function parse(parseType) {
+	      // If we parsing rule body all entire rule
+	      if (parseType === _VirtualActions2.default.PARSE_BODY || parseType === _VirtualActions2.default.PARSE_ALL) {
+	        var bounds = void 0,
+	            body = void 0,
+	            tokens = void 0,
+	            rules = void 0,
+	            rule = void 0,
+	            i = void 0,
+	            id = 0;
+
+	        // Get Rule body bounds (startOffset and endOffset)
+	        bounds = this.getBody();
+	        body = this.cssText.substring(bounds.startOffset, bounds.endOffset);
+
+	        // Get a set of tokens to work with
+	        tokens = _VirtualTokenizer2.default.tokenize(body);
+
+	        if (tokens.length) {
+	          rules = new _VirtualRuleList2.default();
+
+	          for (i = 0; i < tokens.length; i++) {
+	            rule = _VirtualRuleFactory2.default.createFromToken(tokens[i], this, this._opts);
+
+	            if (rule) {
+	              // Inject grouping rule to _patchApply function
+	              rule._patchApply = function (rule, _patchApply) {
+	                function call(patchInfo) {
+	                  _patchApply.bind(rule)(patchInfo);
+	                  rule.parentRule._patchParent.bind(rule)(patchInfo);
+	                }
+
+	                return call;
+	              }(rule, rule._patchApply);
+
+	              // Add injected rule to list
+	              rules.insert(rule, id++);
+	            }
+	          }
+
+	          this.rules = rules;
+	          return;
+	        }
+	      }
+	      this.rules = null;
+	    }
+	  }]);
+
+	  return VirtualGroupingRule;
+	}(_VirtualRule3.default);
+
+	exports.default = VirtualGroupingRule;
+
+/***/ },
+/* 11 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1462,7 +1825,109 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = VirtualTokenizer;
 
 /***/ },
-/* 9 */
+/* 12 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+	var _VirtualActions = __webpack_require__(3);
+
+	var _VirtualActions2 = _interopRequireDefault(_VirtualActions);
+
+	var _VirtualGroupingRule2 = __webpack_require__(10);
+
+	var _VirtualGroupingRule3 = _interopRequireDefault(_VirtualGroupingRule2);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var VirtualMediaRule = function (_VirtualGroupingRule) {
+	  _inherits(VirtualMediaRule, _VirtualGroupingRule);
+
+	  function VirtualMediaRule(ruleInfo, parentRule, opts) {
+	    _classCallCheck(this, VirtualMediaRule);
+
+	    return _possibleConstructorReturn(this, (VirtualMediaRule.__proto__ || Object.getPrototypeOf(VirtualMediaRule)).call(this, ruleInfo, parentRule, opts));
+	  }
+
+	  /**
+	   * Parse media string from current cssText
+	   * @returns {string|*}
+	   * @private
+	   */
+
+
+	  _createClass(VirtualMediaRule, [{
+	    key: "_parseMedia",
+	    value: function _parseMedia() {
+	      var bounds = void 0,
+	          media = void 0;
+
+	      // Get rule head block's bounds
+	      bounds = this.getHead();
+
+	      // Get the head block of this rule
+	      media = this.cssText.substring(bounds.startOffset, bounds.endOffset).trim();
+
+	      // Remove @media prefix
+	      media = media.substring(6).trim();
+
+	      return media;
+	    }
+	  }, {
+	    key: "parse",
+	    value: function parse(parseType) {
+	      _get(VirtualMediaRule.prototype.__proto__ || Object.getPrototypeOf(VirtualMediaRule.prototype), "parse", this).call(this, parseType);
+	      if (parseType === _VirtualActions2.default.PARSE_HEAD || parseType == _VirtualActions2.default.PARSE_ALL) {
+	        this.media = this._parseMedia();
+	      } else {
+	        this.media = null;
+	      }
+	    }
+
+	    /**
+	     * Apply new media string to current rule
+	     * @param media
+	     */
+
+	  }, {
+	    key: "setMedia",
+	    value: function setMedia(media) {
+	      if (typeof media !== "string") throw new TypeError("Your media prop is not a string");
+	      var head = this.getHead();
+
+	      var newMedia = "@media " + media;
+
+	      this.patch({
+	        action: _VirtualActions2.default.PATCH_REPLACE,
+	        start: head.startOffset,
+	        end: head.endOffset,
+	        value: newMedia,
+	        patchDelta: newMedia.length - head.endOffset
+	      });
+	    }
+	  }]);
+
+	  return VirtualMediaRule;
+	}(_VirtualGroupingRule3.default);
+
+	exports.default = VirtualMediaRule;
+
+/***/ },
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1489,7 +1954,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _VirtualRuleFactory2 = _interopRequireDefault(_VirtualRuleFactory);
 
-	var _VirtualTokenizer = __webpack_require__(8);
+	var _VirtualTokenizer = __webpack_require__(11);
 
 	var _VirtualTokenizer2 = _interopRequireDefault(_VirtualTokenizer);
 
@@ -1541,7 +2006,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = VirtualStyleSheet;
 
 /***/ },
-/* 10 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1552,6 +2017,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
 	var _VirtualActions = __webpack_require__(3);
 
 	var _VirtualActions2 = _interopRequireDefault(_VirtualActions);
@@ -1560,18 +2027,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _VirtualRule3 = _interopRequireDefault(_VirtualRule2);
 
-	var _VirtualRuleList = __webpack_require__(4);
-
-	var _VirtualRuleList2 = _interopRequireDefault(_VirtualRuleList);
-
-	var _VirtualTokenizer = __webpack_require__(8);
-
-	var _VirtualTokenizer2 = _interopRequireDefault(_VirtualTokenizer);
-
-	var _VirtualRuleFactory = __webpack_require__(2);
-
-	var _VirtualRuleFactory2 = _interopRequireDefault(_VirtualRuleFactory);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1580,166 +2035,229 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var VirtualGroupingRule = function (_VirtualRule) {
-	  _inherits(VirtualGroupingRule, _VirtualRule);
+	var U_LETTER = "u".charCodeAt(0);
+	var R_LETTER = "r".charCodeAt(0);
+	var L_LETTER = "l".charCodeAt(0);
+	var WHITESPACE = " ".charCodeAt(0);
+	var SINGLE_QUOTE = "\'".charCodeAt(0);
+	var DOUBLE_QUOTE = "\"".charCodeAt(0);
+	var LEFT_BRACE = "(".charCodeAt(0);
+	var RIGHT_BRACE = ")".charCodeAt(0);
+	var SLASH = "\\".charCodeAt(0);
+	var SEMICOLON = ";".charCodeAt(0);
 
-	  function VirtualGroupingRule(ruleInfo, parentRule, opts) {
-	    _classCallCheck(this, VirtualGroupingRule);
+	var VirtualImportRule = function (_VirtualRule) {
+	  _inherits(VirtualImportRule, _VirtualRule);
 
-	    return _possibleConstructorReturn(this, (VirtualGroupingRule.__proto__ || Object.getPrototypeOf(VirtualGroupingRule)).call(this, ruleInfo, parentRule, opts));
+	  function VirtualImportRule(ruleInfo, parentRule, opts) {
+	    _classCallCheck(this, VirtualImportRule);
+
+	    return _possibleConstructorReturn(this, (VirtualImportRule.__proto__ || Object.getPrototypeOf(VirtualImportRule)).call(this, ruleInfo, parentRule, opts));
 	  }
 
 	  /**
-	   * Force update patching for its child rules
-	   * @param patchInfo
+	   * Get href prop bounds of current rule
+	   * @returns {*}
 	   * @private
 	   */
 
 
-	  _createClass(VirtualGroupingRule, [{
-	    key: "_patchChildRules",
-	    value: function _patchChildRules(patchInfo, startFrom) {
-	      /*istanbul ignore else*/
-	      if (patchInfo.patchDelta && this.rules && this.rules.length) {
-	        var start = startFrom || 0;
-	        for (var i = start; i < this.rules.length; i++) {
-	          this.rules.get(i).patch(patchInfo);
-	        }
-	      }
-	    }
+	  _createClass(VirtualImportRule, [{
+	    key: "_getLocationBounds",
+	    value: function _getLocationBounds() {
+	      var i = void 0,
+	          nextCode = void 0,
+	          prevCode = void 0,
+	          secondCode = void 0,
+	          thirdCode = void 0,
+	          quotesCode = void 0,
+	          startOffset = void 0,
+	          endOffset = void 0,
+	          urlSpotted = void 0;
 
-	    /**
-	     * Apply patch to parent rule
-	     * @param patchInfo
-	     * @private
-	     */
+	      // Skip @import definition, start at 7
+	      for (i = 7; i < this.cssText.length; i++) {
+	        nextCode = this.cssText.charCodeAt(i);
 
-	  }, {
-	    key: "_patchParent",
-	    value: function _patchParent(patchInfo) {
-	      if (patchInfo && patchInfo.action !== _VirtualActions2.default.PATCH_UPDATE) {
-	        var parentRule = void 0;
-	        /*istanbul ignore else*/
-	        if (parentRule = this.parentRule) {
-	          var parentPatch = void 0,
-	              siblingPatch = void 0,
-	              body = void 0,
-	              i = void 0;
-
-	          // Get Parent Rule body bounds (startOffset and endOffset)
-	          body = parentRule.getBody();
-
-	          // Create parent patch excluding default reparse behavior
-	          parentPatch = Object.assign({}, patchInfo, {
-	            start: body.startOffset + this.startOffset + patchInfo.start,
-	            end: body.startOffset + this.startOffset + patchInfo.end,
-	            reparse: false
-	          });
-
-	          this.parentRule.patch(parentPatch);
-
-	          // Simply update the position of next rule's sibling if it has changed its length
-	          if (patchInfo.patchDelta) {
-	            siblingPatch = {
-	              action: _VirtualActions2.default.PATCH_UPDATE,
-	              patchDelta: patchInfo.patchDelta
-	            };
-
-	            this.parentRule._patchChildRules(siblingPatch, this.id + 1);
+	        // Check for url term
+	        if (!urlSpotted) {
+	          if (!quotesCode && nextCode === R_LETTER && prevCode === U_LETTER) {
+	            secondCode = this.cssText.charCodeAt(i + 1);
+	            thirdCode = this.cssText.charCodeAt(i + 2);
+	            if (secondCode === L_LETTER && thirdCode === LEFT_BRACE) {
+	              i += 2;
+	              startOffset = i + 1;
+	              urlSpotted = true;
+	              continue;
+	            }
 	          }
 	        }
+
+	        // Check if " or ' was spotted without escape \
+	        if (prevCode && prevCode !== SLASH && (nextCode === SINGLE_QUOTE || nextCode == DOUBLE_QUOTE)) {
+	          if (!!quotesCode) {
+	            if (nextCode === quotesCode) {
+	              endOffset = i;
+	              break;
+	            }
+	          } else {
+	            quotesCode = nextCode;
+	            startOffset = i + 1;
+	          }
+	        }
+
+	        if (urlSpotted) {
+	          if (nextCode === RIGHT_BRACE) {
+	            endOffset = i;
+	          }
+	        }
+
+	        prevCode = nextCode;
 	      }
+
+	      if (startOffset === undefined || endOffset === undefined) return null;
+
+	      return { startOffset: startOffset, endOffset: endOffset };
+	    }
+	  }, {
+	    key: "_getMediaBounds",
+	    value: function _getMediaBounds(hrefBounds) {
+	      /*istanbul ignore if*/
+	      if (!hrefBounds || !hrefBounds.endOffset) return null;
+
+	      var i = void 0,
+	          startOffset = void 0,
+	          endOffset = void 0,
+	          nextCode = void 0,
+	          prevCode = void 0;
+
+	      for (i = hrefBounds.endOffset; i < this.cssText.length; i++) {
+	        nextCode = this.cssText.charCodeAt(i);
+
+	        if (startOffset === undefined && prevCode === WHITESPACE && nextCode !== WHITESPACE) {
+	          startOffset = i;
+	        }
+
+	        if (nextCode === SEMICOLON) {
+	          endOffset = i;
+	          break;
+	        }
+
+	        prevCode = nextCode;
+	      }
+
+	      if (startOffset === undefined || endOffset === undefined) return null;
+
+	      return { startOffset: startOffset, endOffset: endOffset };
 	    }
 	  }, {
 	    key: "parse",
 	    value: function parse(parseType) {
-	      // If we parsing rule body all entire rule
-	      if (parseType === _VirtualActions2.default.PARSE_BODY || parseType === _VirtualActions2.default.PARSE_ALL) {
-	        var bounds = void 0,
-	            body = void 0,
-	            tokens = void 0,
-	            rules = void 0,
-	            rule = void 0,
-	            i = void 0,
-	            id = 0;
-
-	        // Get Rule body bounds (startOffset and endOffset)
-	        bounds = this.getBody();
-	        body = this.cssText.substring(bounds.startOffset, bounds.endOffset);
-
-	        // Get a set of tokens to work with
-	        tokens = _VirtualTokenizer2.default.tokenize(body);
-
-	        if (tokens.length) {
-	          rules = new _VirtualRuleList2.default();
-
-	          for (i = 0; i < tokens.length; i++) {
-	            rule = _VirtualRuleFactory2.default.createFromToken(tokens[i], this, this._opts);
-
-	            if (rule) {
-	              // Inject grouping rule to _patchApply function
-	              rule._patchApply = function (rule, _patchApply) {
-	                function call(patchInfo) {
-	                  _patchApply.bind(rule)(patchInfo);
-	                  rule.parentRule._patchParent.bind(rule)(patchInfo);
-	                }
-
-	                return call;
-	              }(rule, rule._patchApply);
-
-	              // Add injected rule to list
-	              rules.insert(rule, id++);
-	            }
-	          }
-
-	          this.rules = rules;
+	      _get(VirtualImportRule.prototype.__proto__ || Object.getPrototypeOf(VirtualImportRule.prototype), "parse", this).call(this, parseType);
+	      if (parseType === _VirtualActions2.default.PARSE_HEAD || parseType == _VirtualActions2.default.PARSE_ALL) {
+	        var hrefBounds = this._getLocationBounds();
+	        if (hrefBounds) {
+	          var mediaBounds = this._getMediaBounds(hrefBounds);
+	          this.href = this.cssText.substring(hrefBounds.startOffset, hrefBounds.endOffset);
+	          this.media = mediaBounds ? this.cssText.substring(mediaBounds.startOffset, mediaBounds.endOffset) : null;
 	          return;
 	        }
 	      }
-	      this.rules = null;
+	      this.href = null;
+	      this.media = null;
+	    }
+
+	    /**
+	     * Applies new href to current rule
+	     * @param href
+	     */
+
+	  }, {
+	    key: "setLocation",
+	    value: function setLocation(href) {
+	      if (typeof href !== "string") throw new TypeError("href is not a string");
+	      var hrefBounds = this._getLocationBounds(),
+	          start = void 0,
+	          end = void 0,
+	          value = void 0,
+	          oldValue = void 0;
+
+	      // Replace current location
+	      if (hrefBounds) {
+	        value = href;
+	        start = hrefBounds.startOffset;
+	        end = hrefBounds.endOffset;
+	        oldValue = this.cssText.substring(start, end);
+	      }
+	      // Or create completely new rule
+	      else {
+	          value = "@import \"" + href + "\";";
+	          start = 0;
+	          end = this.cssText.length;
+	          oldValue = this.cssText;
+	        }
+
+	      this.patch({
+	        action: _VirtualActions2.default.PATCH_REPLACE,
+	        patchDelta: value.length - oldValue.length,
+	        start: start, end: end, value: value
+	      });
+	    }
+
+	    /**
+	     * Applies new media string to current rule
+	     * @param media
+	     */
+
+	  }, {
+	    key: "setMedia",
+	    value: function setMedia(media) {
+	      if (typeof media !== "string") throw new TypeError("media is not a string");
+	      var hrefBounds = void 0,
+	          mediaBounds = void 0,
+	          i = void 0,
+	          nextCode = void 0,
+	          start = void 0,
+	          end = void 0,
+	          oldValue = void 0,
+	          action = void 0;
+
+	      // If there is no location specified - rule makes no sense
+	      if (hrefBounds = this._getLocationBounds()) {
+	        // Replace current media string
+	        if (mediaBounds = this._getMediaBounds(hrefBounds)) {
+	          start = mediaBounds.startOffset;
+	          end = mediaBounds.endOffset;
+	          oldValue = this.cssText.substring(start, end);
+	          action = _VirtualActions2.default.PATCH_REPLACE;
+	        }
+	        // Or create a new one
+	        else {
+	            for (i = hrefBounds.endOffset; i < this.cssText.length; i++) {
+	              nextCode = this.cssText.charCodeAt(i);
+
+	              if (nextCode !== WHITESPACE && nextCode !== SINGLE_QUOTE && nextCode !== DOUBLE_QUOTE && nextCode !== RIGHT_BRACE) {
+	                start = i;
+	                action = _VirtualActions2.default.PATCH_INSERT;
+	                oldValue = "";
+	                break;
+	              }
+	            }
+	          }
+
+	        this.patch({
+	          value: " " + media,
+	          patchDelta: 1 + media.length - oldValue.length,
+	          start: start, end: end, action: action
+	        });
+	      }
 	    }
 	  }]);
 
-	  return VirtualGroupingRule;
+	  return VirtualImportRule;
 	}(_VirtualRule3.default);
 
-	exports.default = VirtualGroupingRule;
-
-/***/ },
-/* 11 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _VirtualStyleDeclarationRule = __webpack_require__(7);
-
-	var _VirtualStyleDeclarationRule2 = _interopRequireDefault(_VirtualStyleDeclarationRule);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var VirtualViewportRule = function (_VirtualStyleDeclarat) {
-	  _inherits(VirtualViewportRule, _VirtualStyleDeclarat);
-
-	  function VirtualViewportRule(ruleInfo, parentRule, opts) {
-	    _classCallCheck(this, VirtualViewportRule);
-
-	    return _possibleConstructorReturn(this, (VirtualViewportRule.__proto__ || Object.getPrototypeOf(VirtualViewportRule)).call(this, ruleInfo, parentRule, opts));
-	  }
-
-	  return VirtualViewportRule;
-	}(_VirtualStyleDeclarationRule2.default);
-
-	exports.default = VirtualViewportRule;
+	exports.default = VirtualImportRule;
 
 /***/ }
 /******/ ])

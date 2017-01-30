@@ -31,8 +31,12 @@ export default class VirtualStyleRule extends VirtualStyleDeclarationRule{
    * @param parseType
    */
   parse(parseType){
-    if (parseType === VirtualActions.PARSE_HEAD || parseType == VirtualActions.PARSE_ALL)
+    super.parse(parseType);
+    if (parseType === VirtualActions.PARSE_HEAD || parseType == VirtualActions.PARSE_ALL) {
       this.selectorText = this._parseSelectorText();
+    } else {
+      this.selectorText = null;
+    }
   }
 
   /**
@@ -40,6 +44,7 @@ export default class VirtualStyleRule extends VirtualStyleDeclarationRule{
    * @param selectorText
    */
   setSelector(selectorText){
+    if (typeof selectorText !== "string") throw new TypeError("Your selectorText is not a string");
     let head = super.getHead();
 
     this.patch({
