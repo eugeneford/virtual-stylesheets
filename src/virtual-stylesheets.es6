@@ -22,6 +22,7 @@ import VirtualRuleFactory from "./VirtualRuleFactory";
 import VirtualStyleSheet from "./VirtualStyleSheet";
 import VirtualList from "./VirtualList";
 import VirtualTokenizer from "./VirtualTokenizer";
+import VirtualStyleDeclarationParser from "./VirtualStyleDeclarationParser";
 import VirtualRule from "./VirtualRule";
 import VirtualGroupingRule from "./VirtualGroupingRule";
 import VirtualStyleDeclarationRule from "./VirtualStyleDeclarationRule";
@@ -43,6 +44,7 @@ module.exports = {
   VirtualMediaRule : VirtualMediaRule,
   VirtualList : VirtualList,
   VirtualTokenizer : VirtualTokenizer,
+  VirtualStyleDeclarationParser : VirtualStyleDeclarationParser,
   VirtualImportRule : VirtualImportRule,
   VirtualStyleSheet : VirtualStyleSheet
 };

@@ -23,7 +23,7 @@ describe("VirtualStyleDeclarationRule", function(){
         startOffset: 0,
         endOffset: 10,
         cssText: ".selector:before { content: \"\\f001\"; width: 40px; height: 40px; color: #000; /* comment */ box-shadow: 0 3px 6px rgba(0,0,0,0.19); font: 400 14px/24px \'FontAwesome\'}"
-      }); 
+      });
 
       var list = new VirtualList();
 

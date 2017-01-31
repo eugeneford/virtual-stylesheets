@@ -76,6 +76,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _VirtualTokenizer2 = _interopRequireDefault(_VirtualTokenizer);
 
+	var _VirtualStyleDeclarationParser = __webpack_require__(16);
+
+	var _VirtualStyleDeclarationParser2 = _interopRequireDefault(_VirtualStyleDeclarationParser);
+
 	var _VirtualRule = __webpack_require__(5);
 
 	var _VirtualRule2 = _interopRequireDefault(_VirtualRule);
@@ -110,6 +114,25 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	/**
+	* Copyright (c) 2017 Eugene Ford (stmechanus@gmail.com)
+	*
+	* Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+	* and associated documentation files (the "Software"), to deal in the Software without restriction,
+	* including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+	* and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+	* subject to the following conditions:
+	*
+	* The above copyright notice  and this permission notice shall be included in all copies or substantial
+	* portions of the Software.
+	*
+	* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY  OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+	* LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+	* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+	* WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
+	* OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+	*/
+
 	module.exports = {
 	  VirtualGrammar: _VirtualGrammar2.default,
 	  VirtualRuleFactory: _VirtualRuleFactory2.default,
@@ -122,26 +145,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  VirtualMediaRule: _VirtualMediaRule2.default,
 	  VirtualList: _VirtualList2.default,
 	  VirtualTokenizer: _VirtualTokenizer2.default,
+	  VirtualStyleDeclarationParser: _VirtualStyleDeclarationParser2.default,
 	  VirtualImportRule: _VirtualImportRule2.default,
 	  VirtualStyleSheet: _VirtualStyleSheet2.default
-	}; /**
-	   * Copyright (c) 2017 Eugene Ford (stmechanus@gmail.com)
-	   *
-	   * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
-	   * and associated documentation files (the "Software"), to deal in the Software without restriction,
-	   * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
-	   * and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
-	   * subject to the following conditions:
-	   *
-	   * The above copyright notice  and this permission notice shall be included in all copies or substantial
-	   * portions of the Software.
-	   *
-	   * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY  OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
-	   * LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-	   * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-	   * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
-	   * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-	   */
+	};
 
 /***/ },
 /* 1 */
@@ -2265,6 +2272,191 @@ return /******/ (function(modules) { // webpackBootstrap
 	}();
 
 	exports.default = VirtualList;
+
+/***/ },
+/* 16 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var WHITESPACE = " ".charCodeAt(0);
+	var NEW_LINE = "\n".charCodeAt(0);
+	var SLASH = "/".charCodeAt(0);
+	var BACKSLASH = "\\".charCodeAt(0);
+	var SINGLE_QUOTE = "\'".charCodeAt(0);
+	var DOUBLE_QUOTE = "\"".charCodeAt(0);
+	var MINUS = "-".charCodeAt(0);
+	var COLON = ":".charCodeAt(0);
+	var ASTERISK = "*".charCodeAt(0);
+	var SEMICOLON = ";".charCodeAt(0);
+
+	var CF_LETTER = function CF_LETTER(code) {
+	  return code >= 65 && code <= 90 || code >= 97 && code <= 122;
+	};
+
+	var CF_NUMBER = function CF_NUMBER(code) {
+	  return code >= 48 && code <= 57;
+	};
+
+	var CF_NON_ASCII = function CF_NON_ASCII(code) {
+	  return code >= 128;
+	};
+
+	var VirtualStyleDeclarationParser = function () {
+	  function VirtualStyleDeclarationParser() {
+	    _classCallCheck(this, VirtualStyleDeclarationParser);
+
+	    throw new Error("Attempt to create a copy of static class");
+	  }
+
+	  _createClass(VirtualStyleDeclarationParser, null, [{
+	    key: "getWhitespaceLength",
+	    value: function getWhitespaceLength(cssText, startIndex) {
+	      var index = startIndex,
+	          nextCode = void 0,
+	          endOffset = void 0;
+
+	      while (index < cssText.length) {
+	        nextCode = cssText.charCodeAt(index);
+
+	        if (nextCode !== WHITESPACE && nextCode !== NEW_LINE) break;
+
+	        index++;
+	        endOffset = index;
+	      }
+
+	      return { endOffset: endOffset };
+	    }
+	  }, {
+	    key: "getCommentLength",
+	    value: function getCommentLength(cssText, startIndex) {
+	      var index = startIndex,
+	          prevCode = void 0,
+	          nextCode = void 0,
+	          endOffset = void 0;
+
+	      while (index < cssText.length) {
+	        nextCode = cssText.charCodeAt(index);
+
+	        index++;
+	        endOffset = index;
+
+	        // Check if comment end was spotted
+	        if (prevCode === ASTERISK && nextCode === SLASH) break;
+
+	        prevCode = nextCode;
+	      }
+
+	      return { endOffset: endOffset };
+	    }
+	  }, {
+	    key: "getDeclarationToken",
+	    value: function getDeclarationToken(cssText, startIndex) {
+	      var index = startIndex,
+	          nextCode = void 0,
+	          startOffset = void 0,
+	          endOffset = void 0,
+	          property = void 0,
+	          value = void 0,
+	          prevCode = void 0,
+	          quotesCode = void 0,
+	          valueOffset = void 0;
+
+	      while (index < cssText.length) {
+	        nextCode = cssText.charCodeAt(index);
+
+	        // Check if " or ' was spotted without escape \
+	        if (prevCode && prevCode !== SLASH && (nextCode === SINGLE_QUOTE || nextCode == DOUBLE_QUOTE)) {
+	          if (!!quotesCode) {
+	            if (nextCode === quotesCode) quotesCode = undefined;
+	          } else {
+	            quotesCode = nextCode;
+	          }
+	        }
+
+	        /* Check if declaration was started */
+	        if (startOffset === undefined && (nextCode === MINUS || CF_LETTER(nextCode) || CF_NON_ASCII(nextCode))) {
+	          startOffset = index;
+	        }
+
+	        /* Check if property name bounds spotted */
+	        if (!!startOffset && !quotesCode && nextCode === COLON) {
+	          property = cssText.substring(startOffset, index).trim();
+	        }
+
+	        /* Check if property value bounds spotted*/
+	        if (property && !valueOffset && nextCode !== WHITESPACE && nextCode !== NEW_LINE && nextCode !== COLON) {
+	          valueOffset = index;
+	        }
+
+	        index++;
+	        endOffset = index;
+
+	        // Check if end of rule was spotted
+	        if (!quotesCode && nextCode === SEMICOLON || index === cssText.length) {
+	          if (!!valueOffset) value = cssText.substring(valueOffset, index - 1);
+	          break;
+	        }
+
+	        prevCode = nextCode;
+	      }
+
+	      return { startOffset: startOffset, endOffset: endOffset, property: property, value: value };
+	    }
+	  }, {
+	    key: "parseAt",
+	    value: function parseAt(cssText, startIndex) {
+	      var startCode = void 0;
+
+	      switch (startCode = cssText.charCodeAt(startIndex)) {
+	        case WHITESPACE:
+	        case NEW_LINE:
+	          return VirtualStyleDeclarationParser.getWhitespaceLength(cssText, startIndex);
+
+	        case SLASH:
+	          return VirtualStyleDeclarationParser.getCommentLength(cssText, startIndex);
+
+	        default:
+	          return VirtualStyleDeclarationParser.getDeclarationToken(cssText, startIndex);
+	      }
+	    }
+	  }, {
+	    key: "parse",
+	    value: function parse(cssText) {
+	      var declarations = [],
+	          declaration = void 0,
+	          index = 0;
+
+	      while (index < cssText.length) {
+
+	        // Create a token
+	        declaration = VirtualStyleDeclarationParser.parseAt(cssText, index);
+
+	        // Shift loop pointer by token size
+	        index = declaration.endOffset;
+
+	        // Add token to tokensList
+	        if (declaration.startOffset) {
+	          declarations.push(declaration);
+	        }
+	      }
+
+	      return declarations;
+	    }
+	  }]);
+
+	  return VirtualStyleDeclarationParser;
+	}();
+
+	exports.default = VirtualStyleDeclarationParser;
 
 /***/ }
 /******/ ])
