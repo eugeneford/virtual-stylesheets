@@ -17,7 +17,7 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import VirtualActions from "./VirtualActions";   
+import VirtualActions from "./VirtualActions";
 
 export default class VirtualList {
   constructor(){
@@ -37,7 +37,7 @@ export default class VirtualList {
 
     if (typeof index === "undefined" || index > this._items.length) {
       id = this._items.length;
-    } else {
+    } else { 
       id = index;
     }
 

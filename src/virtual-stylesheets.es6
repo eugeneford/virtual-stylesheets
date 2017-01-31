@@ -20,10 +20,11 @@
 import VirtualGrammar from "./VirtualGrammar";
 import VirtualRuleFactory from "./VirtualRuleFactory";
 import VirtualStyleSheet from "./VirtualStyleSheet";
-import VirtualRuleList from "./VirtualList";
+import VirtualList from "./VirtualList";
 import VirtualTokenizer from "./VirtualTokenizer";
 import VirtualRule from "./VirtualRule";
 import VirtualGroupingRule from "./VirtualGroupingRule";
+import VirtualStyleDeclarationRule from "./VirtualStyleDeclarationRule";
 import VirtualCharsetRule from "./VirtualCharsetRule";
 import VirtualStyleRule from "./VirtualStyleRule";
 import VirtualImportRule from "./VirtualImportRule";
@@ -35,11 +36,12 @@ module.exports = {
   VirtualRuleFactory : VirtualRuleFactory,
   VirtualRule : VirtualRule,
   VirtualGroupingRule : VirtualGroupingRule,
+  VirtualStyleDeclarationRule : VirtualStyleDeclarationRule,
   VirtualCharsetRule : VirtualCharsetRule,
   VirtualStyleRule : VirtualStyleRule,
   VirtualViewportRule : VirtualViewportRule,
   VirtualMediaRule : VirtualMediaRule,
-  VirtualRuleList : VirtualRuleList,
+  VirtualList : VirtualList,
   VirtualTokenizer : VirtualTokenizer,
   VirtualImportRule : VirtualImportRule,
   VirtualStyleSheet : VirtualStyleSheet

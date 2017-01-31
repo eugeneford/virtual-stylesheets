@@ -84,6 +84,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _VirtualGroupingRule2 = _interopRequireDefault(_VirtualGroupingRule);
 
+	var _VirtualStyleDeclarationRule = __webpack_require__(8);
+
+	var _VirtualStyleDeclarationRule2 = _interopRequireDefault(_VirtualStyleDeclarationRule);
+
 	var _VirtualCharsetRule = __webpack_require__(6);
 
 	var _VirtualCharsetRule2 = _interopRequireDefault(_VirtualCharsetRule);
@@ -106,39 +110,38 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	/**
-	* Copyright (c) 2017 Eugene Ford (stmechanus@gmail.com)
-	*
-	* Permission is hereby granted, free of charge, to any person obtaining a copy of this software
-	* and associated documentation files (the "Software"), to deal in the Software without restriction,
-	* including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
-	* and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
-	* subject to the following conditions:
-	*
-	* The above copyright notice  and this permission notice shall be included in all copies or substantial
-	* portions of the Software.
-	*
-	* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY  OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
-	* LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-	* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-	* WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
-	* OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-	*/
-
 	module.exports = {
 	  VirtualGrammar: _VirtualGrammar2.default,
 	  VirtualRuleFactory: _VirtualRuleFactory2.default,
 	  VirtualRule: _VirtualRule2.default,
 	  VirtualGroupingRule: _VirtualGroupingRule2.default,
+	  VirtualStyleDeclarationRule: _VirtualStyleDeclarationRule2.default,
 	  VirtualCharsetRule: _VirtualCharsetRule2.default,
 	  VirtualStyleRule: _VirtualStyleRule2.default,
 	  VirtualViewportRule: _VirtualViewportRule2.default,
 	  VirtualMediaRule: _VirtualMediaRule2.default,
-	  VirtualRuleList: _VirtualList2.default,
+	  VirtualList: _VirtualList2.default,
 	  VirtualTokenizer: _VirtualTokenizer2.default,
 	  VirtualImportRule: _VirtualImportRule2.default,
 	  VirtualStyleSheet: _VirtualStyleSheet2.default
-	};
+	}; /**
+	   * Copyright (c) 2017 Eugene Ford (stmechanus@gmail.com)
+	   *
+	   * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+	   * and associated documentation files (the "Software"), to deal in the Software without restriction,
+	   * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+	   * and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+	   * subject to the following conditions:
+	   *
+	   * The above copyright notice  and this permission notice shall be included in all copies or substantial
+	   * portions of the Software.
+	   *
+	   * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY  OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+	   * LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+	   * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+	   * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
+	   * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+	   */
 
 /***/ },
 /* 1 */

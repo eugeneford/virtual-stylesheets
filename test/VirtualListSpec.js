@@ -1,4 +1,4 @@
-var VirtualList = VSM.VirtualRuleList;
+var VirtualList = VSM.VirtualList;
 var VirtualRule = VSM.VirtualRule;
 
 describe("Virtual List", function() {
