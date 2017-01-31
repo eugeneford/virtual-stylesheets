@@ -1,13 +1,13 @@
 var VirtualList = VSM.VirtualRuleList;
 var VirtualRule = VSM.VirtualRule;
 
-describe("Virtual Rule List", function() {
+describe("Virtual List", function() {
   describe("constructor()", function() {
     it("created a rule list", function() {
       var list = new VirtualList();
       expect(list instanceof VirtualList).toEqual(true);
       expect(list.length).toEqual(0);
-      expect(list._rules).toEqual([]);
+      expect(list._items).toEqual([]);
     });
   });
 
@@ -21,7 +21,7 @@ describe("Virtual Rule List", function() {
       var list = new VirtualList();
       var rule = new VirtualRule({type: 1, startOffset: 0, endOffset: 0, cssText: ""});
       list.insert(rule, 0);
-      expect(list._rules[0]).toEqual(rule);
+      expect(list._items[0]).toEqual(rule);
     });
 
     it(`Added a new rule to list's trail when index wasnt specified`, function() {
@@ -29,14 +29,14 @@ describe("Virtual Rule List", function() {
       var rule = new VirtualRule({type: 1, startOffset: 0, endOffset: 0, cssText: ""});
       list.insert(new VirtualRule({type: 1, startOffset: 0, endOffset: 0, cssText: ""}), 0);
       list.insert(rule);
-      expect(list._rules[1]).toEqual(rule);
+      expect(list._items[1]).toEqual(rule);
     });
 
     it(`Added a new rule to list's trail when index was larger than list length`, function() {
       var list = new VirtualList();
       var rule = new VirtualRule({type: 1, startOffset: 0, endOffset: 0, cssText: ""});
       list.insert(rule, 10);
-      expect(list._rules[0].id).toEqual(0);
+      expect(list._items[0].id).toEqual(0);
     });
 
     it(`Threw an error when was trying to add a rule to negative position`, function() {
@@ -51,9 +51,9 @@ describe("Virtual Rule List", function() {
       list.insert(new VirtualRule({type: 1, startOffset: 0, endOffset: 0, cssText: ""}));
       list.insert(rule, 1);
 
-      expect(list._rules[0].id).toEqual(0);
-      expect(list._rules[1].id).toEqual(1);
-      expect(list._rules[2].id).toEqual(2);
+      expect(list._items[0].id).toEqual(0);
+      expect(list._items[1].id).toEqual(1);
+      expect(list._items[2].id).toEqual(2);
     });
   });
 
@@ -89,8 +89,8 @@ describe("Virtual Rule List", function() {
       list.insert(new VirtualRule({type: 1, startOffset: 0, endOffset: 0, cssText: ""}));
       list.insert(new VirtualRule({type: 1, startOffset: 0, endOffset: 0, cssText: ""}));
       list.remove(1);
-      expect(list._rules[0].id).toEqual(0);
-      expect(list._rules[1].id).toEqual(1);
+      expect(list._items[0].id).toEqual(0);
+      expect(list._items[1].id).toEqual(1);
     });
   });
 

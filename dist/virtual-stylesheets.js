@@ -2169,62 +2169,53 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _VirtualActions2 = _interopRequireDefault(_VirtualActions);
 
-	var _VirtualRule = __webpack_require__(5);
-
-	var _VirtualRule2 = _interopRequireDefault(_VirtualRule);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	/**
-	 * Virtual list is a array-like object containing an ordered collection of VirtualRules
-	 */
-	var VirtualRuleList = function () {
-	  function VirtualRuleList() {
-	    _classCallCheck(this, VirtualRuleList);
+	var VirtualList = function () {
+	  function VirtualList() {
+	    _classCallCheck(this, VirtualList);
 
-	    this._rules = [];
+	    this._items = [];
 	    this.length = 0;
 	  }
 
 	  /**
-	   * Inserts an additional VirtualRule  rule at specified position index in current VirtualList.
-	   * @param rule
+	   * Inserts an additional item at specified position index in current VirtualList.
+	   * @param item
 	   * @param index
-	   *
-	   * @throws TypeError - if rule is not a type of VirtualRule
 	   */
 
 
-	  _createClass(VirtualRuleList, [{
+	  _createClass(VirtualList, [{
 	    key: "insert",
-	    value: function insert(rule, index) {
+	    value: function insert(item, index) {
 	      var id = void 0;
-	      if (!rule) throw new Error("rule is not defined");
+	      if (!item) throw new Error("item is not defined");
 	      if (index < 0) throw new Error("index should be a positive int");
 
-	      if (typeof index === "undefined" || index > this._rules.length) {
-	        id = this._rules.length;
+	      if (typeof index === "undefined" || index > this._items.length) {
+	        id = this._items.length;
 	      } else {
 	        id = index;
 	      }
 
-	      rule.id = id;
-	      this._rules.splice(id, 0, rule);
-	      this.length = this._rules.length;
+	      item.id = id;
+	      this._items.splice(id, 0, item);
+	      this.length = this._items.length;
 
-	      for (var i = id + 1; i < this._rules.length; i++) {
-	        this._rules[i].id = i;
+	      for (var i = id + 1; i < this._items.length; i++) {
+	        this._items[i].id = i;
 	      }
 	    }
 
 	    /**
-	     * Removes a VirtualRule at target position index. Returns removed rule
+	     * Removes the item at target position index. Returns removed item
 	     * @param id
-	     * @returns {VirtualRule}
+	     * @returns {object}
 	     *
-	     * @throws Error = if there is not rule with specified id
+	     * @throws Error = if there is not item with specified id
 	     */
 
 	  }, {
@@ -2232,45 +2223,45 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function remove(id) {
 	      if (typeof id === "undefined") throw new Error("id is not defined");
 	      if (id < 0) throw new Error("id should be a positive int");
-	      if (id >= this._rules.length) throw new Error("id (" + id + ") is out of range (" + this._rules.length + ")");
+	      if (id >= this._items.length) throw new Error("id (" + id + ") is out of range (" + this._items.length + ")");
 
-	      for (var i = id + 1; i < this._rules.length; i++) {
-	        this._rules[i].id -= 1;
+	      for (var i = id + 1; i < this._items.length; i++) {
+	        this._items[i].id -= 1;
 	      }
-	      this.length = this._rules.length - 1;
-	      return this._rules.splice(id, 1)[0];
+	      this.length = this._items.length - 1;
+	      return this._items.splice(id, 1)[0];
 	    }
 
 	    /**
-	     * Returns a VirtualRule that has target id.
+	     * Returns the item that has target id.
 	     * @param id
-	     * @returns {VirtualRule}
+	     * @returns {object}
 	     */
 
 	  }, {
 	    key: "get",
 	    value: function get(id) {
-	      return this._rules[id];
+	      return this._items[id];
 	    }
 
 	    /**
-	     * Returns a set of VirtualRules that satisfy specified target filterFunc function and
+	     * Returns a set of items that satisfy specified target filterFunc function and
 	     * VirtualStyleSheet.FILTER_ACCEPT, VirtualStyleSheet.FILTER_REJECT flags returned by it.
 	     * @param filterFunc
-	     * @returns {Array.<VirtualRule>}
+	     * @returns {Array}
 	     */
 
 	  }, {
 	    key: "filter",
 	    value: function filter(filterFunc) {
-	      return this._rules.filter(filterFunc);
+	      return this._items.filter(filterFunc);
 	    }
 	  }]);
 
-	  return VirtualRuleList;
+	  return VirtualList;
 	}();
 
-	exports.default = VirtualRuleList;
+	exports.default = VirtualList;
 
 /***/ }
 /******/ ])

@@ -22,7 +22,7 @@ class VirtualStyleSheet {
         rule = VirtualRuleFactory.createFromToken(tokens[i], this, this._opts);
         if (rule) rules.insert(rule, id++);
       }
- 
+
       this.rules = rules;
       return;
     }
