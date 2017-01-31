@@ -1,6 +1,6 @@
 import VirtualActions from "./VirtualActions";
 import VirtualGrammar from "./VirtualGrammar";
-import VirtualRuleList from "./VirtualRuleList";
+import VirtualList from "./VirtualList";
 import VirtualRuleFactory from "./VirtualRuleFactory";
 import VirtualTokenizer from "./VirtualTokenizer";
 
@@ -16,18 +16,18 @@ class VirtualStyleSheet {
     tokens = VirtualTokenizer.tokenize(cssText);
 
     if (tokens.length) {
-      rules = new VirtualRuleList();
+      rules = new VirtualList();
 
       for (i = 0; i < tokens.length; i++){
         rule = VirtualRuleFactory.createFromToken(tokens[i], this, this._opts);
         if (rule) rules.insert(rule, id++);
       }
-
+ 
       this.rules = rules;
       return;
     }
 
-    this.rules = new VirtualRuleList();
+    this.rules = new VirtualList();
   }
 }
 

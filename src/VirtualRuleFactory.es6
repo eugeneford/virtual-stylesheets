@@ -1,6 +1,6 @@
 import VirtualActions from "./VirtualActions";
 import VirtualGrammar from "./VirtualGrammar";
-import VirtualRuleList from "./VirtualRuleList";
+import VirtualRuleList from "./VirtualList";
 import VirtualRule from "./VirtualRule";
 import VirtualCharsetRule from "./VirtualCharsetRule";
 import VirtualStyleRule from "./VirtualStyleRule";

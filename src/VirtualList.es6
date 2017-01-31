@@ -30,7 +30,7 @@ export default class VirtualRuleList {
   }
 
   /**
-   * Inserts an additional VirtualRule  rule at specified position index in current VirtualRuleList.
+   * Inserts an additional VirtualRule  rule at specified position index in current VirtualList.
    * @param rule
    * @param index
    *

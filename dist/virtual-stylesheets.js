@@ -64,15 +64,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _VirtualRuleFactory2 = _interopRequireDefault(_VirtualRuleFactory);
 
-	var _VirtualStyleSheet = __webpack_require__(13);
+	var _VirtualStyleSheet = __webpack_require__(14);
 
 	var _VirtualStyleSheet2 = _interopRequireDefault(_VirtualStyleSheet);
 
-	var _VirtualRuleList = __webpack_require__(4);
+	var _VirtualList = __webpack_require__(15);
 
-	var _VirtualRuleList2 = _interopRequireDefault(_VirtualRuleList);
+	var _VirtualList2 = _interopRequireDefault(_VirtualList);
 
-	var _VirtualTokenizer = __webpack_require__(11);
+	var _VirtualTokenizer = __webpack_require__(12);
 
 	var _VirtualTokenizer2 = _interopRequireDefault(_VirtualTokenizer);
 
@@ -80,7 +80,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _VirtualRule2 = _interopRequireDefault(_VirtualRule);
 
-	var _VirtualGroupingRule = __webpack_require__(10);
+	var _VirtualGroupingRule = __webpack_require__(11);
 
 	var _VirtualGroupingRule2 = _interopRequireDefault(_VirtualGroupingRule);
 
@@ -92,15 +92,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _VirtualStyleRule2 = _interopRequireDefault(_VirtualStyleRule);
 
-	var _VirtualImportRule = __webpack_require__(14);
+	var _VirtualImportRule = __webpack_require__(9);
 
 	var _VirtualImportRule2 = _interopRequireDefault(_VirtualImportRule);
 
-	var _VirtualViewportRule = __webpack_require__(9);
+	var _VirtualViewportRule = __webpack_require__(10);
 
 	var _VirtualViewportRule2 = _interopRequireDefault(_VirtualViewportRule);
 
-	var _VirtualMediaRule = __webpack_require__(12);
+	var _VirtualMediaRule = __webpack_require__(13);
 
 	var _VirtualMediaRule2 = _interopRequireDefault(_VirtualMediaRule);
 
@@ -134,7 +134,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  VirtualStyleRule: _VirtualStyleRule2.default,
 	  VirtualViewportRule: _VirtualViewportRule2.default,
 	  VirtualMediaRule: _VirtualMediaRule2.default,
-	  VirtualRuleList: _VirtualRuleList2.default,
+	  VirtualRuleList: _VirtualList2.default,
 	  VirtualTokenizer: _VirtualTokenizer2.default,
 	  VirtualImportRule: _VirtualImportRule2.default,
 	  VirtualStyleSheet: _VirtualStyleSheet2.default
@@ -350,9 +350,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _VirtualGrammar2 = _interopRequireDefault(_VirtualGrammar);
 
-	var _VirtualRuleList = __webpack_require__(4);
+	var _VirtualList = __webpack_require__(15);
 
-	var _VirtualRuleList2 = _interopRequireDefault(_VirtualRuleList);
+	var _VirtualList2 = _interopRequireDefault(_VirtualList);
 
 	var _VirtualRule = __webpack_require__(5);
 
@@ -366,23 +366,23 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _VirtualStyleRule2 = _interopRequireDefault(_VirtualStyleRule);
 
-	var _VirtualImportRule = __webpack_require__(14);
+	var _VirtualImportRule = __webpack_require__(9);
 
 	var _VirtualImportRule2 = _interopRequireDefault(_VirtualImportRule);
 
-	var _VirtualViewportRule = __webpack_require__(9);
+	var _VirtualViewportRule = __webpack_require__(10);
 
 	var _VirtualViewportRule2 = _interopRequireDefault(_VirtualViewportRule);
 
-	var _VirtualGroupingRule = __webpack_require__(10);
+	var _VirtualGroupingRule = __webpack_require__(11);
 
 	var _VirtualGroupingRule2 = _interopRequireDefault(_VirtualGroupingRule);
 
-	var _VirtualMediaRule = __webpack_require__(12);
+	var _VirtualMediaRule = __webpack_require__(13);
 
 	var _VirtualMediaRule2 = _interopRequireDefault(_VirtualMediaRule);
 
-	var _VirtualTokenizer = __webpack_require__(11);
+	var _VirtualTokenizer = __webpack_require__(12);
 
 	var _VirtualTokenizer2 = _interopRequireDefault(_VirtualTokenizer);
 
@@ -530,142 +530,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 4 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Copyright (c) 2017 Eugene Ford (stmechanus@gmail.com)
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * and associated documentation files (the "Software"), to deal in the Software without restriction,
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * subject to the following conditions:
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * The above copyright notice and this permission notice shall be included in all copies or substantial
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * portions of the Software.
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
-
-	var _VirtualActions = __webpack_require__(3);
-
-	var _VirtualActions2 = _interopRequireDefault(_VirtualActions);
-
-	var _VirtualRule = __webpack_require__(5);
-
-	var _VirtualRule2 = _interopRequireDefault(_VirtualRule);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	/**
-	 * Virtual list is a array-like object containing an ordered collection of VirtualRules
-	 */
-	var VirtualRuleList = function () {
-	  function VirtualRuleList() {
-	    _classCallCheck(this, VirtualRuleList);
-
-	    this._rules = [];
-	    this.length = 0;
-	  }
-
-	  /**
-	   * Inserts an additional VirtualRule  rule at specified position index in current VirtualRuleList.
-	   * @param rule
-	   * @param index
-	   *
-	   * @throws TypeError - if rule is not a type of VirtualRule
-	   */
-
-
-	  _createClass(VirtualRuleList, [{
-	    key: "insert",
-	    value: function insert(rule, index) {
-	      var id = void 0;
-	      if (!rule) throw new Error("rule is not defined");
-	      if (index < 0) throw new Error("index should be a positive int");
-
-	      if (typeof index === "undefined" || index > this._rules.length) {
-	        id = this._rules.length;
-	      } else {
-	        id = index;
-	      }
-
-	      rule.id = id;
-	      this._rules.splice(id, 0, rule);
-	      this.length = this._rules.length;
-
-	      for (var i = id + 1; i < this._rules.length; i++) {
-	        this._rules[i].id = i;
-	      }
-	    }
-
-	    /**
-	     * Removes a VirtualRule at target position index. Returns removed rule
-	     * @param id
-	     * @returns {VirtualRule}
-	     *
-	     * @throws Error = if there is not rule with specified id
-	     */
-
-	  }, {
-	    key: "remove",
-	    value: function remove(id) {
-	      if (typeof id === "undefined") throw new Error("id is not defined");
-	      if (id < 0) throw new Error("id should be a positive int");
-	      if (id >= this._rules.length) throw new Error("id (" + id + ") is out of range (" + this._rules.length + ")");
-
-	      for (var i = id + 1; i < this._rules.length; i++) {
-	        this._rules[i].id -= 1;
-	      }
-	      this.length = this._rules.length - 1;
-	      return this._rules.splice(id, 1)[0];
-	    }
-
-	    /**
-	     * Returns a VirtualRule that has target id.
-	     * @param id
-	     * @returns {VirtualRule}
-	     */
-
-	  }, {
-	    key: "get",
-	    value: function get(id) {
-	      return this._rules[id];
-	    }
-
-	    /**
-	     * Returns a set of VirtualRules that satisfy specified target filterFunc function and
-	     * VirtualStyleSheet.FILTER_ACCEPT, VirtualStyleSheet.FILTER_REJECT flags returned by it.
-	     * @param filterFunc
-	     * @returns {Array.<VirtualRule>}
-	     */
-
-	  }, {
-	    key: "filter",
-	    value: function filter(filterFunc) {
-	      return this._rules.filter(filterFunc);
-	    }
-	  }]);
-
-	  return VirtualRuleList;
-	}();
-
-	exports.default = VirtualRuleList;
-
-/***/ },
+/* 4 */,
 /* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -1231,6 +1096,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  value: true
 	});
 
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
 	var _VirtualActions = __webpack_require__(3);
 
 	var _VirtualActions2 = _interopRequireDefault(_VirtualActions);
@@ -1259,6 +1128,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return _possibleConstructorReturn(this, (VirtualStyleDeclarationRule.__proto__ || Object.getPrototypeOf(VirtualStyleDeclarationRule)).call(this, ruleInfo, parentRule, opts));
 	  }
 
+	  _createClass(VirtualStyleDeclarationRule, [{
+	    key: "parse",
+	    value: function parse(parseType) {
+	      _get(VirtualStyleDeclarationRule.prototype.__proto__ || Object.getPrototypeOf(VirtualStyleDeclarationRule.prototype), "parse", this).call(this, parseType);
+	      if (parseType === _VirtualActions2.default.PARSE_BODY || parseType == _VirtualActions2.default.PARSE_ALL) {}
+	    }
+	  }]);
+
 	  return VirtualStyleDeclarationRule;
 	}(_VirtualRule3.default);
 
@@ -1266,6 +1143,260 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+	var _VirtualActions = __webpack_require__(3);
+
+	var _VirtualActions2 = _interopRequireDefault(_VirtualActions);
+
+	var _VirtualRule2 = __webpack_require__(5);
+
+	var _VirtualRule3 = _interopRequireDefault(_VirtualRule2);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var U_LETTER = "u".charCodeAt(0);
+	var R_LETTER = "r".charCodeAt(0);
+	var L_LETTER = "l".charCodeAt(0);
+	var WHITESPACE = " ".charCodeAt(0);
+	var SINGLE_QUOTE = "\'".charCodeAt(0);
+	var DOUBLE_QUOTE = "\"".charCodeAt(0);
+	var LEFT_BRACE = "(".charCodeAt(0);
+	var RIGHT_BRACE = ")".charCodeAt(0);
+	var SLASH = "\\".charCodeAt(0);
+	var SEMICOLON = ";".charCodeAt(0);
+
+	var VirtualImportRule = function (_VirtualRule) {
+	  _inherits(VirtualImportRule, _VirtualRule);
+
+	  function VirtualImportRule(ruleInfo, parentRule, opts) {
+	    _classCallCheck(this, VirtualImportRule);
+
+	    return _possibleConstructorReturn(this, (VirtualImportRule.__proto__ || Object.getPrototypeOf(VirtualImportRule)).call(this, ruleInfo, parentRule, opts));
+	  }
+
+	  /**
+	   * Get href prop bounds of current rule
+	   * @returns {*}
+	   * @private
+	   */
+
+
+	  _createClass(VirtualImportRule, [{
+	    key: "_getLocationBounds",
+	    value: function _getLocationBounds() {
+	      var i = void 0,
+	          nextCode = void 0,
+	          prevCode = void 0,
+	          secondCode = void 0,
+	          thirdCode = void 0,
+	          quotesCode = void 0,
+	          startOffset = void 0,
+	          endOffset = void 0,
+	          urlSpotted = void 0;
+
+	      // Skip @import definition, start at 7
+	      for (i = 7; i < this.cssText.length; i++) {
+	        nextCode = this.cssText.charCodeAt(i);
+
+	        // Check for url term
+	        if (!urlSpotted) {
+	          if (!quotesCode && nextCode === R_LETTER && prevCode === U_LETTER) {
+	            secondCode = this.cssText.charCodeAt(i + 1);
+	            thirdCode = this.cssText.charCodeAt(i + 2);
+	            if (secondCode === L_LETTER && thirdCode === LEFT_BRACE) {
+	              i += 2;
+	              startOffset = i + 1;
+	              urlSpotted = true;
+	              continue;
+	            }
+	          }
+	        }
+
+	        // Check if " or ' was spotted without escape \
+	        if (prevCode && prevCode !== SLASH && (nextCode === SINGLE_QUOTE || nextCode == DOUBLE_QUOTE)) {
+	          if (!!quotesCode) {
+	            if (nextCode === quotesCode) {
+	              endOffset = i;
+	              break;
+	            }
+	          } else {
+	            quotesCode = nextCode;
+	            startOffset = i + 1;
+	          }
+	        }
+
+	        if (urlSpotted) {
+	          if (nextCode === RIGHT_BRACE) {
+	            endOffset = i;
+	          }
+	        }
+
+	        prevCode = nextCode;
+	      }
+
+	      if (startOffset === undefined || endOffset === undefined) return null;
+
+	      return { startOffset: startOffset, endOffset: endOffset };
+	    }
+	  }, {
+	    key: "_getMediaBounds",
+	    value: function _getMediaBounds(hrefBounds) {
+	      /*istanbul ignore if*/
+	      if (!hrefBounds || !hrefBounds.endOffset) return null;
+
+	      var i = void 0,
+	          startOffset = void 0,
+	          endOffset = void 0,
+	          nextCode = void 0,
+	          prevCode = void 0;
+
+	      for (i = hrefBounds.endOffset; i < this.cssText.length; i++) {
+	        nextCode = this.cssText.charCodeAt(i);
+
+	        if (startOffset === undefined && prevCode === WHITESPACE && nextCode !== WHITESPACE) {
+	          startOffset = i;
+	        }
+
+	        if (nextCode === SEMICOLON) {
+	          endOffset = i;
+	          break;
+	        }
+
+	        prevCode = nextCode;
+	      }
+
+	      if (startOffset === undefined || endOffset === undefined) return null;
+
+	      return { startOffset: startOffset, endOffset: endOffset };
+	    }
+	  }, {
+	    key: "parse",
+	    value: function parse(parseType) {
+	      _get(VirtualImportRule.prototype.__proto__ || Object.getPrototypeOf(VirtualImportRule.prototype), "parse", this).call(this, parseType);
+	      if (parseType === _VirtualActions2.default.PARSE_HEAD || parseType == _VirtualActions2.default.PARSE_ALL) {
+	        var hrefBounds = this._getLocationBounds();
+	        if (hrefBounds) {
+	          var mediaBounds = this._getMediaBounds(hrefBounds);
+	          this.href = this.cssText.substring(hrefBounds.startOffset, hrefBounds.endOffset);
+	          this.media = mediaBounds ? this.cssText.substring(mediaBounds.startOffset, mediaBounds.endOffset) : null;
+	          return;
+	        }
+	      }
+	      this.href = null;
+	      this.media = null;
+	    }
+
+	    /**
+	     * Applies new href to current rule
+	     * @param href
+	     */
+
+	  }, {
+	    key: "setLocation",
+	    value: function setLocation(href) {
+	      if (typeof href !== "string") throw new TypeError("href is not a string");
+	      var hrefBounds = this._getLocationBounds(),
+	          start = void 0,
+	          end = void 0,
+	          value = void 0,
+	          oldValue = void 0;
+
+	      // Replace current location
+	      if (hrefBounds) {
+	        value = href;
+	        start = hrefBounds.startOffset;
+	        end = hrefBounds.endOffset;
+	        oldValue = this.cssText.substring(start, end);
+	      }
+	      // Or create completely new rule
+	      else {
+	          value = "@import \"" + href + "\";";
+	          start = 0;
+	          end = this.cssText.length;
+	          oldValue = this.cssText;
+	        }
+
+	      this.patch({
+	        action: _VirtualActions2.default.PATCH_REPLACE,
+	        patchDelta: value.length - oldValue.length,
+	        start: start, end: end, value: value
+	      });
+	    }
+
+	    /**
+	     * Applies new media string to current rule
+	     * @param media
+	     */
+
+	  }, {
+	    key: "setMedia",
+	    value: function setMedia(media) {
+	      if (typeof media !== "string") throw new TypeError("media is not a string");
+	      var hrefBounds = void 0,
+	          mediaBounds = void 0,
+	          i = void 0,
+	          nextCode = void 0,
+	          start = void 0,
+	          end = void 0,
+	          oldValue = void 0,
+	          action = void 0;
+
+	      // If there is no location specified - rule makes no sense
+	      if (hrefBounds = this._getLocationBounds()) {
+	        // Replace current media string
+	        if (mediaBounds = this._getMediaBounds(hrefBounds)) {
+	          start = mediaBounds.startOffset;
+	          end = mediaBounds.endOffset;
+	          oldValue = this.cssText.substring(start, end);
+	          action = _VirtualActions2.default.PATCH_REPLACE;
+	        }
+	        // Or create a new one
+	        else {
+	            for (i = hrefBounds.endOffset; i < this.cssText.length; i++) {
+	              nextCode = this.cssText.charCodeAt(i);
+
+	              if (nextCode !== WHITESPACE && nextCode !== SINGLE_QUOTE && nextCode !== DOUBLE_QUOTE && nextCode !== RIGHT_BRACE) {
+	                start = i;
+	                action = _VirtualActions2.default.PATCH_INSERT;
+	                oldValue = "";
+	                break;
+	              }
+	            }
+	          }
+
+	        this.patch({
+	          value: " " + media,
+	          patchDelta: 1 + media.length - oldValue.length,
+	          start: start, end: end, action: action
+	        });
+	      }
+	    }
+	  }]);
+
+	  return VirtualImportRule;
+	}(_VirtualRule3.default);
+
+	exports.default = VirtualImportRule;
+
+/***/ },
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1301,7 +1432,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = VirtualViewportRule;
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1320,11 +1451,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _VirtualRule3 = _interopRequireDefault(_VirtualRule2);
 
-	var _VirtualRuleList = __webpack_require__(4);
+	var _VirtualList = __webpack_require__(15);
 
-	var _VirtualRuleList2 = _interopRequireDefault(_VirtualRuleList);
+	var _VirtualList2 = _interopRequireDefault(_VirtualList);
 
-	var _VirtualTokenizer = __webpack_require__(11);
+	var _VirtualTokenizer = __webpack_require__(12);
 
 	var _VirtualTokenizer2 = _interopRequireDefault(_VirtualTokenizer);
 
@@ -1431,7 +1562,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        tokens = _VirtualTokenizer2.default.tokenize(body);
 
 	        if (tokens.length) {
-	          rules = new _VirtualRuleList2.default();
+	          rules = new _VirtualList2.default();
 
 	          for (i = 0; i < tokens.length; i++) {
 	            rule = _VirtualRuleFactory2.default.createFromToken(tokens[i], this, this._opts);
@@ -1466,7 +1597,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = VirtualGroupingRule;
 
 /***/ },
-/* 11 */
+/* 12 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1825,7 +1956,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = VirtualTokenizer;
 
 /***/ },
-/* 12 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1842,7 +1973,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _VirtualActions2 = _interopRequireDefault(_VirtualActions);
 
-	var _VirtualGroupingRule2 = __webpack_require__(10);
+	var _VirtualGroupingRule2 = __webpack_require__(11);
 
 	var _VirtualGroupingRule3 = _interopRequireDefault(_VirtualGroupingRule2);
 
@@ -1927,7 +2058,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = VirtualMediaRule;
 
 /***/ },
-/* 13 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1946,15 +2077,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _VirtualGrammar2 = _interopRequireDefault(_VirtualGrammar);
 
-	var _VirtualRuleList = __webpack_require__(4);
+	var _VirtualList = __webpack_require__(15);
 
-	var _VirtualRuleList2 = _interopRequireDefault(_VirtualRuleList);
+	var _VirtualList2 = _interopRequireDefault(_VirtualList);
 
 	var _VirtualRuleFactory = __webpack_require__(2);
 
 	var _VirtualRuleFactory2 = _interopRequireDefault(_VirtualRuleFactory);
 
-	var _VirtualTokenizer = __webpack_require__(11);
+	var _VirtualTokenizer = __webpack_require__(12);
 
 	var _VirtualTokenizer2 = _interopRequireDefault(_VirtualTokenizer);
 
@@ -1982,7 +2113,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      tokens = _VirtualTokenizer2.default.tokenize(cssText);
 
 	      if (tokens.length) {
-	        rules = new _VirtualRuleList2.default();
+	        rules = new _VirtualList2.default();
 
 	        for (i = 0; i < tokens.length; i++) {
 	          rule = _VirtualRuleFactory2.default.createFromToken(tokens[i], this, this._opts);
@@ -1993,7 +2124,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return;
 	      }
 
-	      this.rules = new _VirtualRuleList2.default();
+	      this.rules = new _VirtualList2.default();
 	    }
 	  }]);
 
@@ -2006,7 +2137,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = VirtualStyleSheet;
 
 /***/ },
-/* 14 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -2015,249 +2146,131 @@ return /******/ (function(modules) { // webpackBootstrap
 	  value: true
 	});
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Copyright (c) 2017 Eugene Ford (stmechanus@gmail.com)
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * and associated documentation files (the "Software"), to deal in the Software without restriction,
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * subject to the following conditions:
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * The above copyright notice and this permission notice shall be included in all copies or substantial
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * portions of the Software.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
 	var _VirtualActions = __webpack_require__(3);
 
 	var _VirtualActions2 = _interopRequireDefault(_VirtualActions);
 
-	var _VirtualRule2 = __webpack_require__(5);
+	var _VirtualRule = __webpack_require__(5);
 
-	var _VirtualRule3 = _interopRequireDefault(_VirtualRule2);
+	var _VirtualRule2 = _interopRequireDefault(_VirtualRule);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	/**
+	 * Virtual list is a array-like object containing an ordered collection of VirtualRules
+	 */
+	var VirtualRuleList = function () {
+	  function VirtualRuleList() {
+	    _classCallCheck(this, VirtualRuleList);
 
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var U_LETTER = "u".charCodeAt(0);
-	var R_LETTER = "r".charCodeAt(0);
-	var L_LETTER = "l".charCodeAt(0);
-	var WHITESPACE = " ".charCodeAt(0);
-	var SINGLE_QUOTE = "\'".charCodeAt(0);
-	var DOUBLE_QUOTE = "\"".charCodeAt(0);
-	var LEFT_BRACE = "(".charCodeAt(0);
-	var RIGHT_BRACE = ")".charCodeAt(0);
-	var SLASH = "\\".charCodeAt(0);
-	var SEMICOLON = ";".charCodeAt(0);
-
-	var VirtualImportRule = function (_VirtualRule) {
-	  _inherits(VirtualImportRule, _VirtualRule);
-
-	  function VirtualImportRule(ruleInfo, parentRule, opts) {
-	    _classCallCheck(this, VirtualImportRule);
-
-	    return _possibleConstructorReturn(this, (VirtualImportRule.__proto__ || Object.getPrototypeOf(VirtualImportRule)).call(this, ruleInfo, parentRule, opts));
+	    this._rules = [];
+	    this.length = 0;
 	  }
 
 	  /**
-	   * Get href prop bounds of current rule
-	   * @returns {*}
-	   * @private
+	   * Inserts an additional VirtualRule  rule at specified position index in current VirtualList.
+	   * @param rule
+	   * @param index
+	   *
+	   * @throws TypeError - if rule is not a type of VirtualRule
 	   */
 
 
-	  _createClass(VirtualImportRule, [{
-	    key: "_getLocationBounds",
-	    value: function _getLocationBounds() {
-	      var i = void 0,
-	          nextCode = void 0,
-	          prevCode = void 0,
-	          secondCode = void 0,
-	          thirdCode = void 0,
-	          quotesCode = void 0,
-	          startOffset = void 0,
-	          endOffset = void 0,
-	          urlSpotted = void 0;
+	  _createClass(VirtualRuleList, [{
+	    key: "insert",
+	    value: function insert(rule, index) {
+	      var id = void 0;
+	      if (!rule) throw new Error("rule is not defined");
+	      if (index < 0) throw new Error("index should be a positive int");
 
-	      // Skip @import definition, start at 7
-	      for (i = 7; i < this.cssText.length; i++) {
-	        nextCode = this.cssText.charCodeAt(i);
-
-	        // Check for url term
-	        if (!urlSpotted) {
-	          if (!quotesCode && nextCode === R_LETTER && prevCode === U_LETTER) {
-	            secondCode = this.cssText.charCodeAt(i + 1);
-	            thirdCode = this.cssText.charCodeAt(i + 2);
-	            if (secondCode === L_LETTER && thirdCode === LEFT_BRACE) {
-	              i += 2;
-	              startOffset = i + 1;
-	              urlSpotted = true;
-	              continue;
-	            }
-	          }
-	        }
-
-	        // Check if " or ' was spotted without escape \
-	        if (prevCode && prevCode !== SLASH && (nextCode === SINGLE_QUOTE || nextCode == DOUBLE_QUOTE)) {
-	          if (!!quotesCode) {
-	            if (nextCode === quotesCode) {
-	              endOffset = i;
-	              break;
-	            }
-	          } else {
-	            quotesCode = nextCode;
-	            startOffset = i + 1;
-	          }
-	        }
-
-	        if (urlSpotted) {
-	          if (nextCode === RIGHT_BRACE) {
-	            endOffset = i;
-	          }
-	        }
-
-	        prevCode = nextCode;
+	      if (typeof index === "undefined" || index > this._rules.length) {
+	        id = this._rules.length;
+	      } else {
+	        id = index;
 	      }
 
-	      if (startOffset === undefined || endOffset === undefined) return null;
+	      rule.id = id;
+	      this._rules.splice(id, 0, rule);
+	      this.length = this._rules.length;
 
-	      return { startOffset: startOffset, endOffset: endOffset };
-	    }
-	  }, {
-	    key: "_getMediaBounds",
-	    value: function _getMediaBounds(hrefBounds) {
-	      /*istanbul ignore if*/
-	      if (!hrefBounds || !hrefBounds.endOffset) return null;
-
-	      var i = void 0,
-	          startOffset = void 0,
-	          endOffset = void 0,
-	          nextCode = void 0,
-	          prevCode = void 0;
-
-	      for (i = hrefBounds.endOffset; i < this.cssText.length; i++) {
-	        nextCode = this.cssText.charCodeAt(i);
-
-	        if (startOffset === undefined && prevCode === WHITESPACE && nextCode !== WHITESPACE) {
-	          startOffset = i;
-	        }
-
-	        if (nextCode === SEMICOLON) {
-	          endOffset = i;
-	          break;
-	        }
-
-	        prevCode = nextCode;
+	      for (var i = id + 1; i < this._rules.length; i++) {
+	        this._rules[i].id = i;
 	      }
-
-	      if (startOffset === undefined || endOffset === undefined) return null;
-
-	      return { startOffset: startOffset, endOffset: endOffset };
-	    }
-	  }, {
-	    key: "parse",
-	    value: function parse(parseType) {
-	      _get(VirtualImportRule.prototype.__proto__ || Object.getPrototypeOf(VirtualImportRule.prototype), "parse", this).call(this, parseType);
-	      if (parseType === _VirtualActions2.default.PARSE_HEAD || parseType == _VirtualActions2.default.PARSE_ALL) {
-	        var hrefBounds = this._getLocationBounds();
-	        if (hrefBounds) {
-	          var mediaBounds = this._getMediaBounds(hrefBounds);
-	          this.href = this.cssText.substring(hrefBounds.startOffset, hrefBounds.endOffset);
-	          this.media = mediaBounds ? this.cssText.substring(mediaBounds.startOffset, mediaBounds.endOffset) : null;
-	          return;
-	        }
-	      }
-	      this.href = null;
-	      this.media = null;
 	    }
 
 	    /**
-	     * Applies new href to current rule
-	     * @param href
+	     * Removes a VirtualRule at target position index. Returns removed rule
+	     * @param id
+	     * @returns {VirtualRule}
+	     *
+	     * @throws Error = if there is not rule with specified id
 	     */
 
 	  }, {
-	    key: "setLocation",
-	    value: function setLocation(href) {
-	      if (typeof href !== "string") throw new TypeError("href is not a string");
-	      var hrefBounds = this._getLocationBounds(),
-	          start = void 0,
-	          end = void 0,
-	          value = void 0,
-	          oldValue = void 0;
+	    key: "remove",
+	    value: function remove(id) {
+	      if (typeof id === "undefined") throw new Error("id is not defined");
+	      if (id < 0) throw new Error("id should be a positive int");
+	      if (id >= this._rules.length) throw new Error("id (" + id + ") is out of range (" + this._rules.length + ")");
 
-	      // Replace current location
-	      if (hrefBounds) {
-	        value = href;
-	        start = hrefBounds.startOffset;
-	        end = hrefBounds.endOffset;
-	        oldValue = this.cssText.substring(start, end);
+	      for (var i = id + 1; i < this._rules.length; i++) {
+	        this._rules[i].id -= 1;
 	      }
-	      // Or create completely new rule
-	      else {
-	          value = "@import \"" + href + "\";";
-	          start = 0;
-	          end = this.cssText.length;
-	          oldValue = this.cssText;
-	        }
-
-	      this.patch({
-	        action: _VirtualActions2.default.PATCH_REPLACE,
-	        patchDelta: value.length - oldValue.length,
-	        start: start, end: end, value: value
-	      });
+	      this.length = this._rules.length - 1;
+	      return this._rules.splice(id, 1)[0];
 	    }
 
 	    /**
-	     * Applies new media string to current rule
-	     * @param media
+	     * Returns a VirtualRule that has target id.
+	     * @param id
+	     * @returns {VirtualRule}
 	     */
 
 	  }, {
-	    key: "setMedia",
-	    value: function setMedia(media) {
-	      if (typeof media !== "string") throw new TypeError("media is not a string");
-	      var hrefBounds = void 0,
-	          mediaBounds = void 0,
-	          i = void 0,
-	          nextCode = void 0,
-	          start = void 0,
-	          end = void 0,
-	          oldValue = void 0,
-	          action = void 0;
+	    key: "get",
+	    value: function get(id) {
+	      return this._rules[id];
+	    }
 
-	      // If there is no location specified - rule makes no sense
-	      if (hrefBounds = this._getLocationBounds()) {
-	        // Replace current media string
-	        if (mediaBounds = this._getMediaBounds(hrefBounds)) {
-	          start = mediaBounds.startOffset;
-	          end = mediaBounds.endOffset;
-	          oldValue = this.cssText.substring(start, end);
-	          action = _VirtualActions2.default.PATCH_REPLACE;
-	        }
-	        // Or create a new one
-	        else {
-	            for (i = hrefBounds.endOffset; i < this.cssText.length; i++) {
-	              nextCode = this.cssText.charCodeAt(i);
+	    /**
+	     * Returns a set of VirtualRules that satisfy specified target filterFunc function and
+	     * VirtualStyleSheet.FILTER_ACCEPT, VirtualStyleSheet.FILTER_REJECT flags returned by it.
+	     * @param filterFunc
+	     * @returns {Array.<VirtualRule>}
+	     */
 
-	              if (nextCode !== WHITESPACE && nextCode !== SINGLE_QUOTE && nextCode !== DOUBLE_QUOTE && nextCode !== RIGHT_BRACE) {
-	                start = i;
-	                action = _VirtualActions2.default.PATCH_INSERT;
-	                oldValue = "";
-	                break;
-	              }
-	            }
-	          }
-
-	        this.patch({
-	          value: " " + media,
-	          patchDelta: 1 + media.length - oldValue.length,
-	          start: start, end: end, action: action
-	        });
-	      }
+	  }, {
+	    key: "filter",
+	    value: function filter(filterFunc) {
+	      return this._rules.filter(filterFunc);
 	    }
 	  }]);
 
-	  return VirtualImportRule;
-	}(_VirtualRule3.default);
+	  return VirtualRuleList;
+	}();
 
-	exports.default = VirtualImportRule;
+	exports.default = VirtualRuleList;
 
 /***/ }
 /******/ ])

@@ -1,6 +1,6 @@
 import VirtualActions from "./VirtualActions";
 import VirtualRule from "./VirtualRule";
-import VirtualRuleList from "./VirtualRuleList";
+import VirtualList from "./VirtualList";
 import VirtualTokenizer from "./VirtualTokenizer";
 import VirtualRuleFactory from "./VirtualRuleFactory";
 
@@ -74,7 +74,7 @@ export default class VirtualGroupingRule extends VirtualRule {
       tokens = VirtualTokenizer.tokenize(body);
 
       if (tokens.length) {
-        rules = new VirtualRuleList();
+        rules = new VirtualList();
 
         for (i = 0; i < tokens.length; i++){
           rule = VirtualRuleFactory.createFromToken(tokens[i], this, this._opts);
