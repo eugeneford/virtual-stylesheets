@@ -246,7 +246,7 @@ describe("Virtual Rule", function() {
         action: VirtualStyleSheet.PATCH_DELETE,
         start: 12,
         end: 24,
-        patchDelta: 13
+        patchDelta: -13
       });
 
       expect(rule.cssText).toEqual(".selector {  }");

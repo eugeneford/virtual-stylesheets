@@ -1244,6 +1244,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _VirtualRule3 = _interopRequireDefault(_VirtualRule2);
 
+	var _VirtualStyleDeclarationParser = __webpack_require__(15);
+
+	var _VirtualStyleDeclarationParser2 = _interopRequireDefault(_VirtualStyleDeclarationParser);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1251,6 +1255,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var NEW_LINE = "\n".charCodeAt(0);
+	var WHITESPACE = " ".charCodeAt(0);
+	var SEMICOLON = ";".charCodeAt(0);
 
 	var VirtualStyleDeclarationRule = function (_VirtualRule) {
 	  _inherits(VirtualStyleDeclarationRule, _VirtualRule);
@@ -1264,11 +1272,280 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return _possibleConstructorReturn(this, (VirtualStyleDeclarationRule.__proto__ || Object.getPrototypeOf(VirtualStyleDeclarationRule)).call(this, ruleInfo, parentRule, opts));
 	  }
 
+	  /**
+	   * Changes an existing style declaration
+	   * @param declaration
+	   * @param property
+	   * @param value
+	   * @private
+	   */
+
+
 	  _createClass(VirtualStyleDeclarationRule, [{
+	    key: "_changeProperty",
+	    value: function _changeProperty(declaration, property, value) {
+	      var body = void 0,
+	          start = void 0,
+	          end = void 0,
+	          code = void 0,
+	          suffix = void 0,
+	          val = void 0,
+	          original = void 0,
+	          i = void 0;
+	      // Get body block bounds
+	      body = this.getBody();
+
+	      // Calculate patch bounds
+	      start = body.startOffset + declaration.startOffset;
+	      end = body.startOffset + declaration.endOffset;
+
+	      // Copy style declaration suffix for proper formatting
+	      original = this.cssText.substring(start, end);
+	      suffix = 0;
+	      for (i = original.length - 1; i >= 0; i++) {
+	        code = original.charCodeAt(i);
+	        if (code !== WHITESPACE && code !== SEMICOLON && code !== NEW_LINE) break;
+	        suffix++;
+	      }
+
+	      // Recreate new style declaration in string format
+	      val = property + ": " + value + original.substr(original.length - suffix);
+
+	      this.patch({
+	        action: _VirtualActions2.default.PATCH_REPLACE,
+	        value: val, start: start, end: end,
+	        patchDelta: val.length - declaration.endOffset - declaration.startOffset
+	      });
+	    }
+
+	    /**
+	     * Create new style declaration
+	     * @param property
+	     * @param value
+	     * @private
+	     */
+
+	  }, {
+	    key: "_appendProperty",
+	    value: function _appendProperty(property, value) {
+	      var declaration = void 0,
+	          bounds = void 0,
+	          val = void 0,
+	          code = void 0,
+	          start = void 0,
+	          end = void 0,
+	          suffix = void 0,
+	          i = void 0,
+	          prefix = void 0;
+
+	      // Get body block bounds
+	      bounds = this.getBody();
+
+	      // Append new style declaration to existing ones
+	      if (this.style && this.style.length) {
+	        // Get the new declaration suffix
+	        suffix = 0;
+	        i = bounds.endOffset;
+	        while (i-- >= 0) {
+	          code = this.cssText.charCodeAt(i);
+	          if (code !== WHITESPACE && code !== NEW_LINE) break;
+	          suffix++;
+	        }
+	        suffix = this.cssText.substring(bounds.endOffset - suffix, bounds.endOffset);
+
+	        // Get the new declaration prefix
+	        declaration = this.style.get(0);
+	        prefix = this.cssText.substring(bounds.startOffset, bounds.startOffset + declaration.startOffset);
+
+	        // Build new declaration string
+	        val = "" + prefix + property + ": " + value + ";" + suffix;
+	        start = bounds.endOffset - suffix.length;
+	        end = bounds.endOffset;
+
+	        // Check if last declaration is closed with ;
+	        declaration = this.style.get(this.style.length - 1);
+	        if (declaration.endOffset === bounds.endOffset - bounds.startOffset) {
+	          val = ";" + val;
+	        }
+	      }
+	      // Or create completely new style declaration
+	      else {
+	          val = "\n  " + property + ": " + value + ";\n";
+	          start = bounds.startOffset;
+	          end = bounds.endOffset;
+	        }
+
+	      this.patch({
+	        action: _VirtualActions2.default.PATCH_REPLACE,
+	        start: start, end: end, value: val,
+	        patchDelta: val.length - end - start
+	      });
+	    }
+	  }, {
 	    key: "parse",
 	    value: function parse(parseType) {
 	      _get(VirtualStyleDeclarationRule.prototype.__proto__ || Object.getPrototypeOf(VirtualStyleDeclarationRule.prototype), "parse", this).call(this, parseType);
-	      if (parseType === _VirtualActions2.default.PARSE_BODY || parseType == _VirtualActions2.default.PARSE_ALL) {}
+	      if (parseType === _VirtualActions2.default.PARSE_BODY || parseType == _VirtualActions2.default.PARSE_ALL) {
+	        var bounds = void 0,
+	            body = void 0,
+	            declarations = void 0,
+	            style = void 0,
+	            i = void 0;
+
+	        // Get Rule body bounds (startOffset and endOffset)
+	        bounds = this.getBody();
+	        body = this.cssText.substring(bounds.startOffset, bounds.endOffset);
+
+	        // Get a set of declarations to work with
+	        declarations = _VirtualStyleDeclarationParser2.default.parse(body);
+
+	        if (declarations.length) {
+	          style = new VirtualList();
+
+	          for (i = 0; i < declarations.length; i++) {
+	            style.insert(declarations[i]);
+	          }
+
+	          this.style = style;
+	          return;
+	        }
+	      }
+	      this.style = null;
+	    }
+
+	    /**
+	     * Returns the property value.
+	     * @param property
+	     * @returns {string|null}
+	     */
+
+	  }, {
+	    key: "getPropertyValue",
+	    value: function getPropertyValue(property) {
+	      if (typeof property !== "string") throw new TypeError("Property is not a string.");
+	      var i = void 0,
+	          declaration = void 0;
+
+	      if (this.style) {
+	        for (i = 0; i < this.style.length; i++) {
+	          declaration = this.style.get(i);
+
+	          if (declaration.property === property) return declaration.value;
+	        }
+	      }
+
+	      return null;
+	    }
+
+	    /**
+	     * Returns true if property has !important priority.
+	     * @param property
+	     */
+
+	  }, {
+	    key: "isImportant",
+	    value: function isImportant(property) {
+	      if (typeof property !== "string") throw new TypeError("Property is not a string.");
+	      var i = void 0,
+	          declaration = void 0;
+	      if (this.style) {
+	        for (i = 0; i < this.style.length; i++) {
+	          declaration = this.style.get(i);
+
+	          if (declaration.property === property) return declaration.isImportant;
+	        }
+	      }
+
+	      return false;
+	    }
+
+	    /**
+	     * Deletes a target property from current VirtualStyleDeclaration.
+	     * @param property
+	     * @returns {string|null}
+	     */
+
+	  }, {
+	    key: "removeProperty",
+	    value: function removeProperty(property) {
+	      if (typeof property !== "string") throw new TypeError("Property is not a string.");
+	      var i = void 0,
+	          declaration = void 0,
+	          body = void 0,
+	          isChanged = void 0;
+
+	      // Try to remove target property from style declaration list
+	      if (this.style) {
+	        for (i = this.style.length - 1; i >= 0; i--) {
+	          declaration = this.style.get(i);
+	          if (declaration.property === property) {
+	            this.style.remove(i);
+	            isChanged = true;
+	            break;
+	          }
+	        }
+	      }
+
+	      // Apply delete patch to this rule is style declaration list was changed
+	      if (isChanged) {
+	        // Get body block bounds
+	        body = this.getBody();
+
+	        this.patch({
+	          action: _VirtualActions2.default.PATCH_DELETE,
+	          start: body.startOffset + declaration.startOffset,
+	          end: body.startOffset + declaration.endOffset,
+	          patchDelta: -(declaration.endOffset - declaration.startOffset)
+	        });
+
+	        return declaration.value;
+	      }
+	      return null;
+	    }
+
+	    /**
+	     * Applies a property changes in current VirtualStyleDeclaration.
+	     * @param property
+	     * @param value
+	     */
+
+	  }, {
+	    key: "setProperty",
+	    value: function setProperty(property, value) {
+	      if (typeof property !== "string") throw new TypeError("Property is not a string.");
+	      if (typeof value !== "string") throw new TypeError("Value is not a string.");
+
+	      var newDecl = void 0,
+	          i = void 0,
+	          declaration = void 0,
+	          changable = void 0;
+
+	      //Try to build a new style declaration using StyleDeclarationParser
+	      newDecl = _VirtualStyleDeclarationParser2.default.getDeclarationToken(property + ": " + value + ";", 0);
+
+	      // Check for bad input
+	      if (!newDecl.property || !newDecl.value) throw new SyntaxError("Bad input");
+
+	      if (this.style) {
+	        for (i = this.style.length - 1; i >= 0; i--) {
+	          declaration = this.style.get(i);
+
+	          // Check if existing rule can be replaced
+	          if (declaration.property === property) {
+	            changable = true;
+	            break;
+	          }
+	        }
+	      }
+
+	      // Replace existing style declaration
+	      if (changable) {
+	        this._changeProperty(declaration, property, value);
+	      }
+	      // Or create new style declaration
+	      else {
+	          this._appendProperty(property, value);
+	        }
 	    }
 	  }]);
 
@@ -2297,6 +2574,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var SEMICOLON = ";".charCodeAt(0);
 	var CURLY_OPEN = "{".charCodeAt(0);
 	var CURLY_CLOSE = "}".charCodeAt(0);
+	var EXCLAMATION = "!".charCodeAt(0);
 
 	var CF_LETTER = function CF_LETTER(code) {
 	  return code >= 65 && code <= 90 || code >= 97 && code <= 122;
@@ -2358,6 +2636,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          endOffset = void 0,
 	          property = void 0,
 	          value = void 0,
+	          isImportant = false,
 	          prevCode = void 0,
 	          quotesCode = void 0,
 	          valueOffset = void 0;
@@ -2397,17 +2676,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	        index++;
 	        endOffset = index;
 
+	        // Check for "!important" flag if "!" was spotted
+	        if (!quotesCode && nextCode === EXCLAMATION) {
+	          /*istanbul ignore else*/
+	          if (cssText.substr(index, 9) === "important") isImportant = true;
+	        }
+
 	        // Check if end of rule was spotted
 	        if (!quotesCode && nextCode === SEMICOLON || index === cssText.length) {
-	          /* istanbul ignore else */
-	          if (!!valueOffset) value = cssText.substring(valueOffset, index - 1).trim();
+	          /*istanbul ignore else*/
+	          if (!!valueOffset) {
+	            // If next code is semicolon - exclude it from value
+	            if (nextCode === SEMICOLON) {
+	              value = cssText.substring(valueOffset, index - 1).trim();
+	            } else {
+	              value = cssText.substring(valueOffset, index).trim();
+	            }
+	          }
 	          break;
 	        }
 
 	        prevCode = nextCode;
 	      }
 
-	      return { startOffset: startOffset, endOffset: endOffset, property: property, value: value };
+	      return { startOffset: startOffset, endOffset: endOffset, property: property, value: value, isImportant: isImportant };
 	    }
 	  }, {
 	    key: "parseAt",

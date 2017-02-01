@@ -10,6 +10,7 @@ const ASTERISK      = "*".charCodeAt(0);
 const SEMICOLON     = ";".charCodeAt(0);
 const CURLY_OPEN    = "{".charCodeAt(0);
 const CURLY_CLOSE   = "}".charCodeAt(0);
+const EXCLAMATION   = "!".charCodeAt(0);
 
 const CF_LETTER = function(code){
   return (code >= 65 && code <= 90) || (code >= 97 && code <= 122);
@@ -54,7 +55,7 @@ class VirtualStyleDeclarationParser {
   }
 
   static getDeclarationToken(cssText, startIndex){
-    let index = startIndex, nextCode, startOffset, endOffset, property, value, prevCode, quotesCode, valueOffset;
+    let index = startIndex, nextCode, startOffset, endOffset, property, value, isImportant = false, prevCode, quotesCode, valueOffset;
 
     while (index < cssText.length) {
       nextCode = cssText.charCodeAt(index);
@@ -91,17 +92,30 @@ class VirtualStyleDeclarationParser {
       index++;
       endOffset = index;
 
+      // Check for "!important" flag if "!" was spotted
+      if (!quotesCode && nextCode === EXCLAMATION){
+        /*istanbul ignore else*/
+        if (cssText.substr(index, 9) === "important") isImportant = true;
+      }
+
       // Check if end of rule was spotted
       if (!quotesCode && nextCode === SEMICOLON || index === cssText.length) {
-        /* istanbul ignore else */
-        if (!!valueOffset) value = cssText.substring(valueOffset, index - 1).trim();
+        /*istanbul ignore else*/
+        if (!!valueOffset) {
+          // If next code is semicolon - exclude it from value
+          if (nextCode === SEMICOLON) {
+            value = cssText.substring(valueOffset, index - 1).trim();
+          } else {
+            value = cssText.substring(valueOffset, index).trim();
+          }
+        }
         break;
       }
 
       prevCode = nextCode;
     }
 
-    return {startOffset, endOffset, property, value};
+    return {startOffset, endOffset, property, value, isImportant};
   }
 
   static parseAt(cssText, startIndex) {
@@ -136,7 +150,7 @@ class VirtualStyleDeclarationParser {
         declarations.push(declaration);
       }
     }
- 
+
     return declarations;
   }
 }
