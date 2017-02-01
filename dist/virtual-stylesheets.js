@@ -68,7 +68,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _VirtualStyleSheet2 = _interopRequireDefault(_VirtualStyleSheet);
 
-	var _VirtualList = __webpack_require__(15);
+	var _VirtualList = __webpack_require__(4);
 
 	var _VirtualList2 = _interopRequireDefault(_VirtualList);
 
@@ -76,7 +76,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _VirtualTokenizer2 = _interopRequireDefault(_VirtualTokenizer);
 
-	var _VirtualStyleDeclarationParser = __webpack_require__(16);
+	var _VirtualStyleDeclarationParser = __webpack_require__(15);
 
 	var _VirtualStyleDeclarationParser2 = _interopRequireDefault(_VirtualStyleDeclarationParser);
 
@@ -360,7 +360,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _VirtualGrammar2 = _interopRequireDefault(_VirtualGrammar);
 
-	var _VirtualList = __webpack_require__(15);
+	var _VirtualList = __webpack_require__(4);
 
 	var _VirtualList2 = _interopRequireDefault(_VirtualList);
 
@@ -540,7 +540,133 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 4 */,
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Copyright (c) 2017 Eugene Ford (stmechanus@gmail.com)
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * and associated documentation files (the "Software"), to deal in the Software without restriction,
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * subject to the following conditions:
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * The above copyright notice and this permission notice shall be included in all copies or substantial
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * portions of the Software.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
+
+	var _VirtualActions = __webpack_require__(3);
+
+	var _VirtualActions2 = _interopRequireDefault(_VirtualActions);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var VirtualList = function () {
+	  function VirtualList() {
+	    _classCallCheck(this, VirtualList);
+
+	    this._items = [];
+	    this.length = 0;
+	  }
+
+	  /**
+	   * Inserts an additional item at specified position index in current VirtualList.
+	   * @param item
+	   * @param index
+	   */
+
+
+	  _createClass(VirtualList, [{
+	    key: "insert",
+	    value: function insert(item, index) {
+	      var id = void 0;
+	      if (!item) throw new Error("item is not defined");
+	      if (index < 0) throw new Error("index should be a positive int");
+
+	      if (typeof index === "undefined" || index > this._items.length) {
+	        id = this._items.length;
+	      } else {
+	        id = index;
+	      }
+
+	      item.id = id;
+	      this._items.splice(id, 0, item);
+	      this.length = this._items.length;
+
+	      for (var i = id + 1; i < this._items.length; i++) {
+	        this._items[i].id = i;
+	      }
+	    }
+
+	    /**
+	     * Removes the item at target position index. Returns removed item
+	     * @param id
+	     * @returns {object}
+	     *
+	     * @throws Error = if there is not item with specified id
+	     */
+
+	  }, {
+	    key: "remove",
+	    value: function remove(id) {
+	      if (typeof id === "undefined") throw new Error("id is not defined");
+	      if (id < 0) throw new Error("id should be a positive int");
+	      if (id >= this._items.length) throw new Error("id (" + id + ") is out of range (" + this._items.length + ")");
+
+	      for (var i = id + 1; i < this._items.length; i++) {
+	        this._items[i].id -= 1;
+	      }
+	      this.length = this._items.length - 1;
+	      return this._items.splice(id, 1)[0];
+	    }
+
+	    /**
+	     * Returns the item that has target id.
+	     * @param id
+	     * @returns {object}
+	     */
+
+	  }, {
+	    key: "get",
+	    value: function get(id) {
+	      return this._items[id];
+	    }
+
+	    /**
+	     * Returns a set of items that satisfy specified target filterFunc function and
+	     * VirtualStyleSheet.FILTER_ACCEPT, VirtualStyleSheet.FILTER_REJECT flags returned by it.
+	     * @param filterFunc
+	     * @returns {Array}
+	     */
+
+	  }, {
+	    key: "filter",
+	    value: function filter(filterFunc) {
+	      return this._items.filter(filterFunc);
+	    }
+	  }]);
+
+	  return VirtualList;
+	}();
+
+	exports.default = VirtualList;
+
+/***/ },
 /* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -1461,7 +1587,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _VirtualRule3 = _interopRequireDefault(_VirtualRule2);
 
-	var _VirtualList = __webpack_require__(15);
+	var _VirtualList = __webpack_require__(4);
 
 	var _VirtualList2 = _interopRequireDefault(_VirtualList);
 
@@ -2087,7 +2213,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _VirtualGrammar2 = _interopRequireDefault(_VirtualGrammar);
 
-	var _VirtualList = __webpack_require__(15);
+	var _VirtualList = __webpack_require__(4);
 
 	var _VirtualList2 = _interopRequireDefault(_VirtualList);
 
@@ -2148,133 +2274,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 15 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Copyright (c) 2017 Eugene Ford (stmechanus@gmail.com)
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * and associated documentation files (the "Software"), to deal in the Software without restriction,
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * subject to the following conditions:
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * The above copyright notice and this permission notice shall be included in all copies or substantial
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * portions of the Software.
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
-
-	var _VirtualActions = __webpack_require__(3);
-
-	var _VirtualActions2 = _interopRequireDefault(_VirtualActions);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var VirtualList = function () {
-	  function VirtualList() {
-	    _classCallCheck(this, VirtualList);
-
-	    this._items = [];
-	    this.length = 0;
-	  }
-
-	  /**
-	   * Inserts an additional item at specified position index in current VirtualList.
-	   * @param item
-	   * @param index
-	   */
-
-
-	  _createClass(VirtualList, [{
-	    key: "insert",
-	    value: function insert(item, index) {
-	      var id = void 0;
-	      if (!item) throw new Error("item is not defined");
-	      if (index < 0) throw new Error("index should be a positive int");
-
-	      if (typeof index === "undefined" || index > this._items.length) {
-	        id = this._items.length;
-	      } else {
-	        id = index;
-	      }
-
-	      item.id = id;
-	      this._items.splice(id, 0, item);
-	      this.length = this._items.length;
-
-	      for (var i = id + 1; i < this._items.length; i++) {
-	        this._items[i].id = i;
-	      }
-	    }
-
-	    /**
-	     * Removes the item at target position index. Returns removed item
-	     * @param id
-	     * @returns {object}
-	     *
-	     * @throws Error = if there is not item with specified id
-	     */
-
-	  }, {
-	    key: "remove",
-	    value: function remove(id) {
-	      if (typeof id === "undefined") throw new Error("id is not defined");
-	      if (id < 0) throw new Error("id should be a positive int");
-	      if (id >= this._items.length) throw new Error("id (" + id + ") is out of range (" + this._items.length + ")");
-
-	      for (var i = id + 1; i < this._items.length; i++) {
-	        this._items[i].id -= 1;
-	      }
-	      this.length = this._items.length - 1;
-	      return this._items.splice(id, 1)[0];
-	    }
-
-	    /**
-	     * Returns the item that has target id.
-	     * @param id
-	     * @returns {object}
-	     */
-
-	  }, {
-	    key: "get",
-	    value: function get(id) {
-	      return this._items[id];
-	    }
-
-	    /**
-	     * Returns a set of items that satisfy specified target filterFunc function and
-	     * VirtualStyleSheet.FILTER_ACCEPT, VirtualStyleSheet.FILTER_REJECT flags returned by it.
-	     * @param filterFunc
-	     * @returns {Array}
-	     */
-
-	  }, {
-	    key: "filter",
-	    value: function filter(filterFunc) {
-	      return this._items.filter(filterFunc);
-	    }
-	  }]);
-
-	  return VirtualList;
-	}();
-
-	exports.default = VirtualList;
-
-/***/ },
-/* 16 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -2290,24 +2289,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	var WHITESPACE = " ".charCodeAt(0);
 	var NEW_LINE = "\n".charCodeAt(0);
 	var SLASH = "/".charCodeAt(0);
-	var BACKSLASH = "\\".charCodeAt(0);
 	var SINGLE_QUOTE = "\'".charCodeAt(0);
 	var DOUBLE_QUOTE = "\"".charCodeAt(0);
 	var MINUS = "-".charCodeAt(0);
 	var COLON = ":".charCodeAt(0);
 	var ASTERISK = "*".charCodeAt(0);
 	var SEMICOLON = ";".charCodeAt(0);
+	var CURLY_OPEN = "{".charCodeAt(0);
+	var CURLY_CLOSE = "}".charCodeAt(0);
 
 	var CF_LETTER = function CF_LETTER(code) {
 	  return code >= 65 && code <= 90 || code >= 97 && code <= 122;
-	};
-
-	var CF_NUMBER = function CF_NUMBER(code) {
-	  return code >= 48 && code <= 57;
-	};
-
-	var CF_NON_ASCII = function CF_NON_ASCII(code) {
-	  return code >= 128;
 	};
 
 	var VirtualStyleDeclarationParser = function () {
@@ -2373,6 +2365,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	      while (index < cssText.length) {
 	        nextCode = cssText.charCodeAt(index);
 
+	        // Check for SyntaxError
+	        if (!quotesCode && (nextCode === CURLY_OPEN || nextCode === CURLY_CLOSE)) {
+	          throw new SyntaxError("Unexpected character " + cssText[index] + " at " + index + ". Use rule body block only for parsing.");
+	        }
+
 	        // Check if " or ' was spotted without escape \
 	        if (prevCode && prevCode !== SLASH && (nextCode === SINGLE_QUOTE || nextCode == DOUBLE_QUOTE)) {
 	          if (!!quotesCode) {
@@ -2383,12 +2380,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        /* Check if declaration was started */
-	        if (startOffset === undefined && (nextCode === MINUS || CF_LETTER(nextCode) || CF_NON_ASCII(nextCode))) {
+	        if (startOffset === undefined && (nextCode === MINUS || CF_LETTER(nextCode))) {
 	          startOffset = index;
 	        }
 
 	        /* Check if property name bounds spotted */
-	        if (!!startOffset && !quotesCode && nextCode === COLON) {
+	        if (startOffset !== undefined && !quotesCode && nextCode === COLON) {
 	          property = cssText.substring(startOffset, index).trim();
 	        }
 
@@ -2402,7 +2399,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        // Check if end of rule was spotted
 	        if (!quotesCode && nextCode === SEMICOLON || index === cssText.length) {
-	          if (!!valueOffset) value = cssText.substring(valueOffset, index - 1);
+	          /* istanbul ignore else */
+	          if (!!valueOffset) value = cssText.substring(valueOffset, index - 1).trim();
 	          break;
 	        }
 
@@ -2444,7 +2442,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        index = declaration.endOffset;
 
 	        // Add token to tokensList
-	        if (declaration.startOffset) {
+	        if (declaration.property && declaration.value) {
 	          declarations.push(declaration);
 	        }
 	      }
