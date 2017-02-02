@@ -99,6 +99,43 @@ export default class VirtualStyleDeclarationRule extends VirtualRule{
     })
   }
 
+  /**
+   * Insert target style declaration at specified position
+   * @param id
+   * @param property
+   * @param value
+   * @private
+   */
+  _insertProperty(id, property, value){
+    let declaration, start, val, bounds, suffix, prefix;
+
+    // Get body block bounds
+    bounds = this.getBody();
+
+    // Get a style declaration at specified position
+    declaration = this.style.get(id);
+
+    // Try to append new style declaration to current set
+    if (id >= this.style.length){
+      this._appendProperty(property, value);
+    }
+    // Or insert somewhere in the middle
+    else if (id >= 0) {
+      start = bounds.startOffset + declaration.startOffset;
+      suffix =  this.cssText.substring(bounds.startOffset, bounds.startOffset + this.style.get(0).startOffset);
+      val = `${property}: ${value};${suffix}`;
+ 
+      this.patch({
+        action: VirtualActions.PATCH_INSERT,
+        start, value: val, patchDelta: val.length
+      });
+    }
+    // Otherwise, throw an error
+    else {
+      throw new Error("Cant insert a property at negative position "+id);
+    }
+  }
+
   parse(parseType){
     super.parse(parseType);
     if (parseType === VirtualActions.PARSE_BODY || parseType == VirtualActions.PARSE_ALL) {
@@ -228,13 +265,34 @@ export default class VirtualStyleDeclarationRule extends VirtualRule{
           break;
         }
       }
-    } 
+    }
 
     // Replace existing style declaration
     if (changable){
       this._changeProperty(declaration, property, value);
     }
     // Or create new style declaration
+    else {
+      this._appendProperty(property, value);
+    }
+  }
+
+  /**
+   * Inserts a property at specified position of style declaration set
+   * @param id
+   * @param property
+   * @param value
+   */
+  insertProperty(id, property, value){
+    if (typeof id !== "number") throw new TypeError("ID is not a number.");
+    if (typeof property !== "string") throw new TypeError("Property is not a string.");
+    if (typeof value !== "string") throw new TypeError("Value is not a string.");
+
+    // Try to insert new style declaration into existing set
+    if (this.style && this.style.length){
+      this._insertProperty(id, property, value);
+    }
+    // Otherwise, create completely new set
     else {
       this._appendProperty(property, value);
     }

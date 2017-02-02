@@ -64,7 +64,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _VirtualRuleFactory2 = _interopRequireDefault(_VirtualRuleFactory);
 
-	var _VirtualStyleSheet = __webpack_require__(14);
+	var _VirtualStyleSheet = __webpack_require__(15);
 
 	var _VirtualStyleSheet2 = _interopRequireDefault(_VirtualStyleSheet);
 
@@ -72,11 +72,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _VirtualList2 = _interopRequireDefault(_VirtualList);
 
-	var _VirtualTokenizer = __webpack_require__(12);
+	var _VirtualTokenizer = __webpack_require__(13);
 
 	var _VirtualTokenizer2 = _interopRequireDefault(_VirtualTokenizer);
 
-	var _VirtualStyleDeclarationParser = __webpack_require__(15);
+	var _VirtualStyleDeclarationParser = __webpack_require__(9);
 
 	var _VirtualStyleDeclarationParser2 = _interopRequireDefault(_VirtualStyleDeclarationParser);
 
@@ -84,7 +84,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _VirtualRule2 = _interopRequireDefault(_VirtualRule);
 
-	var _VirtualGroupingRule = __webpack_require__(11);
+	var _VirtualGroupingRule = __webpack_require__(12);
 
 	var _VirtualGroupingRule2 = _interopRequireDefault(_VirtualGroupingRule);
 
@@ -100,15 +100,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _VirtualStyleRule2 = _interopRequireDefault(_VirtualStyleRule);
 
-	var _VirtualImportRule = __webpack_require__(9);
+	var _VirtualImportRule = __webpack_require__(10);
 
 	var _VirtualImportRule2 = _interopRequireDefault(_VirtualImportRule);
 
-	var _VirtualViewportRule = __webpack_require__(10);
+	var _VirtualViewportRule = __webpack_require__(11);
 
 	var _VirtualViewportRule2 = _interopRequireDefault(_VirtualViewportRule);
 
-	var _VirtualMediaRule = __webpack_require__(13);
+	var _VirtualMediaRule = __webpack_require__(14);
 
 	var _VirtualMediaRule2 = _interopRequireDefault(_VirtualMediaRule);
 
@@ -376,23 +376,23 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _VirtualStyleRule2 = _interopRequireDefault(_VirtualStyleRule);
 
-	var _VirtualImportRule = __webpack_require__(9);
+	var _VirtualImportRule = __webpack_require__(10);
 
 	var _VirtualImportRule2 = _interopRequireDefault(_VirtualImportRule);
 
-	var _VirtualViewportRule = __webpack_require__(10);
+	var _VirtualViewportRule = __webpack_require__(11);
 
 	var _VirtualViewportRule2 = _interopRequireDefault(_VirtualViewportRule);
 
-	var _VirtualGroupingRule = __webpack_require__(11);
+	var _VirtualGroupingRule = __webpack_require__(12);
 
 	var _VirtualGroupingRule2 = _interopRequireDefault(_VirtualGroupingRule);
 
-	var _VirtualMediaRule = __webpack_require__(13);
+	var _VirtualMediaRule = __webpack_require__(14);
 
 	var _VirtualMediaRule2 = _interopRequireDefault(_VirtualMediaRule);
 
-	var _VirtualTokenizer = __webpack_require__(12);
+	var _VirtualTokenizer = __webpack_require__(13);
 
 	var _VirtualTokenizer2 = _interopRequireDefault(_VirtualTokenizer);
 
@@ -1244,7 +1244,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _VirtualRule3 = _interopRequireDefault(_VirtualRule2);
 
-	var _VirtualStyleDeclarationParser = __webpack_require__(15);
+	var _VirtualStyleDeclarationParser = __webpack_require__(9);
 
 	var _VirtualStyleDeclarationParser2 = _interopRequireDefault(_VirtualStyleDeclarationParser);
 
@@ -1380,6 +1380,51 @@ return /******/ (function(modules) { // webpackBootstrap
 	        start: start, end: end, value: val,
 	        patchDelta: val.length - end - start
 	      });
+	    }
+
+	    /**
+	     * Insert target style declaration at specified position
+	     * @param id
+	     * @param property
+	     * @param value
+	     * @private
+	     */
+
+	  }, {
+	    key: "_insertProperty",
+	    value: function _insertProperty(id, property, value) {
+	      var declaration = void 0,
+	          start = void 0,
+	          val = void 0,
+	          bounds = void 0,
+	          suffix = void 0,
+	          prefix = void 0;
+
+	      // Get body block bounds
+	      bounds = this.getBody();
+
+	      // Get a style declaration at specified position
+	      declaration = this.style.get(id);
+
+	      // Try to append new style declaration to current set
+	      if (id >= this.style.length) {
+	        this._appendProperty(property, value);
+	      }
+	      // Or insert somewhere in the middle
+	      else if (id >= 0) {
+	          start = bounds.startOffset + declaration.startOffset;
+	          suffix = this.cssText.substring(bounds.startOffset, bounds.startOffset + this.style.get(0).startOffset);
+	          val = property + ": " + value + ";" + suffix;
+
+	          this.patch({
+	            action: _VirtualActions2.default.PATCH_INSERT,
+	            start: start, value: val, patchDelta: val.length
+	          });
+	        }
+	        // Otherwise, throw an error
+	        else {
+	            throw new Error("Cant insert a property at negative position " + id);
+	          }
 	    }
 	  }, {
 	    key: "parse",
@@ -1547,6 +1592,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	          this._appendProperty(property, value);
 	        }
 	    }
+
+	    /**
+	     * Inserts a property at specified position of style declaration set
+	     * @param id
+	     * @param property
+	     * @param value
+	     */
+
+	  }, {
+	    key: "insertProperty",
+	    value: function insertProperty(id, property, value) {
+	      if (typeof id !== "number") throw new TypeError("ID is not a number.");
+	      if (typeof property !== "string") throw new TypeError("Property is not a string.");
+	      if (typeof value !== "string") throw new TypeError("Value is not a string.");
+
+	      // Try to insert new style declaration into existing set
+	      if (this.style && this.style.length) {
+	        this._insertProperty(id, property, value);
+	      }
+	      // Otherwise, create completely new set
+	      else {
+	          this._appendProperty(property, value);
+	        }
+	    }
 	  }]);
 
 	  return VirtualStyleDeclarationRule;
@@ -1556,6 +1625,205 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 9 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var WHITESPACE = " ".charCodeAt(0);
+	var NEW_LINE = "\n".charCodeAt(0);
+	var SLASH = "/".charCodeAt(0);
+	var SINGLE_QUOTE = "\'".charCodeAt(0);
+	var DOUBLE_QUOTE = "\"".charCodeAt(0);
+	var MINUS = "-".charCodeAt(0);
+	var COLON = ":".charCodeAt(0);
+	var ASTERISK = "*".charCodeAt(0);
+	var SEMICOLON = ";".charCodeAt(0);
+	var CURLY_OPEN = "{".charCodeAt(0);
+	var CURLY_CLOSE = "}".charCodeAt(0);
+	var EXCLAMATION = "!".charCodeAt(0);
+
+	var CF_LETTER = function CF_LETTER(code) {
+	  return code >= 65 && code <= 90 || code >= 97 && code <= 122;
+	};
+
+	var VirtualStyleDeclarationParser = function () {
+	  function VirtualStyleDeclarationParser() {
+	    _classCallCheck(this, VirtualStyleDeclarationParser);
+
+	    throw new Error("Attempt to create a copy of static class");
+	  }
+
+	  _createClass(VirtualStyleDeclarationParser, null, [{
+	    key: "getWhitespaceLength",
+	    value: function getWhitespaceLength(cssText, startIndex) {
+	      var index = startIndex,
+	          nextCode = void 0,
+	          endOffset = void 0;
+
+	      while (index < cssText.length) {
+	        nextCode = cssText.charCodeAt(index);
+
+	        if (nextCode !== WHITESPACE && nextCode !== NEW_LINE) break;
+
+	        index++;
+	        endOffset = index;
+	      }
+
+	      return { endOffset: endOffset };
+	    }
+	  }, {
+	    key: "getCommentLength",
+	    value: function getCommentLength(cssText, startIndex) {
+	      var index = startIndex,
+	          prevCode = void 0,
+	          nextCode = void 0,
+	          endOffset = void 0;
+
+	      while (index < cssText.length) {
+	        nextCode = cssText.charCodeAt(index);
+
+	        index++;
+	        endOffset = index;
+
+	        // Check if comment end was spotted
+	        if (prevCode === ASTERISK && nextCode === SLASH) break;
+
+	        prevCode = nextCode;
+	      }
+
+	      return { endOffset: endOffset };
+	    }
+	  }, {
+	    key: "getDeclarationToken",
+	    value: function getDeclarationToken(cssText, startIndex) {
+	      var index = startIndex,
+	          nextCode = void 0,
+	          startOffset = void 0,
+	          endOffset = void 0,
+	          property = void 0,
+	          value = void 0,
+	          isImportant = false,
+	          prevCode = void 0,
+	          quotesCode = void 0,
+	          valueOffset = void 0;
+
+	      while (index < cssText.length) {
+	        nextCode = cssText.charCodeAt(index);
+
+	        // Check for SyntaxError
+	        if (!quotesCode && (nextCode === CURLY_OPEN || nextCode === CURLY_CLOSE)) {
+	          throw new SyntaxError("Unexpected character " + cssText[index] + " at " + index + ". Use rule body block only for parsing.");
+	        }
+
+	        // Check if " or ' was spotted without escape \
+	        if (prevCode && prevCode !== SLASH && (nextCode === SINGLE_QUOTE || nextCode == DOUBLE_QUOTE)) {
+	          if (!!quotesCode) {
+	            if (nextCode === quotesCode) quotesCode = undefined;
+	          } else {
+	            quotesCode = nextCode;
+	          }
+	        }
+
+	        /* Check if declaration was started */
+	        if (startOffset === undefined && (nextCode === MINUS || CF_LETTER(nextCode))) {
+	          startOffset = index;
+	        }
+
+	        /* Check if property name bounds spotted */
+	        if (startOffset !== undefined && !quotesCode && nextCode === COLON) {
+	          property = cssText.substring(startOffset, index).trim();
+	        }
+
+	        /* Check if property value bounds spotted*/
+	        if (property && !valueOffset && nextCode !== WHITESPACE && nextCode !== NEW_LINE && nextCode !== COLON) {
+	          valueOffset = index;
+	        }
+
+	        index++;
+	        endOffset = index;
+
+	        // Check for "!important" flag if "!" was spotted
+	        if (!quotesCode && nextCode === EXCLAMATION) {
+	          /*istanbul ignore else*/
+	          if (cssText.substr(index, 9) === "important") isImportant = true;
+	        }
+
+	        // Check if end of rule was spotted
+	        if (!quotesCode && nextCode === SEMICOLON || index === cssText.length) {
+	          /*istanbul ignore else*/
+	          if (!!valueOffset) {
+	            // If next code is semicolon - exclude it from value
+	            if (nextCode === SEMICOLON) {
+	              value = cssText.substring(valueOffset, index - 1).trim();
+	            } else {
+	              value = cssText.substring(valueOffset, index).trim();
+	            }
+	          }
+	          break;
+	        }
+
+	        prevCode = nextCode;
+	      }
+
+	      return { startOffset: startOffset, endOffset: endOffset, property: property, value: value, isImportant: isImportant };
+	    }
+	  }, {
+	    key: "parseAt",
+	    value: function parseAt(cssText, startIndex) {
+	      var startCode = void 0;
+
+	      switch (startCode = cssText.charCodeAt(startIndex)) {
+	        case WHITESPACE:
+	        case NEW_LINE:
+	          return VirtualStyleDeclarationParser.getWhitespaceLength(cssText, startIndex);
+
+	        case SLASH:
+	          return VirtualStyleDeclarationParser.getCommentLength(cssText, startIndex);
+
+	        default:
+	          return VirtualStyleDeclarationParser.getDeclarationToken(cssText, startIndex);
+	      }
+	    }
+	  }, {
+	    key: "parse",
+	    value: function parse(cssText) {
+	      var declarations = [],
+	          declaration = void 0,
+	          index = 0;
+
+	      while (index < cssText.length) {
+
+	        // Create a token
+	        declaration = VirtualStyleDeclarationParser.parseAt(cssText, index);
+
+	        // Shift loop pointer by token size
+	        index = declaration.endOffset;
+
+	        // Add token to tokensList
+	        if (declaration.property && declaration.value) {
+	          declarations.push(declaration);
+	        }
+	      }
+
+	      return declarations;
+	    }
+	  }]);
+
+	  return VirtualStyleDeclarationParser;
+	}();
+
+	exports.default = VirtualStyleDeclarationParser;
+
+/***/ },
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1809,7 +2077,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = VirtualImportRule;
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1845,7 +2113,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = VirtualViewportRule;
 
 /***/ },
-/* 11 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1868,7 +2136,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _VirtualList2 = _interopRequireDefault(_VirtualList);
 
-	var _VirtualTokenizer = __webpack_require__(12);
+	var _VirtualTokenizer = __webpack_require__(13);
 
 	var _VirtualTokenizer2 = _interopRequireDefault(_VirtualTokenizer);
 
@@ -2010,7 +2278,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = VirtualGroupingRule;
 
 /***/ },
-/* 12 */
+/* 13 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -2369,7 +2637,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = VirtualTokenizer;
 
 /***/ },
-/* 13 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -2386,7 +2654,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _VirtualActions2 = _interopRequireDefault(_VirtualActions);
 
-	var _VirtualGroupingRule2 = __webpack_require__(11);
+	var _VirtualGroupingRule2 = __webpack_require__(12);
 
 	var _VirtualGroupingRule3 = _interopRequireDefault(_VirtualGroupingRule2);
 
@@ -2471,7 +2739,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = VirtualMediaRule;
 
 /***/ },
-/* 14 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -2498,7 +2766,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _VirtualRuleFactory2 = _interopRequireDefault(_VirtualRuleFactory);
 
-	var _VirtualTokenizer = __webpack_require__(12);
+	var _VirtualTokenizer = __webpack_require__(13);
 
 	var _VirtualTokenizer2 = _interopRequireDefault(_VirtualTokenizer);
 
@@ -2548,205 +2816,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.assign(VirtualStyleSheet, _VirtualGrammar2.default.getTypes());
 
 	exports.default = VirtualStyleSheet;
-
-/***/ },
-/* 15 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var WHITESPACE = " ".charCodeAt(0);
-	var NEW_LINE = "\n".charCodeAt(0);
-	var SLASH = "/".charCodeAt(0);
-	var SINGLE_QUOTE = "\'".charCodeAt(0);
-	var DOUBLE_QUOTE = "\"".charCodeAt(0);
-	var MINUS = "-".charCodeAt(0);
-	var COLON = ":".charCodeAt(0);
-	var ASTERISK = "*".charCodeAt(0);
-	var SEMICOLON = ";".charCodeAt(0);
-	var CURLY_OPEN = "{".charCodeAt(0);
-	var CURLY_CLOSE = "}".charCodeAt(0);
-	var EXCLAMATION = "!".charCodeAt(0);
-
-	var CF_LETTER = function CF_LETTER(code) {
-	  return code >= 65 && code <= 90 || code >= 97 && code <= 122;
-	};
-
-	var VirtualStyleDeclarationParser = function () {
-	  function VirtualStyleDeclarationParser() {
-	    _classCallCheck(this, VirtualStyleDeclarationParser);
-
-	    throw new Error("Attempt to create a copy of static class");
-	  }
-
-	  _createClass(VirtualStyleDeclarationParser, null, [{
-	    key: "getWhitespaceLength",
-	    value: function getWhitespaceLength(cssText, startIndex) {
-	      var index = startIndex,
-	          nextCode = void 0,
-	          endOffset = void 0;
-
-	      while (index < cssText.length) {
-	        nextCode = cssText.charCodeAt(index);
-
-	        if (nextCode !== WHITESPACE && nextCode !== NEW_LINE) break;
-
-	        index++;
-	        endOffset = index;
-	      }
-
-	      return { endOffset: endOffset };
-	    }
-	  }, {
-	    key: "getCommentLength",
-	    value: function getCommentLength(cssText, startIndex) {
-	      var index = startIndex,
-	          prevCode = void 0,
-	          nextCode = void 0,
-	          endOffset = void 0;
-
-	      while (index < cssText.length) {
-	        nextCode = cssText.charCodeAt(index);
-
-	        index++;
-	        endOffset = index;
-
-	        // Check if comment end was spotted
-	        if (prevCode === ASTERISK && nextCode === SLASH) break;
-
-	        prevCode = nextCode;
-	      }
-
-	      return { endOffset: endOffset };
-	    }
-	  }, {
-	    key: "getDeclarationToken",
-	    value: function getDeclarationToken(cssText, startIndex) {
-	      var index = startIndex,
-	          nextCode = void 0,
-	          startOffset = void 0,
-	          endOffset = void 0,
-	          property = void 0,
-	          value = void 0,
-	          isImportant = false,
-	          prevCode = void 0,
-	          quotesCode = void 0,
-	          valueOffset = void 0;
-
-	      while (index < cssText.length) {
-	        nextCode = cssText.charCodeAt(index);
-
-	        // Check for SyntaxError
-	        if (!quotesCode && (nextCode === CURLY_OPEN || nextCode === CURLY_CLOSE)) {
-	          throw new SyntaxError("Unexpected character " + cssText[index] + " at " + index + ". Use rule body block only for parsing.");
-	        }
-
-	        // Check if " or ' was spotted without escape \
-	        if (prevCode && prevCode !== SLASH && (nextCode === SINGLE_QUOTE || nextCode == DOUBLE_QUOTE)) {
-	          if (!!quotesCode) {
-	            if (nextCode === quotesCode) quotesCode = undefined;
-	          } else {
-	            quotesCode = nextCode;
-	          }
-	        }
-
-	        /* Check if declaration was started */
-	        if (startOffset === undefined && (nextCode === MINUS || CF_LETTER(nextCode))) {
-	          startOffset = index;
-	        }
-
-	        /* Check if property name bounds spotted */
-	        if (startOffset !== undefined && !quotesCode && nextCode === COLON) {
-	          property = cssText.substring(startOffset, index).trim();
-	        }
-
-	        /* Check if property value bounds spotted*/
-	        if (property && !valueOffset && nextCode !== WHITESPACE && nextCode !== NEW_LINE && nextCode !== COLON) {
-	          valueOffset = index;
-	        }
-
-	        index++;
-	        endOffset = index;
-
-	        // Check for "!important" flag if "!" was spotted
-	        if (!quotesCode && nextCode === EXCLAMATION) {
-	          /*istanbul ignore else*/
-	          if (cssText.substr(index, 9) === "important") isImportant = true;
-	        }
-
-	        // Check if end of rule was spotted
-	        if (!quotesCode && nextCode === SEMICOLON || index === cssText.length) {
-	          /*istanbul ignore else*/
-	          if (!!valueOffset) {
-	            // If next code is semicolon - exclude it from value
-	            if (nextCode === SEMICOLON) {
-	              value = cssText.substring(valueOffset, index - 1).trim();
-	            } else {
-	              value = cssText.substring(valueOffset, index).trim();
-	            }
-	          }
-	          break;
-	        }
-
-	        prevCode = nextCode;
-	      }
-
-	      return { startOffset: startOffset, endOffset: endOffset, property: property, value: value, isImportant: isImportant };
-	    }
-	  }, {
-	    key: "parseAt",
-	    value: function parseAt(cssText, startIndex) {
-	      var startCode = void 0;
-
-	      switch (startCode = cssText.charCodeAt(startIndex)) {
-	        case WHITESPACE:
-	        case NEW_LINE:
-	          return VirtualStyleDeclarationParser.getWhitespaceLength(cssText, startIndex);
-
-	        case SLASH:
-	          return VirtualStyleDeclarationParser.getCommentLength(cssText, startIndex);
-
-	        default:
-	          return VirtualStyleDeclarationParser.getDeclarationToken(cssText, startIndex);
-	      }
-	    }
-	  }, {
-	    key: "parse",
-	    value: function parse(cssText) {
-	      var declarations = [],
-	          declaration = void 0,
-	          index = 0;
-
-	      while (index < cssText.length) {
-
-	        // Create a token
-	        declaration = VirtualStyleDeclarationParser.parseAt(cssText, index);
-
-	        // Shift loop pointer by token size
-	        index = declaration.endOffset;
-
-	        // Add token to tokensList
-	        if (declaration.property && declaration.value) {
-	          declarations.push(declaration);
-	        }
-	      }
-
-	      return declarations;
-	    }
-	  }]);
-
-	  return VirtualStyleDeclarationParser;
-	}();
-
-	exports.default = VirtualStyleDeclarationParser;
 
 /***/ }
 /******/ ])

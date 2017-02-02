@@ -410,4 +410,110 @@ describe("VirtualStyleDeclarationRule", function(){
       expect(rule.style).toEqual(style);
     });
   });
+
+  describe("insertProperty()", function(){
+    it("Threw a TypeError when id was not a number", function(){
+      var rule = new VirtualStyleDeclarationRule({
+        type: 1,
+        startOffset: 0,
+        endOffset: 26,
+        cssText: ".selector { width: 24px; height: 24px; }"
+      });
+
+      expect(function(){
+        rule.insertProperty("1", "line-height","24px");
+      }).toThrowError(TypeError);
+    });
+
+    it("Threw a TypeError when property was not a string", function(){
+      var rule = new VirtualStyleDeclarationRule({
+        type: 1,
+        startOffset: 0,
+        endOffset: 26,
+        cssText: ".selector { width: 24px; height: 24px; }"
+      });
+
+      expect(function(){
+        rule.insertProperty(1, 1,"24px");
+      }).toThrowError(TypeError);
+    });
+
+    it("Threw a TypeError when value was not a string", function(){
+      var rule = new VirtualStyleDeclarationRule({
+        type: 1,
+        startOffset: 0,
+        endOffset: 26,
+        cssText: ".selector { width: 24px; height: 24px; }"
+      });
+
+      expect(function(){
+        rule.insertProperty(1, "line-height", 1);
+      }).toThrowError(TypeError);
+    });
+
+    it("Threw an Error when id was a negative number", function(){
+      var rule = new VirtualStyleDeclarationRule({
+        type: 1,
+        startOffset: 0,
+        endOffset: 26,
+        cssText: ".selector { width: 24px; height: 24px; font-size: 24px }"
+      });
+
+      expect(function(){
+        rule.insertProperty(-1, "line-height", "24px");
+      }).toThrowError(Error);
+    });
+
+    it("Correctly inserted new style declaration at the middle of the rule's body block", function(){
+      var rule = new VirtualStyleDeclarationRule({
+        type: 1,
+        startOffset: 0,
+        endOffset: 26,
+        cssText: ".selector { width: 24px; height: 24px; font-size: 24px }"
+      });
+
+      rule.insertProperty(1, "line-height", "24px");
+
+      expect(rule.cssText).toEqual(".selector { width: 24px; line-height: 24px; height: 24px; font-size: 24px }");
+    });
+
+    it("Correctly inserted new style declaration into empty body block", function(){
+      var rule = new VirtualStyleDeclarationRule({
+        type: 1,
+        startOffset: 0,
+        endOffset: 26,
+        cssText: ".selector { }"
+      });
+
+      rule.insertProperty(1, "line-height", "24px");
+
+      expect(rule.cssText).toEqual(".selector {\n  line-height: 24px;\n}");
+    });
+
+    it("Correctly inserted new style declaration at the trail of the rule's body block", function(){
+      var rule = new VirtualStyleDeclarationRule({
+        type: 1,
+        startOffset: 0,
+        endOffset: 26,
+        cssText: ".selector { width: 24px; height: 24px; font-size: 24px }"
+      });
+
+      rule.insertProperty(2, "line-height", "24px");
+
+      expect(rule.cssText).toEqual(".selector { width: 24px; height: 24px; line-height: 24px; font-size: 24px }");
+    });
+
+    it("Correctly appended new style declaration if id was too large", function(){
+      var rule = new VirtualStyleDeclarationRule({
+        type: 1,
+        startOffset: 0,
+        endOffset: 26,
+        cssText: ".selector { width: 24px; height: 24px; font-size: 24px }"
+      });
+
+      rule.insertProperty(20, "line-height", "24px");
+
+      expect(rule.cssText).toEqual(".selector { width: 24px; height: 24px; font-size: 24px; line-height: 24px; }");
+    });
+  });
 });
