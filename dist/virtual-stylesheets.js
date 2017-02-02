@@ -116,6 +116,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _VirtualMediaRule2 = _interopRequireDefault(_VirtualMediaRule);
 
+	var _VirtualKeyframeRule = __webpack_require__(20);
+
+	var _VirtualKeyframeRule2 = _interopRequireDefault(_VirtualKeyframeRule);
+
 	var _VirtualKeyframesRule = __webpack_require__(19);
 
 	var _VirtualKeyframesRule2 = _interopRequireDefault(_VirtualKeyframesRule);
@@ -123,6 +127,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	var _VirtualPageRule = __webpack_require__(18);
 
 	var _VirtualPageRule2 = _interopRequireDefault(_VirtualPageRule);
+
+	var _VirtualNamespaceRule = __webpack_require__(21);
+
+	var _VirtualNamespaceRule2 = _interopRequireDefault(_VirtualNamespaceRule);
 
 	var _VirtualSupportsRule = __webpack_require__(16);
 
@@ -160,8 +168,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  VirtualViewportRule: _VirtualViewportRule2.default,
 	  VirtualFontFaceRule: _VirtualFontFaceRule2.default,
 	  VirtualMediaRule: _VirtualMediaRule2.default,
+	  VirtualKeyframeRule: _VirtualKeyframeRule2.default,
 	  VirtualKeyframesRule: _VirtualKeyframesRule2.default,
 	  VirtualPageRule: _VirtualPageRule2.default,
+	  VirtualNamespaceRule: _VirtualNamespaceRule2.default,
 	  VirtualSupportsRule: _VirtualSupportsRule2.default,
 	  VirtualList: _VirtualList2.default,
 	  VirtualTokenizer: _VirtualTokenizer2.default,
@@ -416,6 +426,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _VirtualMediaRule2 = _interopRequireDefault(_VirtualMediaRule);
 
+	var _VirtualKeyframeRule = __webpack_require__(20);
+
+	var _VirtualKeyframeRule2 = _interopRequireDefault(_VirtualKeyframeRule);
+
 	var _VirtualKeyframesRule = __webpack_require__(19);
 
 	var _VirtualKeyframesRule2 = _interopRequireDefault(_VirtualKeyframesRule);
@@ -423,6 +437,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	var _VirtualPageRule = __webpack_require__(18);
 
 	var _VirtualPageRule2 = _interopRequireDefault(_VirtualPageRule);
+
+	var _VirtualNamespaceRule = __webpack_require__(21);
+
+	var _VirtualNamespaceRule2 = _interopRequireDefault(_VirtualNamespaceRule);
 
 	var _VirtualSupportsRule = __webpack_require__(16);
 
@@ -531,9 +549,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	RuleFactory.register(_VirtualGrammar2.default.MEDIA_RULE, _VirtualMediaRule2.default);
 	RuleFactory.register(_VirtualGrammar2.default.FONT_FACE_RULE, _VirtualFontFaceRule2.default);
 	RuleFactory.register(_VirtualGrammar2.default.PAGE_RULE, _VirtualPageRule2.default);
-	RuleFactory.register(_VirtualGrammar2.default.KEYFRAME_RULE, _VirtualRule2.default);
+	RuleFactory.register(_VirtualGrammar2.default.KEYFRAME_RULE, _VirtualKeyframeRule2.default);
 	RuleFactory.register(_VirtualGrammar2.default.KEYFRAMES_RULE, _VirtualKeyframesRule2.default);
-	RuleFactory.register(_VirtualGrammar2.default.NAMESPACE_RULE, _VirtualRule2.default);
+	RuleFactory.register(_VirtualGrammar2.default.NAMESPACE_RULE, _VirtualNamespaceRule2.default);
 	RuleFactory.register(_VirtualGrammar2.default.SUPPORTS_RULE, _VirtualSupportsRule2.default);
 	RuleFactory.register(_VirtualGrammar2.default.VIEWPORT_RULE, _VirtualViewportRule2.default);
 
@@ -3210,6 +3228,390 @@ return /******/ (function(modules) { // webpackBootstrap
 	}(_VirtualGroupingRule3.default);
 
 	exports.default = VirtualKeyframesRule;
+
+/***/ },
+/* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+	var _VirtualActions = __webpack_require__(3);
+
+	var _VirtualActions2 = _interopRequireDefault(_VirtualActions);
+
+	var _VirtualStyleDeclarationRule = __webpack_require__(8);
+
+	var _VirtualStyleDeclarationRule2 = _interopRequireDefault(_VirtualStyleDeclarationRule);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var VirtualKeyframeRule = function (_VirtualStyleDeclarat) {
+	  _inherits(VirtualKeyframeRule, _VirtualStyleDeclarat);
+
+	  function VirtualKeyframeRule(ruleInfo, parentRule, opts) {
+	    _classCallCheck(this, VirtualKeyframeRule);
+
+	    return _possibleConstructorReturn(this, (VirtualKeyframeRule.__proto__ || Object.getPrototypeOf(VirtualKeyframeRule)).call(this, ruleInfo, parentRule, opts));
+	  }
+
+	  /**
+	   * Parse a formatted key from current VirtualKeyframeRule
+	   * @returns {String}
+	   * @private
+	   */
+
+
+	  _createClass(VirtualKeyframeRule, [{
+	    key: "_parseKey",
+	    value: function _parseKey() {
+	      var keyText = void 0,
+	          head = void 0;
+
+	      // Get head props
+	      head = _get(VirtualKeyframeRule.prototype.__proto__ || Object.getPrototypeOf(VirtualKeyframeRule.prototype), "getHead", this).call(this);
+
+	      // Get raw selector text
+	      keyText = this.cssText.substring(head.startOffset, head.endOffset);
+
+	      // Format selector text
+	      keyText = keyText.trim().replace(/\n/gi, "");
+
+	      return keyText;
+	    }
+
+	    /**
+	     * Parse additional VirtualKeyframeRule props
+	     * @param parseType
+	     */
+
+	  }, {
+	    key: "parse",
+	    value: function parse(parseType) {
+	      _get(VirtualKeyframeRule.prototype.__proto__ || Object.getPrototypeOf(VirtualKeyframeRule.prototype), "parse", this).call(this, parseType);
+	      if (parseType === _VirtualActions2.default.PARSE_HEAD || parseType == _VirtualActions2.default.PARSE_ALL) {
+	        this.keyText = this._parseKey();
+	      } else {
+	        this.keyText = null;
+	      }
+	    }
+
+	    /**
+	     * Applies a new keyText to current VirtualKeyframeRule
+	     * @param keyText
+	     */
+
+	  }, {
+	    key: "setKey",
+	    value: function setKey(keyText) {
+	      if (typeof keyText !== "string") throw new TypeError("Your keyText is not a string");
+	      if (!/\d{1,3}%/.test(keyText)) throw new SyntaxError("Unexpected keyText " + keyText);
+
+	      var head = _get(VirtualKeyframeRule.prototype.__proto__ || Object.getPrototypeOf(VirtualKeyframeRule.prototype), "getHead", this).call(this);
+
+	      this.patch({
+	        action: _VirtualActions2.default.PATCH_REPLACE,
+	        start: head.startOffset,
+	        end: head.endOffset,
+	        value: keyText,
+	        patchDelta: keyText.length - head.endOffset
+	      });
+	    }
+	  }]);
+
+	  return VirtualKeyframeRule;
+	}(_VirtualStyleDeclarationRule2.default);
+
+	exports.default = VirtualKeyframeRule;
+
+/***/ },
+/* 21 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+	var _VirtualActions = __webpack_require__(3);
+
+	var _VirtualActions2 = _interopRequireDefault(_VirtualActions);
+
+	var _VirtualRule2 = __webpack_require__(5);
+
+	var _VirtualRule3 = _interopRequireDefault(_VirtualRule2);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var WHITESPACE = ' '.charCodeAt(0);
+	var NEW_LINE = '\n'.charCodeAt(0);
+	var U_LETTER = "u".charCodeAt(0);
+	var R_LETTER = "r".charCodeAt(0);
+	var L_LETTER = "l".charCodeAt(0);
+	var SINGLE_QUOTE = "\'".charCodeAt(0);
+	var DOUBLE_QUOTE = "\"".charCodeAt(0);
+	var LEFT_BRACE = "(".charCodeAt(0);
+	var RIGHT_BRACE = ")".charCodeAt(0);
+	var SLASH = "\\".charCodeAt(0);
+	var MINUS = "-".charCodeAt(0);
+
+	var CF_LETTER = function CF_LETTER(code) {
+	  return code >= 65 && code <= 90 || code >= 97 && code <= 122;
+	};
+
+	var VirtualNamespaceRule = function (_VirtualRule) {
+	  _inherits(VirtualNamespaceRule, _VirtualRule);
+
+	  function VirtualNamespaceRule(ruleInfo, parentRule, opts) {
+	    _classCallCheck(this, VirtualNamespaceRule);
+
+	    return _possibleConstructorReturn(this, (VirtualNamespaceRule.__proto__ || Object.getPrototypeOf(VirtualNamespaceRule)).call(this, ruleInfo, parentRule, opts));
+	  }
+
+	  _createClass(VirtualNamespaceRule, [{
+	    key: "_getURIBounds",
+	    value: function _getURIBounds() {
+	      var i = void 0,
+	          nextCode = void 0,
+	          secondCode = void 0,
+	          thirdCode = void 0,
+	          startOffset = void 0,
+	          endOffset = void 0,
+	          urlSpotted = void 0,
+	          prevCode = void 0,
+	          quotesCode = void 0;
+
+	      // Start parsing at 10 position skipping @namespace definition
+	      for (i = 10; i < this.cssText.length; i++) {
+	        nextCode = this.cssText.charCodeAt(i);
+
+	        // Check for url term
+	        if (!urlSpotted) {
+	          if (!quotesCode && nextCode === R_LETTER && prevCode === U_LETTER) {
+	            secondCode = this.cssText.charCodeAt(i + 1);
+	            thirdCode = this.cssText.charCodeAt(i + 2);
+	            if (secondCode === L_LETTER && thirdCode === LEFT_BRACE) {
+	              i += 2;
+	              startOffset = i + 1;
+	              urlSpotted = true;
+	              continue;
+	            }
+	          }
+	        }
+
+	        // Check if " or ' was spotted without escape \
+	        if (prevCode && prevCode !== SLASH && (nextCode === SINGLE_QUOTE || nextCode == DOUBLE_QUOTE)) {
+	          if (!!quotesCode) {
+	            if (nextCode === quotesCode) {
+	              endOffset = i;
+	              break;
+	            }
+	          } else {
+	            quotesCode = nextCode;
+	            startOffset = i + 1;
+	          }
+	        }
+
+	        if (urlSpotted) {
+	          if (nextCode === RIGHT_BRACE) {
+	            endOffset = i;
+	          }
+	        }
+
+	        prevCode = nextCode;
+	      }
+
+	      if (startOffset === undefined || endOffset === undefined) return null;
+
+	      return { startOffset: startOffset, endOffset: endOffset };
+	    }
+	  }, {
+	    key: "_getPrefixBounds",
+	    value: function _getPrefixBounds() {
+	      var i = void 0,
+	          nextCode = void 0,
+	          secondCode = void 0,
+	          thirdCode = void 0,
+	          prevCode = void 0,
+	          urlSpotted = void 0,
+	          quotesCode = void 0,
+	          startOffset = void 0,
+	          endOffset = void 0;
+
+	      // Start parsing at 10 position skipping @namespace definition
+	      for (i = 10; i < this.cssText.length; i++) {
+	        nextCode = this.cssText.charCodeAt(i);
+
+	        // Check for url term
+	        if (!urlSpotted) {
+	          if (!quotesCode && nextCode === R_LETTER && prevCode === U_LETTER) {
+	            secondCode = this.cssText.charCodeAt(i + 1);
+	            thirdCode = this.cssText.charCodeAt(i + 2);
+	            if (secondCode === L_LETTER && thirdCode === LEFT_BRACE) {
+	              urlSpotted = true;
+	              continue;
+	            }
+	          }
+	        }
+
+	        // Check if " or ' was spotted without escape \
+	        if (prevCode && prevCode !== SLASH && (nextCode === SINGLE_QUOTE || nextCode == DOUBLE_QUOTE)) {
+	          if (!!quotesCode) {
+	            if (nextCode === quotesCode) quotesCode = undefined;
+	          } else {
+	            quotesCode = nextCode;
+	          }
+	        }
+
+	        // Check if url is closed
+	        if (!quotesCode && urlSpotted && nextCode === RIGHT_BRACE) urlSpotted = false;
+
+	        // Check for prefix started
+	        if (startOffset === undefined && !urlSpotted && !quotesCode && (nextCode === MINUS || CF_LETTER(nextCode))) {
+	          startOffset = i;
+	        }
+
+	        // Check if prefix ended
+	        if (startOffset !== undefined && (nextCode === WHITESPACE || nextCode === NEW_LINE)) {
+	          endOffset = i;
+	        }
+
+	        prevCode = nextCode;
+	      }
+
+	      if (startOffset === undefined || endOffset === undefined) return null;
+
+	      return { startOffset: startOffset, endOffset: endOffset };
+	    }
+	  }, {
+	    key: "parse",
+	    value: function parse(parseType) {
+	      _get(VirtualNamespaceRule.prototype.__proto__ || Object.getPrototypeOf(VirtualNamespaceRule.prototype), "parse", this).call(this, parseType);
+	      if (parseType === _VirtualActions2.default.PARSE_HEAD || parseType == _VirtualActions2.default.PARSE_ALL) {
+	        var uriBounds = void 0,
+	            prefixBounds = void 0;
+
+	        uriBounds = this._getURIBounds();
+	        prefixBounds = this._getPrefixBounds();
+
+	        if (uriBounds) {
+	          this.uri = this.cssText.substring(uriBounds.startOffset, uriBounds.endOffset);
+
+	          if (prefixBounds) {
+	            this.prefix = this.cssText.substring(prefixBounds.startOffset, prefixBounds.endOffset);
+	          } else {
+	            this.prefix = null;
+	          }
+	        } else {
+	          this.uri = null;
+	          this.prefix = null;
+	        }
+	      } else {
+	        this.uri = null;
+	        this.prefix = null;
+	      }
+	    }
+	  }, {
+	    key: "setURI",
+	    value: function setURI(uri) {
+	      if (typeof uri !== "string") throw new TypeError("URI is not a string");
+
+	      var hrefBounds = this._getURIBounds(),
+	          start = void 0,
+	          end = void 0,
+	          value = void 0,
+	          oldValue = void 0;
+
+	      // Replace current location
+	      if (hrefBounds) {
+	        value = uri;
+	        start = hrefBounds.startOffset;
+	        end = hrefBounds.endOffset;
+	        oldValue = this.cssText.substring(start, end);
+	      }
+	      // Or create completely new rule
+	      else {
+	          value = "@namespace url(\"" + uri + "\");";
+	          start = 0;
+	          end = this.cssText.length;
+	          oldValue = this.cssText;
+	        }
+
+	      this.patch({
+	        action: _VirtualActions2.default.PATCH_REPLACE,
+	        patchDelta: value.length - oldValue.length,
+	        start: start, end: end, value: value
+	      });
+	    }
+	  }, {
+	    key: "setPrefix",
+	    value: function setPrefix(prefix) {
+	      if (typeof prefix !== "string") throw new TypeError("URI is not a string");
+	      var uriBounds = void 0,
+	          prefixBounds = void 0,
+	          i = void 0,
+	          nextCode = void 0,
+	          start = void 0,
+	          end = void 0,
+	          oldValue = void 0,
+	          action = void 0,
+	          newValue = void 0;
+
+	      // If there is no uri specified - rule makes no sense
+	      if (uriBounds = this._getURIBounds()) {
+	        // Replace current media string
+	        if (prefixBounds = this._getPrefixBounds()) {
+	          start = prefixBounds.startOffset;
+	          end = prefixBounds.endOffset;
+	          oldValue = this.cssText.substring(start, end);
+	          newValue = prefix;
+	          action = _VirtualActions2.default.PATCH_REPLACE;
+	        }
+	        // Or create a new one
+	        else {
+	            start = 10; //Start at the end of @namespace definition
+	            action = _VirtualActions2.default.PATCH_INSERT;
+	            oldValue = "";
+	            newValue = " " + prefix;
+	          }
+
+	        this.patch({
+	          value: newValue,
+	          patchDelta: newValue.length - oldValue.length,
+	          start: start, end: end, action: action
+	        });
+	      }
+	    }
+	  }]);
+
+	  return VirtualNamespaceRule;
+	}(_VirtualRule3.default);
+
+	exports.default = VirtualNamespaceRule;
 
 /***/ }
 /******/ ])
