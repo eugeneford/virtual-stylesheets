@@ -30,7 +30,9 @@ import VirtualCharsetRule from "./VirtualCharsetRule";
 import VirtualStyleRule from "./VirtualStyleRule";
 import VirtualImportRule from "./VirtualImportRule";
 import VirtualViewportRule from "./VirtualViewportRule";
+import VirtualFontFaceRule from "./VirtualFontFaceRule";
 import VirtualMediaRule from "./VirtualMediaRule";
+import VirtualSupportsRule from "./VirtualSupportsRule";
 
 module.exports = {
   VirtualGrammar : VirtualGrammar,
@@ -41,7 +43,9 @@ module.exports = {
   VirtualCharsetRule : VirtualCharsetRule,
   VirtualStyleRule : VirtualStyleRule,
   VirtualViewportRule : VirtualViewportRule,
+  VirtualFontFaceRule : VirtualFontFaceRule,
   VirtualMediaRule : VirtualMediaRule,
+  VirtualSupportsRule : VirtualSupportsRule,
   VirtualList : VirtualList,
   VirtualTokenizer : VirtualTokenizer,
   VirtualStyleDeclarationParser : VirtualStyleDeclarationParser,

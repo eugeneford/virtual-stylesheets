@@ -6,8 +6,10 @@ import VirtualCharsetRule from "./VirtualCharsetRule";
 import VirtualStyleRule from "./VirtualStyleRule";
 import VirtualImportRule from "./VirtualImportRule";
 import VirtualViewportRule from "./VirtualViewportRule";
+import VirtualFontFaceRule from "./VirtualFontFaceRule";
 import VirtualGroupingRule from "./VirtualGroupingRule";
 import VirtualMediaRule from "./VirtualMediaRule";
+import VirtualSupportsRule from "./VirtualSupportsRule";
 import VirtualTokenizer from "./VirtualTokenizer";
 
 class VirtualRuleFactory {
@@ -85,12 +87,12 @@ RuleFactory.register(VirtualGrammar.STYLE_RULE, VirtualStyleRule);
 RuleFactory.register(VirtualGrammar.CHARSET_RULE, VirtualCharsetRule);
 RuleFactory.register(VirtualGrammar.IMPORT_RULE, VirtualImportRule);
 RuleFactory.register(VirtualGrammar.MEDIA_RULE, VirtualMediaRule);
-RuleFactory.register(VirtualGrammar.FONT_FACE_RULE, VirtualRule);
+RuleFactory.register(VirtualGrammar.FONT_FACE_RULE, VirtualFontFaceRule);
 RuleFactory.register(VirtualGrammar.PAGE_RULE, VirtualRule);
 RuleFactory.register(VirtualGrammar.KEYFRAME_RULE, VirtualRule);
 RuleFactory.register(VirtualGrammar.KEYFRAMES_RULE, VirtualGroupingRule);
 RuleFactory.register(VirtualGrammar.NAMESPACE_RULE, VirtualRule);
-RuleFactory.register(VirtualGrammar.SUPPORTS_RULE, VirtualGroupingRule);
+RuleFactory.register(VirtualGrammar.SUPPORTS_RULE, VirtualSupportsRule);
 RuleFactory.register(VirtualGrammar.VIEWPORT_RULE, VirtualViewportRule);
 
 export default RuleFactory;

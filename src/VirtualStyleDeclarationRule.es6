@@ -124,7 +124,7 @@ export default class VirtualStyleDeclarationRule extends VirtualRule{
       start = bounds.startOffset + declaration.startOffset;
       suffix =  this.cssText.substring(bounds.startOffset, bounds.startOffset + this.style.get(0).startOffset);
       val = `${property}: ${value};${suffix}`;
- 
+
       this.patch({
         action: VirtualActions.PATCH_INSERT,
         start, value: val, patchDelta: val.length

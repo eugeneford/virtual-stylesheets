@@ -50,7 +50,6 @@ describe("Virtual Style Sheet", function(){
         var t2 = performance.now();
 
         console.warn("Large CSS Time: "+ (t2-t1).toFixed(0) + "ms");
-        //console.warn(vss);
       }).not.toThrowError();
     });
   });
