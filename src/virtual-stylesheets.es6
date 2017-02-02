@@ -32,6 +32,8 @@ import VirtualImportRule from "./VirtualImportRule";
 import VirtualViewportRule from "./VirtualViewportRule";
 import VirtualFontFaceRule from "./VirtualFontFaceRule";
 import VirtualMediaRule from "./VirtualMediaRule";
+import VirtualKeyframesRule from "./VirtualKeyframesRule";
+import VirtualPageRule from "./VirtualPageRule";
 import VirtualSupportsRule from "./VirtualSupportsRule";
 
 module.exports = {
@@ -45,6 +47,8 @@ module.exports = {
   VirtualViewportRule : VirtualViewportRule,
   VirtualFontFaceRule : VirtualFontFaceRule,
   VirtualMediaRule : VirtualMediaRule,
+  VirtualKeyframesRule : VirtualKeyframesRule,
+  VirtualPageRule : VirtualPageRule,
   VirtualSupportsRule : VirtualSupportsRule,
   VirtualList : VirtualList,
   VirtualTokenizer : VirtualTokenizer,

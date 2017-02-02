@@ -9,6 +9,8 @@ import VirtualViewportRule from "./VirtualViewportRule";
 import VirtualFontFaceRule from "./VirtualFontFaceRule";
 import VirtualGroupingRule from "./VirtualGroupingRule";
 import VirtualMediaRule from "./VirtualMediaRule";
+import VirtualKeyframesRule from "./VirtualKeyframesRule";
+import VirtualPageRule from "./VirtualPageRule";
 import VirtualSupportsRule from "./VirtualSupportsRule";
 import VirtualTokenizer from "./VirtualTokenizer";
 
@@ -72,7 +74,7 @@ class VirtualRuleFactory {
    * @param ruleType
    * @param ruleClass
    */
-  register(ruleType, ruleClass){
+  register(ruleType, ruleClass){ 
     if (typeof ruleType !== "number") throw TypeError("ruleType is not a number");
     if (typeof ruleClass !== "function") throw TypeError("ruleClass is not a function");
     this._types[ruleType] = ruleClass;
@@ -88,9 +90,9 @@ RuleFactory.register(VirtualGrammar.CHARSET_RULE, VirtualCharsetRule);
 RuleFactory.register(VirtualGrammar.IMPORT_RULE, VirtualImportRule);
 RuleFactory.register(VirtualGrammar.MEDIA_RULE, VirtualMediaRule);
 RuleFactory.register(VirtualGrammar.FONT_FACE_RULE, VirtualFontFaceRule);
-RuleFactory.register(VirtualGrammar.PAGE_RULE, VirtualRule);
+RuleFactory.register(VirtualGrammar.PAGE_RULE, VirtualPageRule);
 RuleFactory.register(VirtualGrammar.KEYFRAME_RULE, VirtualRule);
-RuleFactory.register(VirtualGrammar.KEYFRAMES_RULE, VirtualGroupingRule);
+RuleFactory.register(VirtualGrammar.KEYFRAMES_RULE, VirtualKeyframesRule);
 RuleFactory.register(VirtualGrammar.NAMESPACE_RULE, VirtualRule);
 RuleFactory.register(VirtualGrammar.SUPPORTS_RULE, VirtualSupportsRule);
 RuleFactory.register(VirtualGrammar.VIEWPORT_RULE, VirtualViewportRule);

@@ -64,7 +64,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _VirtualRuleFactory2 = _interopRequireDefault(_VirtualRuleFactory);
 
-	var _VirtualStyleSheet = __webpack_require__(15);
+	var _VirtualStyleSheet = __webpack_require__(17);
 
 	var _VirtualStyleSheet2 = _interopRequireDefault(_VirtualStyleSheet);
 
@@ -72,7 +72,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _VirtualList2 = _interopRequireDefault(_VirtualList);
 
-	var _VirtualTokenizer = __webpack_require__(13);
+	var _VirtualTokenizer = __webpack_require__(14);
 
 	var _VirtualTokenizer2 = _interopRequireDefault(_VirtualTokenizer);
 
@@ -84,7 +84,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _VirtualRule2 = _interopRequireDefault(_VirtualRule);
 
-	var _VirtualGroupingRule = __webpack_require__(12);
+	var _VirtualGroupingRule = __webpack_require__(13);
 
 	var _VirtualGroupingRule2 = _interopRequireDefault(_VirtualGroupingRule);
 
@@ -108,15 +108,23 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _VirtualViewportRule2 = _interopRequireDefault(_VirtualViewportRule);
 
-	var _VirtualFontFaceRule = __webpack_require__(16);
+	var _VirtualFontFaceRule = __webpack_require__(12);
 
 	var _VirtualFontFaceRule2 = _interopRequireDefault(_VirtualFontFaceRule);
 
-	var _VirtualMediaRule = __webpack_require__(14);
+	var _VirtualMediaRule = __webpack_require__(15);
 
 	var _VirtualMediaRule2 = _interopRequireDefault(_VirtualMediaRule);
 
-	var _VirtualSupportsRule = __webpack_require__(17);
+	var _VirtualKeyframesRule = __webpack_require__(19);
+
+	var _VirtualKeyframesRule2 = _interopRequireDefault(_VirtualKeyframesRule);
+
+	var _VirtualPageRule = __webpack_require__(18);
+
+	var _VirtualPageRule2 = _interopRequireDefault(_VirtualPageRule);
+
+	var _VirtualSupportsRule = __webpack_require__(16);
 
 	var _VirtualSupportsRule2 = _interopRequireDefault(_VirtualSupportsRule);
 
@@ -152,6 +160,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  VirtualViewportRule: _VirtualViewportRule2.default,
 	  VirtualFontFaceRule: _VirtualFontFaceRule2.default,
 	  VirtualMediaRule: _VirtualMediaRule2.default,
+	  VirtualKeyframesRule: _VirtualKeyframesRule2.default,
+	  VirtualPageRule: _VirtualPageRule2.default,
 	  VirtualSupportsRule: _VirtualSupportsRule2.default,
 	  VirtualList: _VirtualList2.default,
 	  VirtualTokenizer: _VirtualTokenizer2.default,
@@ -394,23 +404,31 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _VirtualViewportRule2 = _interopRequireDefault(_VirtualViewportRule);
 
-	var _VirtualFontFaceRule = __webpack_require__(16);
+	var _VirtualFontFaceRule = __webpack_require__(12);
 
 	var _VirtualFontFaceRule2 = _interopRequireDefault(_VirtualFontFaceRule);
 
-	var _VirtualGroupingRule = __webpack_require__(12);
+	var _VirtualGroupingRule = __webpack_require__(13);
 
 	var _VirtualGroupingRule2 = _interopRequireDefault(_VirtualGroupingRule);
 
-	var _VirtualMediaRule = __webpack_require__(14);
+	var _VirtualMediaRule = __webpack_require__(15);
 
 	var _VirtualMediaRule2 = _interopRequireDefault(_VirtualMediaRule);
 
-	var _VirtualSupportsRule = __webpack_require__(17);
+	var _VirtualKeyframesRule = __webpack_require__(19);
+
+	var _VirtualKeyframesRule2 = _interopRequireDefault(_VirtualKeyframesRule);
+
+	var _VirtualPageRule = __webpack_require__(18);
+
+	var _VirtualPageRule2 = _interopRequireDefault(_VirtualPageRule);
+
+	var _VirtualSupportsRule = __webpack_require__(16);
 
 	var _VirtualSupportsRule2 = _interopRequireDefault(_VirtualSupportsRule);
 
-	var _VirtualTokenizer = __webpack_require__(13);
+	var _VirtualTokenizer = __webpack_require__(14);
 
 	var _VirtualTokenizer2 = _interopRequireDefault(_VirtualTokenizer);
 
@@ -512,9 +530,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	RuleFactory.register(_VirtualGrammar2.default.IMPORT_RULE, _VirtualImportRule2.default);
 	RuleFactory.register(_VirtualGrammar2.default.MEDIA_RULE, _VirtualMediaRule2.default);
 	RuleFactory.register(_VirtualGrammar2.default.FONT_FACE_RULE, _VirtualFontFaceRule2.default);
-	RuleFactory.register(_VirtualGrammar2.default.PAGE_RULE, _VirtualRule2.default);
+	RuleFactory.register(_VirtualGrammar2.default.PAGE_RULE, _VirtualPageRule2.default);
 	RuleFactory.register(_VirtualGrammar2.default.KEYFRAME_RULE, _VirtualRule2.default);
-	RuleFactory.register(_VirtualGrammar2.default.KEYFRAMES_RULE, _VirtualGroupingRule2.default);
+	RuleFactory.register(_VirtualGrammar2.default.KEYFRAMES_RULE, _VirtualKeyframesRule2.default);
 	RuleFactory.register(_VirtualGrammar2.default.NAMESPACE_RULE, _VirtualRule2.default);
 	RuleFactory.register(_VirtualGrammar2.default.SUPPORTS_RULE, _VirtualSupportsRule2.default);
 	RuleFactory.register(_VirtualGrammar2.default.VIEWPORT_RULE, _VirtualViewportRule2.default);
@@ -2140,6 +2158,42 @@ return /******/ (function(modules) { // webpackBootstrap
 	  value: true
 	});
 
+	var _VirtualStyleDeclarationRule = __webpack_require__(8);
+
+	var _VirtualStyleDeclarationRule2 = _interopRequireDefault(_VirtualStyleDeclarationRule);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var VirtualFontFaceRule = function (_VirtualStyleDeclarat) {
+	  _inherits(VirtualFontFaceRule, _VirtualStyleDeclarat);
+
+	  function VirtualFontFaceRule(ruleInfo, parentRule, opts) {
+	    _classCallCheck(this, VirtualFontFaceRule);
+
+	    return _possibleConstructorReturn(this, (VirtualFontFaceRule.__proto__ || Object.getPrototypeOf(VirtualFontFaceRule)).call(this, ruleInfo, parentRule, opts));
+	  }
+
+	  return VirtualFontFaceRule;
+	}(_VirtualStyleDeclarationRule2.default);
+
+	exports.default = VirtualFontFaceRule;
+
+/***/ },
+/* 13 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _VirtualActions = __webpack_require__(3);
@@ -2154,7 +2208,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _VirtualList2 = _interopRequireDefault(_VirtualList);
 
-	var _VirtualTokenizer = __webpack_require__(13);
+	var _VirtualTokenizer = __webpack_require__(14);
 
 	var _VirtualTokenizer2 = _interopRequireDefault(_VirtualTokenizer);
 
@@ -2296,7 +2350,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = VirtualGroupingRule;
 
 /***/ },
-/* 13 */
+/* 14 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -2655,7 +2709,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = VirtualTokenizer;
 
 /***/ },
-/* 14 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -2672,7 +2726,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _VirtualActions2 = _interopRequireDefault(_VirtualActions);
 
-	var _VirtualGroupingRule2 = __webpack_require__(12);
+	var _VirtualGroupingRule2 = __webpack_require__(13);
 
 	var _VirtualGroupingRule3 = _interopRequireDefault(_VirtualGroupingRule2);
 
@@ -2757,122 +2811,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = VirtualMediaRule;
 
 /***/ },
-/* 15 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _VirtualActions = __webpack_require__(3);
-
-	var _VirtualActions2 = _interopRequireDefault(_VirtualActions);
-
-	var _VirtualGrammar = __webpack_require__(1);
-
-	var _VirtualGrammar2 = _interopRequireDefault(_VirtualGrammar);
-
-	var _VirtualList = __webpack_require__(4);
-
-	var _VirtualList2 = _interopRequireDefault(_VirtualList);
-
-	var _VirtualRuleFactory = __webpack_require__(2);
-
-	var _VirtualRuleFactory2 = _interopRequireDefault(_VirtualRuleFactory);
-
-	var _VirtualTokenizer = __webpack_require__(13);
-
-	var _VirtualTokenizer2 = _interopRequireDefault(_VirtualTokenizer);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var VirtualStyleSheet = function () {
-	  function VirtualStyleSheet(hooks) {
-	    _classCallCheck(this, VirtualStyleSheet);
-
-	    this.rules = [];
-	    this._opts = hooks;
-	  }
-
-	  _createClass(VirtualStyleSheet, [{
-	    key: "parseFromString",
-	    value: function parseFromString(cssText) {
-	      if (typeof cssText !== "string") throw TypeError("cssText is not a string");
-	      var tokens = void 0,
-	          i = void 0,
-	          rule = void 0,
-	          rules = void 0,
-	          id = 0;
-	      tokens = _VirtualTokenizer2.default.tokenize(cssText);
-
-	      if (tokens.length) {
-	        rules = new _VirtualList2.default();
-
-	        for (i = 0; i < tokens.length; i++) {
-	          rule = _VirtualRuleFactory2.default.createFromToken(tokens[i], this, this._opts);
-	          if (rule) rules.insert(rule, id++);
-	        }
-
-	        this.rules = rules;
-	        return;
-	      }
-
-	      this.rules = new _VirtualList2.default();
-	    }
-	  }]);
-
-	  return VirtualStyleSheet;
-	}();
-
-	Object.assign(VirtualStyleSheet, _VirtualActions2.default);
-	Object.assign(VirtualStyleSheet, _VirtualGrammar2.default.getTypes());
-
-	exports.default = VirtualStyleSheet;
-
-/***/ },
 /* 16 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _VirtualStyleDeclarationRule = __webpack_require__(8);
-
-	var _VirtualStyleDeclarationRule2 = _interopRequireDefault(_VirtualStyleDeclarationRule);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var VirtualFontFaceRule = function (_VirtualStyleDeclarat) {
-	  _inherits(VirtualFontFaceRule, _VirtualStyleDeclarat);
-
-	  function VirtualFontFaceRule(ruleInfo, parentRule, opts) {
-	    _classCallCheck(this, VirtualFontFaceRule);
-
-	    return _possibleConstructorReturn(this, (VirtualFontFaceRule.__proto__ || Object.getPrototypeOf(VirtualFontFaceRule)).call(this, ruleInfo, parentRule, opts));
-	  }
-
-	  return VirtualFontFaceRule;
-	}(_VirtualStyleDeclarationRule2.default);
-
-	exports.default = VirtualFontFaceRule;
-
-/***/ },
-/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -2889,7 +2828,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _VirtualActions2 = _interopRequireDefault(_VirtualActions);
 
-	var _VirtualGroupingRule2 = __webpack_require__(12);
+	var _VirtualGroupingRule2 = __webpack_require__(13);
 
 	var _VirtualGroupingRule3 = _interopRequireDefault(_VirtualGroupingRule2);
 
@@ -2972,6 +2911,305 @@ return /******/ (function(modules) { // webpackBootstrap
 	}(_VirtualGroupingRule3.default);
 
 	exports.default = VirtualSupportsRule;
+
+/***/ },
+/* 17 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _VirtualActions = __webpack_require__(3);
+
+	var _VirtualActions2 = _interopRequireDefault(_VirtualActions);
+
+	var _VirtualGrammar = __webpack_require__(1);
+
+	var _VirtualGrammar2 = _interopRequireDefault(_VirtualGrammar);
+
+	var _VirtualList = __webpack_require__(4);
+
+	var _VirtualList2 = _interopRequireDefault(_VirtualList);
+
+	var _VirtualRuleFactory = __webpack_require__(2);
+
+	var _VirtualRuleFactory2 = _interopRequireDefault(_VirtualRuleFactory);
+
+	var _VirtualTokenizer = __webpack_require__(14);
+
+	var _VirtualTokenizer2 = _interopRequireDefault(_VirtualTokenizer);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var VirtualStyleSheet = function () {
+	  function VirtualStyleSheet(hooks) {
+	    _classCallCheck(this, VirtualStyleSheet);
+
+	    this.rules = [];
+	    this._opts = hooks;
+	  }
+
+	  _createClass(VirtualStyleSheet, [{
+	    key: "parseFromString",
+	    value: function parseFromString(cssText) {
+	      if (typeof cssText !== "string") throw TypeError("cssText is not a string");
+	      var tokens = void 0,
+	          i = void 0,
+	          rule = void 0,
+	          rules = void 0,
+	          id = 0;
+	      tokens = _VirtualTokenizer2.default.tokenize(cssText);
+
+	      if (tokens.length) {
+	        rules = new _VirtualList2.default();
+
+	        for (i = 0; i < tokens.length; i++) {
+	          rule = _VirtualRuleFactory2.default.createFromToken(tokens[i], this, this._opts);
+	          if (rule) rules.insert(rule, id++);
+	        }
+
+	        this.rules = rules;
+	        return;
+	      }
+
+	      this.rules = new _VirtualList2.default();
+	    }
+	  }]);
+
+	  return VirtualStyleSheet;
+	}();
+
+	Object.assign(VirtualStyleSheet, _VirtualActions2.default);
+	Object.assign(VirtualStyleSheet, _VirtualGrammar2.default.getTypes());
+
+	exports.default = VirtualStyleSheet;
+
+/***/ },
+/* 18 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+	var _VirtualActions = __webpack_require__(3);
+
+	var _VirtualActions2 = _interopRequireDefault(_VirtualActions);
+
+	var _VirtualStyleDeclarationRule = __webpack_require__(8);
+
+	var _VirtualStyleDeclarationRule2 = _interopRequireDefault(_VirtualStyleDeclarationRule);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var VirtualPageRule = function (_VirtualStyleDeclarat) {
+	  _inherits(VirtualPageRule, _VirtualStyleDeclarat);
+
+	  function VirtualPageRule(ruleInfo, parentRule, opts) {
+	    _classCallCheck(this, VirtualPageRule);
+
+	    return _possibleConstructorReturn(this, (VirtualPageRule.__proto__ || Object.getPrototypeOf(VirtualPageRule)).call(this, ruleInfo, parentRule, opts));
+	  }
+
+	  /**
+	   * Parse a formatted selectorText from current VirtualPageRule
+	   * @returns {String}
+	   * @private
+	   */
+
+
+	  _createClass(VirtualPageRule, [{
+	    key: "_parseSelectorText",
+	    value: function _parseSelectorText() {
+	      var bounds = void 0,
+	          selectorText = void 0;
+
+	      // Get rule head block's bounds
+	      bounds = this.getHead();
+
+	      // Get the head block of this rule
+	      selectorText = this.cssText.substring(bounds.startOffset, bounds.endOffset).trim();
+
+	      // Remove @page prefix
+	      selectorText = selectorText.substring(5).trim();
+
+	      return selectorText;
+	    }
+	  }, {
+	    key: "parse",
+	    value: function parse(parseType) {
+	      _get(VirtualPageRule.prototype.__proto__ || Object.getPrototypeOf(VirtualPageRule.prototype), "parse", this).call(this, parseType);
+	      if (parseType === _VirtualActions2.default.PARSE_HEAD || parseType == _VirtualActions2.default.PARSE_ALL) {
+	        this.selectorText = this._parseSelectorText();
+	      } else {
+	        this.selectorText = null;
+	      }
+	    }
+
+	    /**
+	     * Applies a new selectorText to current VirtualPageRule
+	     * @param selectorText
+	     */
+
+	  }, {
+	    key: "setSelector",
+	    value: function setSelector(selectorText) {
+	      if (typeof selectorText !== "string") throw new TypeError("SelectorText is not a string");
+	      var head = this.getHead();
+
+	      var newCondition = "@page " + selectorText;
+
+	      this.patch({
+	        action: _VirtualActions2.default.PATCH_REPLACE,
+	        start: head.startOffset,
+	        end: head.endOffset,
+	        value: newCondition,
+	        patchDelta: newCondition.length - head.endOffset
+	      });
+	    }
+	  }]);
+
+	  return VirtualPageRule;
+	}(_VirtualStyleDeclarationRule2.default);
+
+	exports.default = VirtualPageRule;
+
+/***/ },
+/* 19 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+	var _VirtualActions = __webpack_require__(3);
+
+	var _VirtualActions2 = _interopRequireDefault(_VirtualActions);
+
+	var _VirtualGroupingRule2 = __webpack_require__(13);
+
+	var _VirtualGroupingRule3 = _interopRequireDefault(_VirtualGroupingRule2);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var VirtualKeyframesRule = function (_VirtualGroupingRule) {
+	  _inherits(VirtualKeyframesRule, _VirtualGroupingRule);
+
+	  function VirtualKeyframesRule(ruleInfo, parentRule, opts) {
+	    _classCallCheck(this, VirtualKeyframesRule);
+
+	    return _possibleConstructorReturn(this, (VirtualKeyframesRule.__proto__ || Object.getPrototypeOf(VirtualKeyframesRule)).call(this, ruleInfo, parentRule, opts));
+	  }
+
+	  _createClass(VirtualKeyframesRule, [{
+	    key: "_getAtDefinition",
+	    value: function _getAtDefinition() {
+	      switch (this.cssText.substr(1, 8)) {
+	        case "-webkit-":
+	          return "@-webkit-keyframes";
+	        case "-moz-key":
+	          return "@-moz-keyframes";
+	        case "-o-keyfr":
+	          return "@-o-keyframes";
+	        case "-ms-keyf":
+	          return "@-ms-keyframes";
+	        default:
+	          return "@keyframes";
+	      }
+	    }
+
+	    /**
+	     * Parse name string from current cssText
+	     * @returns {string|*}
+	     * @private
+	     */
+
+	  }, {
+	    key: "_parseName",
+	    value: function _parseName() {
+	      var bounds = void 0,
+	          name = void 0;
+
+	      // Get rule head block's bounds
+	      bounds = this.getHead();
+
+	      // Get the head block of this rule
+	      name = this.cssText.substring(bounds.startOffset, bounds.endOffset).trim();
+
+	      // Remove @supports prefix
+	      name = name.substring(this._getAtDefinition().length).trim();
+
+	      return name;
+	    }
+	  }, {
+	    key: "parse",
+	    value: function parse(parseType) {
+	      _get(VirtualKeyframesRule.prototype.__proto__ || Object.getPrototypeOf(VirtualKeyframesRule.prototype), "parse", this).call(this, parseType);
+	      if (parseType === _VirtualActions2.default.PARSE_HEAD || parseType == _VirtualActions2.default.PARSE_ALL) {
+	        this.name = this._parseName();
+	      } else {
+	        this.name = null;
+	      }
+	    }
+
+	    /**
+	     * Apply new name string to current rule
+	     * @param name
+	     */
+
+	  }, {
+	    key: "setName",
+	    value: function setName(name) {
+	      if (typeof name !== "string") throw new TypeError("ConditionText is not a string");
+	      var head = this.getHead();
+
+	      var newName = this._getAtDefinition() + " " + name;
+
+	      this.patch({
+	        action: _VirtualActions2.default.PATCH_REPLACE,
+	        start: head.startOffset,
+	        end: head.endOffset,
+	        value: newName,
+	        patchDelta: newName.length - head.endOffset
+	      });
+	    }
+	  }]);
+
+	  return VirtualKeyframesRule;
+	}(_VirtualGroupingRule3.default);
+
+	exports.default = VirtualKeyframesRule;
 
 /***/ }
 /******/ ])
