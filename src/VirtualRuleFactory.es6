@@ -32,7 +32,7 @@ class VirtualRuleFactory {
     if (ruleInfo === undefined) throw Error("ruleInfo is missing");
     if (ruleInfo.type === VirtualGrammar.UNKNOWN_RULE && !opts.acceptUnknown) return null;
 
-    let filterResult;
+    let filterResult, rule;
 
     // Apply a pre parsing filter if was specified
     if (opts.preParsingFilter){
@@ -41,8 +41,11 @@ class VirtualRuleFactory {
     }
 
     // Create a VirtualRule based on type in ruleInfo
-    if (!!this._types[ruleInfo.type])
-      return new this._types[ruleInfo.type](ruleInfo, parentRule, Object.assign({}, opts, {lazyParsing: filterResult}));
+    if (!!this._types[ruleInfo.type]) {
+      rule = new this._types[ruleInfo.type](ruleInfo, parentRule, Object.assign({}, opts, {lazyParsing: filterResult}));
+      rule.type = ruleInfo.type;
+      return rule;
+    }
     // Otherwise throw a TypeError
     throw new TypeError(`There is no ruleClass associated with ${ruleInfo.type}`);
   }

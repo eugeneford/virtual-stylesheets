@@ -17,7 +17,7 @@ export default class VirtualGroupingRule extends VirtualRule {
   _patchChildRules(patchInfo, startFrom) {
     /*istanbul ignore else*/
     if (patchInfo.patchDelta && this.rules && this.rules.length) {
-      let start = startFrom || 0;
+      let start = startFrom;
       for (let i = start; i < this.rules.length; i++){
         this.rules.get(i).patch(patchInfo);
       }
@@ -100,5 +100,120 @@ export default class VirtualGroupingRule extends VirtualRule {
       }
     }
     this.rules = null;
+  }
+
+  /**
+   * Creates a new VirtualRule from string and inserts it at specified position
+   * @param ruleText
+   * @param index
+   */
+  insertRule(ruleText, index){
+    if (typeof ruleText !== "string") throw new TypeError("RuleText is not a string");
+    if (typeof index !== "number") throw new TypeError("Index is not a number");
+    if (index < 0) throw new Error("Index should be a positive number");
+
+    let tokens, rule, anchorRule, start, end, patchDelta, bounds, value, action;
+
+    // Try to get a token from ruleText
+    tokens = VirtualTokenizer.tokenize(ruleText);
+
+    // Throw an error if there are no tokens
+    if (!tokens.length) throw SyntaxError("RuleText is not a CSS rule");
+
+    rule = VirtualRuleFactory.createFromToken(tokens[0], this, this._opts);
+
+    /*istanbul ignore else*/
+    if (rule) {
+      // Inject grouping rule to _patchApply function
+      rule._patchApply = (function(rule, _patchApply) {
+        function call(patchInfo){
+          _patchApply.bind(rule)(patchInfo);
+          rule.parentRule._patchParent.bind(rule)(patchInfo);
+        }
+
+        return call;
+      })(rule, rule._patchApply);
+
+      // Create new rules set if not exists
+      if (!this.rules) this.rules = new VirtualList();
+
+      // Try to get anchor rule
+      anchorRule = this.rules.get(index);
+
+      // Get body block bounds
+      bounds = this.getBody();
+
+      // Add injected rule to list
+      this.rules.insert(rule, index);
+
+      // Calculate patch data
+      if (anchorRule){
+        action = VirtualActions.PATCH_INSERT;
+        start = bounds.startOffset + anchorRule.startOffset;
+        value = `${rule.cssText}${this.cssText.substring(bounds.startOffset, bounds.startOffset + this.rules.get(0).startOffset)}`;
+        patchDelta = value.length;
+        rule.startOffset = anchorRule.startOffset;
+        rule.endOffset = anchorRule.startOffset + rule.cssText.length;
+      } else {
+        action = VirtualActions.PATCH_REPLACE;
+        start = bounds.startOffset;
+        end = bounds.endOffset;
+        value = `\n  ${rule.cssText}\n`;
+        patchDelta = value.length - bounds.endOffset - bounds.startOffset;
+        rule.startOffset = 3;
+        rule.endOffset = 3 + rule.cssText.length;
+      }
+
+      // Patch this rule with by inserting created one
+      this.patch({
+        action, start, end, value, patchDelta, reparse: false
+      });
+
+      // Update child rules
+      this._patchChildRules({
+        action: VirtualActions.PATCH_UPDATE, patchDelta
+      }, index + 1);
+    }
+  }
+
+  /**
+   * Deletes an existing rule at specified position.
+   * @param index
+   */
+  deleteRule(index){
+    if (typeof index !== "number") throw new TypeError("Index is not a number");
+    if (index < 0) throw new Error("Index should be a positive number");
+    if (this.rules && this.rules.length && index >= this.rules.length) throw new Error("Index is larger the child rules count");
+
+    let rule, prevRule, nextRule, bounds, start, end, patchDelta;
+
+    // Get target rule
+    rule = this.rules.get(index);
+
+    // Try to get siblings of target rule
+    prevRule = this.rules.get(index - 1);
+    nextRule = this.rules.get(index + 1);
+
+    // Delete target rule from rules list
+    this.rules.remove(index);
+
+    // Get body block bounds
+    bounds = this.getBody();
+
+    // Create patch props
+    start = bounds.startOffset + (prevRule ? prevRule.endOffset : rule.startOffset);
+    end = bounds.startOffset + (!prevRule && nextRule ? nextRule.startOffset: rule.endOffset);
+    patchDelta = -(end - start);
+
+    // Patch this rule
+    this.patch({
+      action: VirtualActions.PATCH_DELETE,
+      start, end, patchDelta
+    });
+
+    // Update child rule
+    this._patchChildRules({
+      action: VirtualActions.PATCH_UPDATE, patchDelta
+    })
   }
 }

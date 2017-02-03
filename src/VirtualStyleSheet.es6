@@ -1,33 +1,36 @@
 import VirtualActions from "./VirtualActions";
 import VirtualGrammar from "./VirtualGrammar";
 import VirtualList from "./VirtualList";
+import VirtualGroupingRule from "./VirtualGroupingRule";
 import VirtualRuleFactory from "./VirtualRuleFactory";
 import VirtualTokenizer from "./VirtualTokenizer";
 
-class VirtualStyleSheet {
-  constructor(hooks){
-    this.rules = [];
-    this._opts = hooks;
+class VirtualStyleSheet extends VirtualGroupingRule {
+  constructor(cssText, opts){
+    if (typeof cssText !== "string") throw TypeError("CSSText is not a string");
+
+    let ruleInfo = {
+      startOffset: 0,
+      endOffset: cssText.length,
+      cssText: cssText
+    };
+
+    super(ruleInfo, null, opts);
+  }
+
+  getBody(){
+    return {startOffset: this.startOffset, endOffset: this.endOffset}
+  }
+
+  getHead(){
+    return this.getBody();
   }
 
   parseFromString(cssText){
-    if (typeof cssText !== "string") throw TypeError("cssText is not a string");
-    let tokens, i, rule, rules, id = 0;
-    tokens = VirtualTokenizer.tokenize(cssText);
-
-    if (tokens.length) {
-      rules = new VirtualList();
-
-      for (i = 0; i < tokens.length; i++){
-        rule = VirtualRuleFactory.createFromToken(tokens[i], this, this._opts);
-        if (rule) rules.insert(rule, id++);
-      }
-
-      this.rules = rules;
-      return;
-    }
-
-    this.rules = new VirtualList();
+    if (typeof cssText !== "string") throw TypeError("CSSText is not a string");
+    this.cssText = cssText;
+    this.endOffset = cssText.length;
+    this.parse(VirtualActions.PARSE_ALL);
   }
 }
 

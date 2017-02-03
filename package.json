@@ -1,7 +1,7 @@
 {
-  "name": "virtual-stylesheets",
-  "version": "0.3.0",
-  "description": "A string-based StyleSheet management library",
+  "name": "virtual-stylesheets", 
+  "version": "0.8.0",
+  "description": "A complex string based CSS managment library",
   "main": "dist/virtual-sylesheets.js",
   "repository": {
     "type": "git",
@@ -21,7 +21,18 @@
     "grammar",
     "parser",
     "lexer",
-    "spec"
+    "spec",
+    "rule",
+    "media",
+    "supports",
+    "import",
+    "namespace",
+    "page",
+    "style",
+    "charset",
+    "keyframes",
+    "keyframes",
+    "font-face"
   ],
   "author": "Eugene Ford",
   "license": "MIT",
@@ -48,8 +59,5 @@
     "presets": [
       "es2015"
     ]
-  },
-  "dependencies": {
-    "phantomjs": "^2.1.7"
   }
 }

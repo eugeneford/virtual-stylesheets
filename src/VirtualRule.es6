@@ -10,8 +10,7 @@ const DOUBLE_QUOTE = '\"'.charCodeAt(0);
 export default class VirtualRule {
   constructor(ruleInfo, parentRule = null, opts = {}) {
     if (!ruleInfo) throw new Error("ruleInfo is missing");
-    if (typeof  ruleInfo.type === "undefined"
-        || typeof  ruleInfo.startOffset === "undefined"
+    if (typeof  ruleInfo.startOffset === "undefined"
         || typeof  ruleInfo.endOffset === "undefined"
         || typeof  ruleInfo.cssText === "undefined"
     ){
@@ -20,7 +19,6 @@ export default class VirtualRule {
 
     this._opts = opts;
 
-    this.type = ruleInfo.type;
     this.startOffset = ruleInfo.startOffset;
     this.endOffset = ruleInfo.endOffset;
     this.cssText = ruleInfo.cssText;

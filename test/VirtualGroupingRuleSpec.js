@@ -77,7 +77,6 @@ describe("VirtualGroupingRule", function(){
 
       var childs = {
         0: {
-          type: rule.rules.get(0).type,
           startOffset: rule.rules.get(0).startOffset,
           endOffset: rule.rules.get(0).endOffset,
           cssText: rule.rules.get(0).cssText,
@@ -85,7 +84,6 @@ describe("VirtualGroupingRule", function(){
         },
 
         1: {
-          type: rule.rules.get(1).type,
           startOffset: rule.rules.get(1).startOffset,
           endOffset: rule.rules.get(1).startOffset + ".row, .row-fluid {\n    margin-left: -30px;\n  }".length,
           cssText: ".row, .row-fluid {\n    margin-left: -30px;\n  }",
@@ -93,7 +91,6 @@ describe("VirtualGroupingRule", function(){
         },
 
         2: {
-          type: rule.rules.get(2).type,
           startOffset: rule.rules.get(2).startOffset + 12,
           endOffset: rule.rules.get(2).endOffset + 12,
           cssText: rule.rules.get(2).cssText,
@@ -104,24 +101,20 @@ describe("VirtualGroupingRule", function(){
       var child = rule.rules.get(1);
       child.setSelector(".row, .row-fluid ");
 
-      expect(rule.type).toEqual(4);
       expect(rule.cssText).toEqual(example5);
       expect(rule.startOffset).toEqual(0);
       expect(rule.endOffset).toEqual(example5.length);
 
-      expect(rule.rules.get(0).type).toEqual(childs[0].type);
       expect(rule.rules.get(0).startOffset).toEqual(childs[0].startOffset);
       expect(rule.rules.get(0).endOffset).toEqual(childs[0].endOffset);
       expect(rule.rules.get(0).cssText).toEqual(childs[0].cssText);
       expect(rule.rules.get(0).selectorText).toEqual(childs[0].selectorText);
 
-      expect(rule.rules.get(1).type).toEqual(childs[1].type);
       expect(rule.rules.get(1).startOffset).toEqual(childs[1].startOffset);
       expect(rule.rules.get(1).endOffset).toEqual(childs[1].endOffset);
       expect(rule.rules.get(1).cssText).toEqual(childs[1].cssText);
       expect(rule.rules.get(1).selectorText).toEqual(childs[1].selectorText);
 
-      expect(rule.rules.get(2).type).toEqual(childs[2].type);
       expect(rule.rules.get(2).startOffset).toEqual(childs[2].startOffset);
       expect(rule.rules.get(2).endOffset).toEqual(childs[2].endOffset);
       expect(rule.rules.get(2).cssText).toEqual(childs[2].cssText);
@@ -130,7 +123,6 @@ describe("VirtualGroupingRule", function(){
 
     it("Successfully patched parent rule of target child rule and ignored patching of its childs following after target one, because of patchDelta was 0", function(){
       var rule = new VirtualGroupingRule({
-        type: 4,
         startOffset: 0,
         endOffset: example4.length,
         cssText: example4
@@ -138,7 +130,6 @@ describe("VirtualGroupingRule", function(){
 
       var childs = {
         0: {
-          type: rule.rules.get(0).type,
           startOffset: rule.rules.get(0).startOffset,
           endOffset: rule.rules.get(0).endOffset,
           cssText: rule.rules.get(0).cssText,
@@ -146,7 +137,6 @@ describe("VirtualGroupingRule", function(){
         },
 
         1: {
-          type: rule.rules.get(1).type,
           startOffset: rule.rules.get(1).startOffset,
           endOffset: rule.rules.get(1).endOffset,
           cssText: "body {\n    margin-left: -30px;\n  }",
@@ -154,7 +144,6 @@ describe("VirtualGroupingRule", function(){
         },
 
         2: {
-          type: rule.rules.get(2).type,
           startOffset: rule.rules.get(2).startOffset,
           endOffset: rule.rules.get(2).endOffset,
           cssText: rule.rules.get(2).cssText,
@@ -165,24 +154,20 @@ describe("VirtualGroupingRule", function(){
       var child = rule.rules.get(1);
       child.setSelector("body ");
 
-      expect(rule.type).toEqual(4);
       expect(rule.cssText).toEqual("@media (min-width: 768px) {\n  .container {\n    width: 640px;\n  }\n  body {\n    margin-left: -30px;\n  }\n  .column {\n    width: 50%;\n  }\n}");
       expect(rule.startOffset).toEqual(0);
       expect(rule.endOffset).toEqual(example4.length);
 
-      expect(rule.rules.get(0).type).toEqual(childs[0].type);
       expect(rule.rules.get(0).startOffset).toEqual(childs[0].startOffset);
       expect(rule.rules.get(0).endOffset).toEqual(childs[0].endOffset);
       expect(rule.rules.get(0).cssText).toEqual(childs[0].cssText);
       expect(rule.rules.get(0).selectorText).toEqual(childs[0].selectorText);
 
-      expect(rule.rules.get(1).type).toEqual(childs[1].type);
       expect(rule.rules.get(1).startOffset).toEqual(childs[1].startOffset);
       expect(rule.rules.get(1).endOffset).toEqual(childs[1].endOffset);
       expect(rule.rules.get(1).cssText).toEqual(childs[1].cssText);
       expect(rule.rules.get(1).selectorText).toEqual(childs[1].selectorText);
 
-      expect(rule.rules.get(2).type).toEqual(childs[2].type);
       expect(rule.rules.get(2).startOffset).toEqual(childs[2].startOffset);
       expect(rule.rules.get(2).endOffset).toEqual(childs[2].endOffset);
       expect(rule.rules.get(2).cssText).toEqual(childs[2].cssText);
@@ -191,7 +176,6 @@ describe("VirtualGroupingRule", function(){
 
     it("Correctly updated all child rules when patching was triggered by its previous siblings", function(){
       var rule = new VirtualGroupingRule({
-        type: 12,
         startOffset: 0,
         endOffset: example6.length,
         cssText: example6
@@ -199,14 +183,12 @@ describe("VirtualGroupingRule", function(){
 
       var exp = {
         0: {
-          type: 12,
           startOffset: 0,
           endOffset: example7.length,
           cssText: example7
         },
 
         1: {
-          type: 1,
           startOffset: 1,
           endOffset: 32,
           cssText: ".heading-1 { font-size: 16px; }",
@@ -214,28 +196,24 @@ describe("VirtualGroupingRule", function(){
         },
 
         2: {
-          type: 7,
           startOffset: 33,
           endOffset: 111,
           cssText: "@keyframes scale { 0% { transform: scale(0); } 100% { transform: scale(1); } }"
         },
 
         3: {
-          type: 8,
           startOffset: 1,
           endOffset: 28,
           cssText: "0% { transform: scale(0); }"
         },
 
         4: {
-          type: 8,
           startOffset: 29,
           endOffset: 58,
           cssText: "100% { transform: scale(1); }"
         },
 
         5: {
-          type: 1,
           startOffset: 112,
           endOffset: 140,
           cssText: ".section { padding: 80px 0;}",
@@ -245,33 +223,27 @@ describe("VirtualGroupingRule", function(){
 
       rule.rules.get(0).setSelector(".heading-1 ");
 
-      expect(rule.type).toEqual(exp[0].type);
       expect(rule.startOffset).toEqual(exp[0].startOffset);
       expect(rule.endOffset).toEqual(exp[0].endOffset);
       expect(rule.cssText).toEqual(exp[0].cssText);
 
-      expect(rule.rules.get(0).type).toEqual(exp[1].type);
       expect(rule.rules.get(0).startOffset).toEqual(exp[1].startOffset);
       expect(rule.rules.get(0).endOffset).toEqual(exp[1].endOffset);
       expect(rule.rules.get(0).cssText).toEqual(exp[1].cssText);
       expect(rule.rules.get(0).selectorText).toEqual(exp[1].selectorText);
 
-      expect(rule.rules.get(1).type).toEqual(exp[2].type);
       expect(rule.rules.get(1).startOffset).toEqual(exp[2].startOffset);
       expect(rule.rules.get(1).endOffset).toEqual(exp[2].endOffset);
       expect(rule.rules.get(1).cssText).toEqual(exp[2].cssText);
 
-      expect(rule.rules.get(1).rules.get(0).type).toEqual(exp[3].type);
       expect(rule.rules.get(1).rules.get(0).startOffset).toEqual(exp[3].startOffset);
       expect(rule.rules.get(1).rules.get(0).endOffset).toEqual(exp[3].endOffset);
       expect(rule.rules.get(1).rules.get(0).cssText).toEqual(exp[3].cssText);
 
-      expect(rule.rules.get(1).rules.get(1).type).toEqual(exp[4].type);
       expect(rule.rules.get(1).rules.get(1).startOffset).toEqual(exp[4].startOffset);
       expect(rule.rules.get(1).rules.get(1).endOffset).toEqual(exp[4].endOffset);
       expect(rule.rules.get(1).rules.get(1).cssText).toEqual(exp[4].cssText);
 
-      expect(rule.rules.get(2).type).toEqual(exp[5].type);
       expect(rule.rules.get(2).startOffset).toEqual(exp[5].startOffset);
       expect(rule.rules.get(2).endOffset).toEqual(exp[5].endOffset);
       expect(rule.rules.get(2).cssText).toEqual(exp[5].cssText);
@@ -281,7 +253,6 @@ describe("VirtualGroupingRule", function(){
 
     it("Correctly updated 2-level group hierarchy", function(){
       var rule = new VirtualGroupingRule({
-        type: 12,
         startOffset: 0,
         endOffset: example6.length,
         cssText: example6
@@ -289,14 +260,12 @@ describe("VirtualGroupingRule", function(){
 
       var exp = {
         0: {
-          type: 12,
           startOffset: 0,
           endOffset: example8.length,
           cssText: example8
         },
 
         1: {
-          type: 1,
           startOffset: 1,
           endOffset: 26,
           cssText: "body { font-size: 16px; }",
@@ -304,28 +273,24 @@ describe("VirtualGroupingRule", function(){
         },
 
         2: {
-          type: 7,
           startOffset: 27,
           endOffset: 107,
           cssText: "@keyframes scale { 0% { transform: scale(0.5); } 100% { transform: scale(1); } }"
         },
 
         3: {
-          type: 8,
           startOffset: 1,
           endOffset: 30,
           cssText: "0% { transform: scale(0.5); }"
         },
 
         4: {
-          type: 8,
           startOffset: 31,
           endOffset: 60,
           cssText: "100% { transform: scale(1); }"
         },
 
         5: {
-          type: 1,
           startOffset: 108,
           endOffset: 136,
           cssText: ".section { padding: 80px 0;}",
@@ -340,37 +305,328 @@ describe("VirtualGroupingRule", function(){
         patchDelta: 2
       });
 
-      expect(rule.type).toEqual(exp[0].type);
       expect(rule.startOffset).toEqual(exp[0].startOffset);
       expect(rule.endOffset).toEqual(exp[0].endOffset);
       expect(rule.cssText).toEqual(exp[0].cssText);
 
-      expect(rule.rules.get(0).type).toEqual(exp[1].type);
       expect(rule.rules.get(0).startOffset).toEqual(exp[1].startOffset);
       expect(rule.rules.get(0).endOffset).toEqual(exp[1].endOffset);
       expect(rule.rules.get(0).cssText).toEqual(exp[1].cssText);
       expect(rule.rules.get(0).selectorText).toEqual(exp[1].selectorText);
 
-      expect(rule.rules.get(1).type).toEqual(exp[2].type);
       expect(rule.rules.get(1).startOffset).toEqual(exp[2].startOffset);
       expect(rule.rules.get(1).endOffset).toEqual(exp[2].endOffset);
       expect(rule.rules.get(1).cssText).toEqual(exp[2].cssText);
 
-      expect(rule.rules.get(1).rules.get(0).type).toEqual(exp[3].type);
       expect(rule.rules.get(1).rules.get(0).startOffset).toEqual(exp[3].startOffset);
       expect(rule.rules.get(1).rules.get(0).endOffset).toEqual(exp[3].endOffset);
       expect(rule.rules.get(1).rules.get(0).cssText).toEqual(exp[3].cssText);
 
-      expect(rule.rules.get(1).rules.get(1).type).toEqual(exp[4].type);
       expect(rule.rules.get(1).rules.get(1).startOffset).toEqual(exp[4].startOffset);
       expect(rule.rules.get(1).rules.get(1).endOffset).toEqual(exp[4].endOffset);
       expect(rule.rules.get(1).rules.get(1).cssText).toEqual(exp[4].cssText);
 
-      expect(rule.rules.get(2).type).toEqual(exp[5].type);
       expect(rule.rules.get(2).startOffset).toEqual(exp[5].startOffset);
       expect(rule.rules.get(2).endOffset).toEqual(exp[5].endOffset);
       expect(rule.rules.get(2).cssText).toEqual(exp[5].cssText);
       expect(rule.rules.get(2).selectorText).toEqual(exp[5].selectorText);
+    });
+  });
+
+  describe("insertRule()", function(){
+    it("Threw a TypeError when ruleText was not a string", function(){
+      var rule = new VirtualGroupingRule({
+        type: 4,
+        startOffset: 0,
+        endOffset: 0,
+        cssText: "@media print { }"
+      });
+
+      expect(function(){
+        rule.insertRule(1,1);
+      }).toThrowError(TypeError);
+    });
+
+    it("Threw a TypeError when index was not a number", function(){
+      var rule = new VirtualGroupingRule({
+        type: 4,
+        startOffset: 0,
+        endOffset: 0,
+        cssText: "@media print { }"
+      });
+
+      expect(function(){
+        rule.insertRule("body { width: 24px; }", "1");
+      }).toThrowError(TypeError);
+    });
+
+    it("Threw an Error when index was a negative number", function(){
+      var rule = new VirtualGroupingRule({
+        type: 4,
+        startOffset: 0,
+        endOffset: 0,
+        cssText: "@media print { }"
+      });
+
+      expect(function(){
+        rule.insertRule("body { width: 24px; }", -10);
+      }).toThrowError(Error);
+    });
+
+    it("Threw an Error when ruleText was not a css rule", function(){
+      var rule = new VirtualGroupingRule({
+        type: 4,
+        startOffset: 0,
+        endOffset: 0,
+        cssText: "@media print { }"
+      });
+
+      expect(function(){
+        rule.insertRule("body", 0);
+      }).toThrowError(SyntaxError);
+    });
+
+    it("Successfully inserted new CSS rule into empty VirtualGroupingRule", function(){
+      var rule = new VirtualGroupingRule({
+        type: 4,
+        startOffset: 0,
+        endOffset: 16,
+        cssText: "@media print { }"
+      });
+
+      rule.insertRule("body { width: 24px }", 0);
+
+      expect(rule.cssText).toEqual("@media print {\n  body { width: 24px }\n}");
+      expect(rule.startOffset).toEqual(0);
+      expect(rule.endOffset).toEqual(39);
+      expect(rule.rules.length).toEqual(1);
+
+      expect(rule.rules.get(0).startOffset).toEqual(3);
+      expect(rule.rules.get(0).endOffset).toEqual(23);
+      expect(rule.rules.get(0).cssText).toEqual("body { width: 24px }");
+    });
+
+    it("Successfully appended new CSS rule at the trail of VirtualGroupingRule", function(){
+      var rule = new VirtualGroupingRule({
+        type: 4,
+        startOffset: 0,
+        endOffset: 16,
+        cssText: "@media print { }"
+      });
+
+      rule.insertRule("body { width: 24px }", 10);
+
+      expect(rule.cssText).toEqual("@media print {\n  body { width: 24px }\n}");
+      expect(rule.startOffset).toEqual(0);
+      expect(rule.endOffset).toEqual(39);
+      expect(rule.rules.length).toEqual(1);
+
+      expect(rule.rules.get(0).startOffset).toEqual(3);
+      expect(rule.rules.get(0).endOffset).toEqual(23);
+      expect(rule.rules.get(0).cssText).toEqual("body { width: 24px }");
+    });
+
+    it("Successfully inserted new CSS rule into the middle of VirtualGroupingRule", function(){
+      var rule = new VirtualGroupingRule({
+        type: 4,
+        startOffset: 0,
+        endOffset: 70,
+        cssText: "@media print { .rule-1 { display: block; } .rule-2{ display: none; } }"
+      });
+
+      rule.insertRule("body { width: 24px }", 1);
+
+      expect(rule.cssText).toEqual("@media print { .rule-1 { display: block; } body { width: 24px } .rule-2{ display: none; } }");
+      expect(rule.startOffset).toEqual(0);
+      expect(rule.endOffset).toEqual(91);
+      expect(rule.rules.length).toEqual(3);
+
+      expect(rule.rules.get(0).startOffset).toEqual(1);
+      expect(rule.rules.get(0).endOffset).toEqual(28);
+      expect(rule.rules.get(0).cssText).toEqual(".rule-1 { display: block; }");
+
+      expect(rule.rules.get(1).startOffset).toEqual(29);
+      expect(rule.rules.get(1).endOffset).toEqual(49);
+      expect(rule.rules.get(1).cssText).toEqual("body { width: 24px }");
+
+      expect(rule.rules.get(2).startOffset).toEqual(50);
+      expect(rule.rules.get(2).endOffset).toEqual(75);
+      expect(rule.rules.get(2).cssText).toEqual(".rule-2{ display: none; }");
+    });
+
+    it("Successfully changed parent rule from inserted child rule", function(){
+      var rule = new VirtualGroupingRule({
+        type: 4,
+        startOffset: 0,
+        endOffset: 70,
+        cssText: "@media print { .rule-1 { display: block; } .rule-2{ display: none; } }"
+      });
+
+      rule.insertRule("body { width: 24px }", 1);
+      rule.rules.get(1).setSelector(".test ");
+
+      expect(rule.cssText).toEqual("@media print { .rule-1 { display: block; } .test { width: 24px } .rule-2{ display: none; } }");
+      expect(rule.startOffset).toEqual(0);
+      expect(rule.endOffset).toEqual(92);
+      expect(rule.rules.length).toEqual(3);
+
+      expect(rule.rules.get(0).startOffset).toEqual(1);
+      expect(rule.rules.get(0).endOffset).toEqual(28);
+      expect(rule.rules.get(0).cssText).toEqual(".rule-1 { display: block; }");
+
+      expect(rule.rules.get(1).startOffset).toEqual(29);
+      expect(rule.rules.get(1).endOffset).toEqual(50);
+      expect(rule.rules.get(1).cssText).toEqual(".test { width: 24px }");
+
+      expect(rule.rules.get(2).startOffset).toEqual(51);
+      expect(rule.rules.get(2).endOffset).toEqual(76);
+      expect(rule.rules.get(2).cssText).toEqual(".rule-2{ display: none; }");
+    });
+
+    it("Successfully inserted new CSS rule into 2 Level rule's hierarchy", function(){
+      var rule = new VirtualGroupingRule({
+        type: 4,
+        startOffset: 0,
+        endOffset: 84,
+        cssText: "@supports { @media print { .rule-1 { display: block; } .rule-2{ display: none; } } }"
+      });
+
+      rule.rules.get(0).insertRule("body { width: 24px }", 1);
+
+      expect(rule.cssText).toEqual("@supports { @media print { .rule-1 { display: block; } body { width: 24px } .rule-2{ display: none; } } }");
+      expect(rule.startOffset).toEqual(0);
+      expect(rule.endOffset).toEqual(105);
+      expect(rule.rules.length).toEqual(1);
+
+      expect(rule.rules.get(0).cssText).toEqual("@media print { .rule-1 { display: block; } body { width: 24px } .rule-2{ display: none; } }");
+      expect(rule.rules.get(0).startOffset).toEqual(1);
+      expect(rule.rules.get(0).endOffset).toEqual(92);
+      expect(rule.rules.get(0).rules.length).toEqual(3);
+
+      expect(rule.rules.get(0).rules.get(0).startOffset).toEqual(1);
+      expect(rule.rules.get(0).rules.get(0).endOffset).toEqual(28);
+      expect(rule.rules.get(0).rules.get(0).cssText).toEqual(".rule-1 { display: block; }");
+
+      expect(rule.rules.get(0).rules.get(1).startOffset).toEqual(29);
+      expect(rule.rules.get(0).rules.get(1).endOffset).toEqual(49);
+      expect(rule.rules.get(0).rules.get(1).cssText).toEqual("body { width: 24px }");
+
+      expect(rule.rules.get(0).rules.get(2).startOffset).toEqual(50);
+      expect(rule.rules.get(0).rules.get(2).endOffset).toEqual(75);
+      expect(rule.rules.get(0).rules.get(2).cssText).toEqual(".rule-2{ display: none; }");
+    });
+  });
+
+  describe("deleteRule()", function(){
+    it("Threw a TypeError when index was not a number", function(){
+      var rule = new VirtualGroupingRule({
+        type: 4,
+        startOffset: 0,
+        endOffset: 91,
+        cssText: "@media print { .rule-1 { display: block; } body { width: 24px } .rule-2{ display: none; } }"
+      });
+
+      expect(function(){
+        rule.deleteRule("1");
+      }).toThrowError(TypeError);
+    });
+
+    it("Threw a Error when index was a negative number", function(){
+      var rule = new VirtualGroupingRule({
+        type: 4,
+        startOffset: 0,
+        endOffset: 91,
+        cssText: "@media print { .rule-1 { display: block; } body { width: 24px } .rule-2{ display: none; } }"
+      });
+
+      expect(function(){
+        rule.deleteRule(-1);
+      }).toThrowError(Error);
+    });
+
+    it("Threw a Error when index was larger then child rules length", function(){
+      var rule = new VirtualGroupingRule({
+        type: 4,
+        startOffset: 0,
+        endOffset: 91,
+        cssText: "@media print { .rule-1 { display: block; } body { width: 24px } .rule-2{ display: none; } }"
+      });
+
+      expect(function(){
+        rule.deleteRule(10);
+      }).toThrowError(Error);
+    });
+
+    it("Successfully deleted a child rule at the middle of the VirtualGroupingRule", function(){
+      var rule = new VirtualGroupingRule({
+        type: 4,
+        startOffset: 0,
+        endOffset: 92,
+        cssText: "@media print { .rule-1 { display: block; } body { width: 24px } .rule-2 { display: none; } }"
+      });
+
+      rule.deleteRule(1);
+
+      expect(rule.cssText).toEqual("@media print { .rule-1 { display: block; } .rule-2 { display: none; } }");
+      expect(rule.startOffset).toEqual(0);
+      expect(rule.endOffset).toEqual(71);
+      expect(rule.rules.length).toEqual(2);
+
+      expect(rule.rules.get(0).cssText).toEqual(".rule-1 { display: block; }");
+      expect(rule.rules.get(0).startOffset).toEqual(1);
+      expect(rule.rules.get(0).endOffset).toEqual(28);
+
+      expect(rule.rules.get(1).cssText).toEqual(".rule-2 { display: none; }");
+      expect(rule.rules.get(1).startOffset).toEqual(29);
+      expect(rule.rules.get(1).endOffset).toEqual(55);
+    });
+
+    it("Successfully deleted a child rule at the trail of the VirtualGroupingRule", function(){
+      var rule = new VirtualGroupingRule({
+        type: 4,
+        startOffset: 0,
+        endOffset: 92,
+        cssText: "@media print { .rule-1 { display: block; } body { width: 24px } .rule-2 { display: none; } }"
+      });
+
+      rule.deleteRule(2);
+
+      expect(rule.cssText).toEqual("@media print { .rule-1 { display: block; } body { width: 24px } }");
+      expect(rule.startOffset).toEqual(0);
+      expect(rule.endOffset).toEqual(65);
+      expect(rule.rules.length).toEqual(2);
+
+      expect(rule.rules.get(0).cssText).toEqual(".rule-1 { display: block; }");
+      expect(rule.rules.get(0).startOffset).toEqual(1);
+      expect(rule.rules.get(0).endOffset).toEqual(28);
+
+      expect(rule.rules.get(1).cssText).toEqual("body { width: 24px }");
+      expect(rule.rules.get(1).startOffset).toEqual(29);
+      expect(rule.rules.get(1).endOffset).toEqual(49);
+    });
+
+    it("Successfully deleted a child rule at the head of the VirtualGroupingRule", function(){
+      var rule = new VirtualGroupingRule({
+        type: 4,
+        startOffset: 0,
+        endOffset: 92,
+        cssText: "@media print { .rule-1 { display: block; } body { width: 24px } .rule-2 { display: none; } }"
+      });
+
+      rule.deleteRule(0);
+
+      expect(rule.cssText).toEqual("@media print { body { width: 24px } .rule-2 { display: none; } }");
+      expect(rule.startOffset).toEqual(0);
+      expect(rule.endOffset).toEqual(64);
+      expect(rule.rules.length).toEqual(2);
+
+      expect(rule.rules.get(0).cssText).toEqual("body { width: 24px }");
+      expect(rule.rules.get(0).startOffset).toEqual(1);
+      expect(rule.rules.get(0).endOffset).toEqual(21);
+
+      expect(rule.rules.get(1).cssText).toEqual(".rule-2 { display: none; }");
+      expect(rule.rules.get(1).startOffset).toEqual(22);
+      expect(rule.rules.get(1).endOffset).toEqual(48);
     });
   });
 });

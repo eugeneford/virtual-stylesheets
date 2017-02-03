@@ -192,7 +192,7 @@ describe("VirtualNamespaceRule", function(){
       var rule = new VirtualNamespaceRule({
         type: 10,
         startOffset: 0,
-        endOffset: 15, 
+        endOffset: 15,
         cssText: "@namespace svg;"
       });
 
