@@ -1,8 +1,8 @@
 {
   "name": "virtual-stylesheets", 
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "A complex string based CSS managment library",
-  "main": "dist/virtual-sylesheets.js",
+  "main": "dist/virtual-stylesheets.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/eugeneford/virtual-stylesheets.git"
