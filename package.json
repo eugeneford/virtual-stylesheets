@@ -1,6 +1,6 @@
 {
   "name": "virtual-stylesheets", 
-  "version": "0.8.2",
+  "version": "0.8.3",
   "description": "A complex string based CSS managment library",
   "main": "dist/virtual-stylesheets.js",
   "repository": {

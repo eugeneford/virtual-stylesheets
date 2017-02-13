@@ -236,7 +236,7 @@ class VirtualTokenizer {
       case AT_SIGN:
         return VirtualTokenizer.getAtRuleToken(cssText, startIndex);
 
-      case CARRIAGE_RETURN:  
+      case CARRIAGE_RETURN:
       case NEW_LINE:
       case WHITESPACE:
         return VirtualTokenizer.getWhitespaceToken(cssText, startIndex);
