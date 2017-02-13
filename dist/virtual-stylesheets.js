@@ -2534,6 +2534,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var WHITESPACE = ' '.charCodeAt(0);
 	var NEW_LINE = '\n'.charCodeAt(0);
+	var CARRIAGE_RETURN = 13;
 	var SLASH = '\\'.charCodeAt(0);
 	var BACKSLASH = '/'.charCodeAt(0);
 	var HASH = '#'.charCodeAt(0);
@@ -2723,7 +2724,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      while (index < cssText.length) {
 	        nextCode = cssText.charCodeAt(index);
 
-	        if (nextCode !== WHITESPACE && nextCode !== NEW_LINE) break;
+	        if (nextCode !== WHITESPACE && nextCode !== NEW_LINE && nextCode !== CARRIAGE_RETURN) break;
 
 	        length++;
 	        index++;
@@ -2764,6 +2765,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            if ((hypothesis = VirtualTokenizer.getAtRuleToken(cssText, index)) && hypothesis.type === TYPES.AT_RULE_TOKEN) isNextTokenBounds = true;
 	            break;
 
+	          case CARRIAGE_RETURN:
 	          case NEW_LINE:
 	          case WHITESPACE:
 	            isNextTokenBounds = true;
@@ -2806,6 +2808,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        case AT_SIGN:
 	          return VirtualTokenizer.getAtRuleToken(cssText, startIndex);
 
+	        case CARRIAGE_RETURN:
 	        case NEW_LINE:
 	        case WHITESPACE:
 	          return VirtualTokenizer.getWhitespaceToken(cssText, startIndex);

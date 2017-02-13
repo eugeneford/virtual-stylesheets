@@ -8,6 +8,7 @@ const TYPES = {
 
 const WHITESPACE =   ' '.charCodeAt(0);
 const NEW_LINE =     '\n'.charCodeAt(0);
+const CARRIAGE_RETURN = 13;
 const SLASH =        '\\'.charCodeAt(0);
 const BACKSLASH =    '/'.charCodeAt(0);
 const HASH =         '#'.charCodeAt(0);
@@ -162,7 +163,7 @@ class VirtualTokenizer {
     while (index < cssText.length) {
       nextCode = cssText.charCodeAt(index);
 
-      if (nextCode !== WHITESPACE && nextCode !== NEW_LINE) break;
+      if (nextCode !== WHITESPACE && nextCode !== NEW_LINE && nextCode !== CARRIAGE_RETURN) break;
 
       length++;
       index++;
@@ -195,6 +196,7 @@ class VirtualTokenizer {
           if ((hypothesis = VirtualTokenizer.getAtRuleToken(cssText, index)) && hypothesis.type === TYPES.AT_RULE_TOKEN) isNextTokenBounds = true;
           break;
 
+        case CARRIAGE_RETURN:
         case NEW_LINE:
         case WHITESPACE:
           isNextTokenBounds = true;
@@ -234,6 +236,7 @@ class VirtualTokenizer {
       case AT_SIGN:
         return VirtualTokenizer.getAtRuleToken(cssText, startIndex);
 
+      case CARRIAGE_RETURN:  
       case NEW_LINE:
       case WHITESPACE:
         return VirtualTokenizer.getWhitespaceToken(cssText, startIndex);
