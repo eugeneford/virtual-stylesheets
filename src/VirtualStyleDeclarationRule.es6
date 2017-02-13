@@ -1,6 +1,7 @@
 import VirtualActions from "./VirtualActions";
 import VirtualRule from "./VirtualRule";
 import VirtualStyleDeclarationParser from "./VirtualStyleDeclarationParser";
+import VirtualList from "./VirtualList";
 
 const NEW_LINE   = "\n".charCodeAt(0);
 const WHITESPACE = " ".charCodeAt(0);

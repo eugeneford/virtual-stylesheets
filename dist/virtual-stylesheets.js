@@ -1306,6 +1306,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _VirtualStyleDeclarationParser2 = _interopRequireDefault(_VirtualStyleDeclarationParser);
 
+	var _VirtualList = __webpack_require__(4);
+
+	var _VirtualList2 = _interopRequireDefault(_VirtualList);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1503,7 +1507,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        declarations = _VirtualStyleDeclarationParser2.default.parse(body);
 
 	        if (declarations.length) {
-	          style = new VirtualList();
+	          style = new _VirtualList2.default();
 
 	          for (i = 0; i < declarations.length; i++) {
 	            style.insert(declarations[i]);
