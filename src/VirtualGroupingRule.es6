@@ -159,7 +159,7 @@ export default class VirtualGroupingRule extends VirtualRule {
         patchDelta = value.length - bounds.endOffset - bounds.startOffset;
         rule.startOffset = 3;
         rule.endOffset = 3 + rule.cssText.length;
-      }  
+      }
 
       // Add injected rule to list
       this.rules.insert(rule, index);
