@@ -515,6 +515,46 @@ describe("VirtualGroupingRule", function(){
       expect(rule.rules.get(0).rules.get(2).endOffset).toEqual(75);
       expect(rule.rules.get(0).rules.get(2).cssText).toEqual(".rule-2{ display: none; }");
     });
+
+    it("Successfully passed reference rule to patch function", function(){
+      var refer;
+      var rule = new VirtualGroupingRule({
+        type: 4,
+        startOffset: 0,
+        endOffset: 70,
+        cssText: "@media print { .rule-1 { display: block; } .rule-2{ display: none; } }"
+      }, null, {
+        prePatchApply: function(rule, patchInfo, ref) {
+          if (patchInfo.action === VirtualStyleSheet.PATCH_INSERT) {
+            refer = ref;
+          }
+        }
+      });
+
+      rule.insertRule("body { width: 24px }", 1);
+
+      expect(".rule-2{ display: none; }").toEqual(refer.cssText);
+    });
+
+    it("Successfully passed the last rule to patch function as the reference, if index was too large", function(){
+      var refer;
+      var rule = new VirtualGroupingRule({
+        type: 4,
+        startOffset: 0,
+        endOffset: 70,
+        cssText: "@media print { .rule-1 { display: block; } .rule-2{ display: none; } }"
+      }, null, {
+        prePatchApply: function(rule, patchInfo, ref) {
+          if (patchInfo.action === VirtualStyleSheet.PATCH_REPLACE) {
+            refer = ref;
+          }
+        }
+      });
+
+      rule.insertRule("body { width: 24px }", 10);
+
+      expect(".rule-2{ display: none; }").toEqual(refer.cssText);
+    });
   });
 
   describe("deleteRule()", function(){
@@ -627,6 +667,26 @@ describe("VirtualGroupingRule", function(){
       expect(rule.rules.get(1).cssText).toEqual(".rule-2 { display: none; }");
       expect(rule.rules.get(1).startOffset).toEqual(22);
       expect(rule.rules.get(1).endOffset).toEqual(48);
+    });
+
+    it("Successfully passed refference rule to patch function", function(){
+      var refer;
+      var rule = new VirtualGroupingRule({
+        type: 4,
+        startOffset: 0,
+        endOffset: 92,
+        cssText: "@media print { .rule-1 { display: block; } body { width: 24px } .rule-2 { display: none; } }"
+      }, null, {
+        prePatchApply: function(rule, patchInfo, ref){
+          if (patchInfo.action === VirtualStyleSheet.PATCH_DELETE) {
+            refer = ref;
+          }
+        }
+      });
+
+      rule.deleteRule(1);
+
+      expect("body { width: 24px }").toEqual(refer.cssText);
     });
   });
 });

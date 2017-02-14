@@ -143,9 +143,6 @@ export default class VirtualGroupingRule extends VirtualRule {
       // Get body block bounds
       bounds = this.getBody();
 
-      // Add injected rule to list
-      this.rules.insert(rule, index);
-
       // Calculate patch data
       if (anchorRule){
         action = VirtualActions.PATCH_INSERT;
@@ -155,6 +152,7 @@ export default class VirtualGroupingRule extends VirtualRule {
         rule.startOffset = anchorRule.startOffset;
         rule.endOffset = anchorRule.startOffset + rule.cssText.length;
       } else {
+        anchorRule = this.rules.get(this.rules.length - 1);
         action = VirtualActions.PATCH_REPLACE;
         start = bounds.startOffset;
         end = bounds.endOffset;
@@ -164,10 +162,13 @@ export default class VirtualGroupingRule extends VirtualRule {
         rule.endOffset = 3 + rule.cssText.length;
       }
 
+      // Add injected rule to list
+      this.rules.insert(rule, index);
+
       // Patch this rule with by inserting created one
       this.patch({
         action, start, end, value, patchDelta, reparse: false
-      });
+      }, anchorRule);
 
       // Update child rules
       this._patchChildRules({
@@ -209,7 +210,7 @@ export default class VirtualGroupingRule extends VirtualRule {
     this.patch({
       action: VirtualActions.PATCH_DELETE,
       start, end, patchDelta
-    });
+    }, rule);
 
     // Update child rule
     this._patchChildRules({

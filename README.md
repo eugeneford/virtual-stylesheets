@@ -113,8 +113,8 @@ In the example used above, all Virtual Rules which are not a type of STYLE_RULE 
 VirtualStyleSheets provides extension points before and after actual parsing of head and body (actually head and body patching actions) of CSSRules, allowing you to make additional decisions based on continuous patching information. 
 ```js
 vss = new VirtualStyleSheet(cssText, {
-  prePatchApply: function (rule, patch) { ... },
-  postPatchApply: function (rule, patch) { ... }
+  prePatchApply: function (rule, patch, ref) { ... },
+  postPatchApply: function (rule, patch, ref) { ... }
 });
 ```
 ### Unknown rules accepting
@@ -447,7 +447,7 @@ class VirtualRule{
   readonly attribute Boolean lazyParsing;
   readonly attribute VirtualRule parentRule;
 
-  void patch(patchInfo);
+  void patch(patchInfo, ref);
   void parse(parseType);
   object getHead();
   object getBody();
@@ -469,7 +469,7 @@ parentRule | Refers to current VirtualRule’s parent rule.
 
 Name | Description
 -------- | -------
-patch(patchInfo) | Updates all internal attributes basing on current cssText attribute with patch data.
+patch(patchInfo, ref) | Updates all internal attributes basing on current cssText attribute with patch data. Ref - is an optional reference rule.
 parse(parseType) | Create an additional set of props basing on its rule type.
 getHead() | Returns the start and end offset values of rule’s head block (basically all before outer "{}" block)
 getBody() | Returns the start and end offset values of rule’s body block (basically all inside outer "{}" block)

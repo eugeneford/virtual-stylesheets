@@ -929,13 +929,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    /**
 	     * Patch current rule props with patchInfo
 	     * @param patchInfo
+	     * @param ref
 	     */
 
 	  }, {
 	    key: 'patch',
-	    value: function patch(patchInfo) {
+	    value: function patch(patchInfo, ref) {
 	      // Invoke pre patching hook
-	      if (this._opts.prePatchApply && this._opts.prePatchApply(this, patchInfo) === _VirtualActions2.default.PATCH_REJECT) return;
+	      if (this._opts.prePatchApply && this._opts.prePatchApply(this, patchInfo, ref) === _VirtualActions2.default.PATCH_REJECT) return;
 
 	      // Accept rule reparse as default postPatch behavior
 	      if (patchInfo.reparse === undefined) {
@@ -945,7 +946,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this._patchApply(patchInfo);
 
 	      // Invoke post patching hook
-	      if (this._opts.postPatchApply) this._opts.postPatchApply(this, patchInfo);
+	      if (this._opts.postPatchApply) this._opts.postPatchApply(this, patchInfo, ref);
 	    }
 
 	    /**
@@ -2421,9 +2422,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // Get body block bounds
 	        bounds = this.getBody();
 
-	        // Add injected rule to list
-	        this.rules.insert(rule, index);
-
 	        // Calculate patch data
 	        if (anchorRule) {
 	          action = _VirtualActions2.default.PATCH_INSERT;
@@ -2433,6 +2431,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          rule.startOffset = anchorRule.startOffset;
 	          rule.endOffset = anchorRule.startOffset + rule.cssText.length;
 	        } else {
+	          anchorRule = this.rules.get(this.rules.length - 1);
 	          action = _VirtualActions2.default.PATCH_REPLACE;
 	          start = bounds.startOffset;
 	          end = bounds.endOffset;
@@ -2442,10 +2441,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	          rule.endOffset = 3 + rule.cssText.length;
 	        }
 
+	        // Add injected rule to list
+	        this.rules.insert(rule, index);
+
 	        // Patch this rule with by inserting created one
 	        this.patch({
 	          action: action, start: start, end: end, value: value, patchDelta: patchDelta, reparse: false
-	        });
+	        }, anchorRule);
 
 	        // Update child rules
 	        this._patchChildRules({
@@ -2496,7 +2498,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.patch({
 	        action: _VirtualActions2.default.PATCH_DELETE,
 	        start: start, end: end, patchDelta: patchDelta
-	      });
+	      }, rule);
 
 	      // Update child rule
 	      this._patchChildRules({
