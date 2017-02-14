@@ -2431,7 +2431,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	          rule.startOffset = anchorRule.startOffset;
 	          rule.endOffset = anchorRule.startOffset + rule.cssText.length;
 	        } else {
-	          anchorRule = this.rules.get(this.rules.length - 1);
 	          action = _VirtualActions2.default.PATCH_REPLACE;
 	          start = bounds.startOffset;
 	          end = bounds.endOffset;

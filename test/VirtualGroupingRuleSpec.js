@@ -536,7 +536,7 @@ describe("VirtualGroupingRule", function(){
       expect(".rule-2{ display: none; }").toEqual(refer.cssText);
     });
 
-    it("Successfully passed the last rule to patch function as the reference, if index was too large", function(){
+    it("Successfully passed undefined to patch function as the reference, if index was too large", function(){
       var refer;
       var rule = new VirtualGroupingRule({
         type: 4,
@@ -553,7 +553,7 @@ describe("VirtualGroupingRule", function(){
 
       rule.insertRule("body { width: 24px }", 10);
 
-      expect(".rule-2{ display: none; }").toEqual(refer.cssText);
+      expect(undefined).toEqual(refer);
     });
   });
 

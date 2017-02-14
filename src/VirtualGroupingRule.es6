@@ -152,7 +152,6 @@ export default class VirtualGroupingRule extends VirtualRule {
         rule.startOffset = anchorRule.startOffset;
         rule.endOffset = anchorRule.startOffset + rule.cssText.length;
       } else {
-        anchorRule = this.rules.get(this.rules.length - 1);
         action = VirtualActions.PATCH_REPLACE;
         start = bounds.startOffset;
         end = bounds.endOffset;
@@ -160,7 +159,7 @@ export default class VirtualGroupingRule extends VirtualRule {
         patchDelta = value.length - bounds.endOffset - bounds.startOffset;
         rule.startOffset = 3;
         rule.endOffset = 3 + rule.cssText.length;
-      }
+      }  
 
       // Add injected rule to list
       this.rules.insert(rule, index);
