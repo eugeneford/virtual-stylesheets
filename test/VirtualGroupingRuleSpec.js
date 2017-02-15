@@ -728,7 +728,7 @@ describe("VirtualGroupingRule", function(){
       expect(rule.cssText).toEqual("@media print { .rule-1 { display: block; } .test { width: 24px } }");
       expect(rule.startOffset).toEqual(0);
       expect(rule.endOffset).toEqual(66);
-      expect(rule.rules.length).toEqual(2);  
+      expect(rule.rules.length).toEqual(2);
 
       expect(rule.rules.get(0).startOffset).toEqual(1);
       expect(rule.rules.get(0).endOffset).toEqual(28);

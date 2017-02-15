@@ -447,7 +447,7 @@ class VirtualRule{
   readonly attribute Boolean lazyParsing;
   readonly attribute VirtualRule parentRule;
 
-  void patch(patchInfo, ref);
+  void patch(patchInfo);
   void parse(parseType);
   object getHead();
   object getBody();
@@ -469,7 +469,7 @@ parentRule | Refers to current VirtualRule’s parent rule.
 
 Name | Description
 -------- | -------
-patch(patchInfo, ref) | Updates all internal attributes basing on current cssText attribute with patch data. Ref - is an optional reference rule.
+patch(patchInfo) | Updates all internal attributes basing on current cssText attribute with patch data.
 parse(parseType) | Create an additional set of props basing on its rule type.
 getHead() | Returns the start and end offset values of rule’s head block (basically all before outer "{}" block)
 getBody() | Returns the start and end offset values of rule’s body block (basically all inside outer "{}" block)
@@ -499,6 +499,7 @@ insertProperty(id, property, value) | Inserts target property at specified posit
 ```es6
 class VirtualGroupingRule : VirtualRule  {
   readonly attribute VirtualRuleList rules;
+  void patch(patchInfo, ref);
 }
 ```
 
@@ -512,7 +513,9 @@ rules | Represents a set of all parsed CSS Rules described in this VirtualGroupi
 
 Name | Description
 -------- | -------
+patch(patchInfo, ref) | Updates all internal attributes basing on current cssText attribute with patch data. Ref - is an optional reference rule.
 insertRule(ruleText, index) | Creates a new VirtualRule from string and inserts it at specified position
+replaceRule(ruleText, index) | Replaces an existing rule at specified position with target one.
 deleteRule(index) | Deletes an existing rule at specified position.
 
 ### VirtualStyleSheet
