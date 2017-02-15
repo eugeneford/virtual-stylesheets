@@ -151,6 +151,22 @@ describe("Virtual Rule", function() {
         endOffset: 36
       });
     });
+
+    it("sadasdasd", function() {
+      var rule = new VirtualRule({
+        type: 1,
+        startOffset:0,
+        endOffset:324,
+        cssText: ".pswp--animate_opacity {  /* 0.001, because opacity:0 doesn't trigger Paint action, which causes lag at start of transition */  opacity: 0.001;  will-change: opacity;  /* for open/close transition */  -webkit-transition: opacity 333ms cubic-bezier(0.4, 0, 0.22, 1);  transition: opacity 333ms cubic-bezier(0.4, 0, 0.22, 1);}"
+      });
+
+      var body = rule.getBody();
+
+      expect(body).toEqual({
+        startOffset: 24,
+        endOffset: 323
+      });
+    });
   });
 
   describe("patch()", function(){

@@ -1,11 +1,13 @@
 import VirtualActions from "./VirtualActions";
 
-const SLASH =        '\\'.charCodeAt(0);
-const SEMICOLON =    ';'.charCodeAt(0);
-const OPEN_CURLY =   '{'.charCodeAt(0);
-const CLOSE_CURLY =  '}'.charCodeAt(0);
+const SLASH        = '\\'.charCodeAt(0);
+const SEMICOLON    = ';'.charCodeAt(0);
+const OPEN_CURLY   = '{'.charCodeAt(0);
+const CLOSE_CURLY  = '}'.charCodeAt(0);
 const SINGLE_QUOTE = '\''.charCodeAt(0);
 const DOUBLE_QUOTE = '\"'.charCodeAt(0);
+const ASTERISK     = '*'.charCodeAt(0);
+const BACKSLASH    = '/'.charCodeAt(0);
 
 export default class VirtualRule {
   constructor(ruleInfo, parentRule = null, opts = {}) {
@@ -220,31 +222,40 @@ export default class VirtualRule {
    * @returns {object}
    */
   getBody(){
-    let i, quotesCode, nextCode, prevCode, startOffset, endOffset, openCurlyCount = 0;
+    let i, quotesCode, nextCode, prevCode, startOffset, endOffset, openCurlyCount = 0, commentOpened;
 
     for (i = 0; i < this.cssText.length; i++) {
       nextCode = this.cssText.charCodeAt(i);
 
-      // Check if " or ' was spotted without escape \
-      if (prevCode && prevCode !== SLASH && (nextCode === SINGLE_QUOTE || nextCode == DOUBLE_QUOTE)) {
-        if (!!quotesCode) {
-          if (nextCode === quotesCode) quotesCode = undefined;
-        } else {
-          quotesCode = nextCode;
+      // If there are not opened comment
+      if (!commentOpened) {
+        if (prevCode === BACKSLASH && nextCode === ASTERISK) commentOpened = true;
+
+        // Check if " or ' was spotted without escape \
+        if (prevCode && prevCode !== SLASH && (nextCode === SINGLE_QUOTE || nextCode == DOUBLE_QUOTE)) {
+          if (!!quotesCode) {
+            if (nextCode === quotesCode) quotesCode = undefined;
+          } else {
+            quotesCode = nextCode;
+          }
+        }
+
+        if (!startOffset && !quotesCode && i < this.cssText.length - 1 && nextCode === OPEN_CURLY){
+          startOffset = i + 1;
+        }
+
+        if (!quotesCode && openCurlyCount === 0 && nextCode === SEMICOLON) return null;
+        if (!quotesCode && nextCode === OPEN_CURLY) openCurlyCount++;
+        if (!quotesCode && nextCode === CLOSE_CURLY) openCurlyCount--;
+
+        if (!quotesCode && !openCurlyCount && nextCode === CLOSE_CURLY) {
+          endOffset = i;
+          break;
         }
       }
-
-      if (!startOffset && !quotesCode && i < this.cssText.length - 1 && nextCode === OPEN_CURLY){
-        startOffset = i + 1;
-      }
-
-      if (!quotesCode && openCurlyCount === 0 && nextCode === SEMICOLON) return null;
-      if (!quotesCode && nextCode === OPEN_CURLY) openCurlyCount++;
-      if (!quotesCode && nextCode === CLOSE_CURLY) openCurlyCount--;
-
-      if (!quotesCode && !openCurlyCount && nextCode === CLOSE_CURLY) {
-        endOffset = i;
-        break;
+      // Otherwise, check if comment is closed
+      else {
+        if (prevCode === ASTERISK && nextCode === BACKSLASH) commentOpened = false;
       }
 
       prevCode = nextCode;

@@ -751,6 +751,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	var CLOSE_CURLY = '}'.charCodeAt(0);
 	var SINGLE_QUOTE = '\''.charCodeAt(0);
 	var DOUBLE_QUOTE = '\"'.charCodeAt(0);
+	var ASTERISK = '*'.charCodeAt(0);
+	var BACKSLASH = '/'.charCodeAt(0);
 
 	var VirtualRule = function () {
 	  function VirtualRule(ruleInfo) {
@@ -1002,32 +1004,42 @@ return /******/ (function(modules) { // webpackBootstrap
 	          prevCode = void 0,
 	          startOffset = void 0,
 	          endOffset = void 0,
-	          openCurlyCount = 0;
+	          openCurlyCount = 0,
+	          commentOpened = void 0;
 
 	      for (i = 0; i < this.cssText.length; i++) {
 	        nextCode = this.cssText.charCodeAt(i);
 
-	        // Check if " or ' was spotted without escape \
-	        if (prevCode && prevCode !== SLASH && (nextCode === SINGLE_QUOTE || nextCode == DOUBLE_QUOTE)) {
-	          if (!!quotesCode) {
-	            if (nextCode === quotesCode) quotesCode = undefined;
-	          } else {
-	            quotesCode = nextCode;
+	        // If there are not opened comment
+	        if (!commentOpened) {
+	          if (prevCode === BACKSLASH && nextCode === ASTERISK) commentOpened = true;
+
+	          // Check if " or ' was spotted without escape \
+	          if (prevCode && prevCode !== SLASH && (nextCode === SINGLE_QUOTE || nextCode == DOUBLE_QUOTE)) {
+	            if (!!quotesCode) {
+	              if (nextCode === quotesCode) quotesCode = undefined;
+	            } else {
+	              quotesCode = nextCode;
+	            }
+	          }
+
+	          if (!startOffset && !quotesCode && i < this.cssText.length - 1 && nextCode === OPEN_CURLY) {
+	            startOffset = i + 1;
+	          }
+
+	          if (!quotesCode && openCurlyCount === 0 && nextCode === SEMICOLON) return null;
+	          if (!quotesCode && nextCode === OPEN_CURLY) openCurlyCount++;
+	          if (!quotesCode && nextCode === CLOSE_CURLY) openCurlyCount--;
+
+	          if (!quotesCode && !openCurlyCount && nextCode === CLOSE_CURLY) {
+	            endOffset = i;
+	            break;
 	          }
 	        }
-
-	        if (!startOffset && !quotesCode && i < this.cssText.length - 1 && nextCode === OPEN_CURLY) {
-	          startOffset = i + 1;
-	        }
-
-	        if (!quotesCode && openCurlyCount === 0 && nextCode === SEMICOLON) return null;
-	        if (!quotesCode && nextCode === OPEN_CURLY) openCurlyCount++;
-	        if (!quotesCode && nextCode === CLOSE_CURLY) openCurlyCount--;
-
-	        if (!quotesCode && !openCurlyCount && nextCode === CLOSE_CURLY) {
-	          endOffset = i;
-	          break;
-	        }
+	        // Otherwise, check if comment is closed
+	        else {
+	            if (prevCode === ASTERISK && nextCode === BACKSLASH) commentOpened = false;
+	          }
 
 	        prevCode = nextCode;
 	      }
@@ -1500,7 +1512,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            style = void 0,
 	            i = void 0;
 
-	        // Get Rule body bounds (startOffset and endOffset)
+	        // Get Rule body bounds (startOffset and endOffset) 
 	        bounds = this.getBody();
 	        body = this.cssText.substring(bounds.startOffset, bounds.endOffset);
 
