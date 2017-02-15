@@ -557,6 +557,189 @@ describe("VirtualGroupingRule", function(){
     });
   });
 
+  describe("replaceRule()", function(){
+    it("Threw a TypeError when ruleText was not a string", function(){
+      var rule = new VirtualGroupingRule({
+        type: 4,
+        startOffset: 0,
+        endOffset: 0,
+        cssText: "@media print { }"
+      });
+
+      expect(function(){
+        rule.replaceRule(1,1);
+      }).toThrowError(TypeError);
+    });
+
+    it("Threw a TypeError when index was not a number", function(){
+      var rule = new VirtualGroupingRule({
+        type: 4,
+        startOffset: 0,
+        endOffset: 0,
+        cssText: "@media print { }"
+      });
+
+      expect(function(){
+        rule.replaceRule("body { width: 24px; }", "1");
+      }).toThrowError(TypeError);
+    });
+
+    it("Threw an Error when index was a negative number", function(){
+      var rule = new VirtualGroupingRule({
+        type: 4,
+        startOffset: 0,
+        endOffset: 0,
+        cssText: "@media print { }"
+      });
+
+      expect(function(){
+        rule.replaceRule("body { width: 24px; }", -10);
+      }).toThrowError(Error);
+    });
+
+    it("Threw an Error when ruleText was not a css rule", function(){
+      var rule = new VirtualGroupingRule({
+        type: 4,
+        startOffset: 0,
+        endOffset: 0,
+        cssText: "@media print { }"
+      });
+
+      expect(function(){
+        rule.replaceRule("body", 0);
+      }).toThrowError(SyntaxError);
+    });
+
+    it("Threw a Error when index was larger then child rules length", function(){
+      var rule = new VirtualGroupingRule({
+        type: 4,
+        startOffset: 0,
+        endOffset: 91,
+        cssText: "@media print { .rule-1 { display: block; } body { width: 24px } .rule-2{ display: none; } }"
+      });
+
+      expect(function(){
+        rule.replaceRule("body { width: 24px; }", 10);
+      }).toThrowError(Error);
+    });
+
+    it("Successfuly replaced existing rule by target one", function(){
+      var rule = new VirtualGroupingRule({
+        type: 4,
+        startOffset: 0,
+        endOffset: 91,
+        cssText: "@media print { .rule-1 { display: block; } body { width: 24px } .rule-2{ display: none; } }"
+      });
+
+      rule.replaceRule("h1 { font-size: 24px; }", 1);
+
+      expect(rule.cssText).toEqual("@media print { .rule-1 { display: block; } h1 { font-size: 24px; } .rule-2{ display: none; } }");
+      expect(rule.startOffset).toEqual(0);
+      expect(rule.endOffset).toEqual(94);
+      expect(rule.rules.length).toEqual(3);
+
+      expect(rule.rules.get(0).cssText).toEqual(".rule-1 { display: block; }");
+      expect(rule.rules.get(0).startOffset).toEqual(1);
+      expect(rule.rules.get(0).endOffset).toEqual(28);
+      expect(rule.rules.get(0).selectorText).toEqual(".rule-1");
+
+      expect(rule.rules.get(1).cssText).toEqual("h1 { font-size: 24px; }");
+      expect(rule.rules.get(1).startOffset).toEqual(29);
+      expect(rule.rules.get(1).endOffset).toEqual(52);
+      expect(rule.rules.get(1).selectorText).toEqual("h1");
+
+      expect(rule.rules.get(2).cssText).toEqual(".rule-2{ display: none; }");
+      expect(rule.rules.get(2).startOffset).toEqual(53);
+      expect(rule.rules.get(2).endOffset).toEqual(78);
+      expect(rule.rules.get(2).selectorText).toEqual(".rule-2");
+    });
+
+    it("Successfully passed reference rule to patch function", function(){
+      var refer;
+      var rule = new VirtualGroupingRule({
+        type: 4,
+        startOffset: 0,
+        endOffset: 70,
+        cssText: "@media print { .rule-1 { display: block; } .rule-2{ display: none; } }"
+      }, null, {
+        prePatchApply: function(rule, patchInfo, ref) {
+          if (patchInfo.action === VirtualStyleSheet.PATCH_REPLACE) {
+            refer = ref;
+          }
+        }
+      });
+
+      rule.replaceRule("body { width: 24px }", 1);
+
+      expect(".rule-2{ display: none; }").toEqual(refer.cssText);
+    });
+
+    it("Has correct child rules set on prePatchApply", function(){
+      var refer;
+      var rule = new VirtualGroupingRule({
+        type: 4,
+        startOffset: 0,
+        endOffset: 70,
+        cssText: "@media print { .rule-1 { display: block; } .rule-2{ display: none; } }"
+      }, null, {
+        prePatchApply: function(rule, patchInfo, ref) {
+          if (patchInfo.action === VirtualStyleSheet.PATCH_REPLACE) {
+            refer = rule.rules.get(1);
+          }
+        }
+      });
+
+      rule.replaceRule("body { width: 24px }", 1);
+
+      expect(".rule-2{ display: none; }").toEqual(refer.cssText);
+    });
+
+    it("Has correct child rules set on postPatchApply", function(){
+      var refer;
+      var rule = new VirtualGroupingRule({
+        type: 4,
+        startOffset: 0,
+        endOffset: 70,
+        cssText: "@media print { .rule-1 { display: block; } .rule-2{ display: none; } }"
+      }, null, {
+        postPatchApply: function(rule, patchInfo, ref) {
+          if (patchInfo.action === VirtualStyleSheet.PATCH_REPLACE) {
+            refer = rule.rules.get(1);
+          }
+        }
+      });
+
+      rule.replaceRule("body { width: 24px }", 1);
+
+      expect("body { width: 24px }").toEqual(refer.cssText);
+    });
+
+    it("Successfully changed parent rule from replaced child rule", function(){
+      var rule = new VirtualGroupingRule({
+        type: 4,
+        startOffset: 0,
+        endOffset: 70,
+        cssText: "@media print { .rule-1 { display: block; } .rule-2{ display: none; } }"
+      });
+
+      rule.replaceRule("body { width: 24px }", 1);
+      rule.rules.get(1).setSelector(".test ");
+
+      expect(rule.cssText).toEqual("@media print { .rule-1 { display: block; } .test { width: 24px } }");
+      expect(rule.startOffset).toEqual(0);
+      expect(rule.endOffset).toEqual(66);
+      expect(rule.rules.length).toEqual(2);  
+
+      expect(rule.rules.get(0).startOffset).toEqual(1);
+      expect(rule.rules.get(0).endOffset).toEqual(28);
+      expect(rule.rules.get(0).cssText).toEqual(".rule-1 { display: block; }");
+
+      expect(rule.rules.get(1).startOffset).toEqual(29);
+      expect(rule.rules.get(1).endOffset).toEqual(50);
+      expect(rule.rules.get(1).cssText).toEqual(".test { width: 24px }");
+    });
+  });
+
   describe("deleteRule()", function(){
     it("Threw a TypeError when index was not a number", function(){
       var rule = new VirtualGroupingRule({
@@ -687,6 +870,66 @@ describe("VirtualGroupingRule", function(){
       rule.deleteRule(1);
 
       expect("body { width: 24px }").toEqual(refer.cssText);
+    });
+
+    it("Has correct child rules set on prePatchApply", function(){
+      var length;
+      var rule = new VirtualGroupingRule({
+        type: 4,
+        startOffset: 0,
+        endOffset: 70,
+        cssText: "@media print { .rule-1 { display: block; } .rule-2{ display: none; } }"
+      }, null, {
+        prePatchApply: function(rule, patchInfo, ref) {
+          if (patchInfo.action === VirtualStyleSheet.PATCH_DELETE) {
+            length = rule.rules.length;
+          }
+        }
+      });
+
+      rule.deleteRule(1);
+
+      expect(2).toEqual(length);
+    });
+
+    it("Has correct child rules set on postPatchApply", function(){
+      var length;
+      var rule = new VirtualGroupingRule({
+        type: 4,
+        startOffset: 0,
+        endOffset: 70,
+        cssText: "@media print { .rule-1 { display: block; } .rule-2{ display: none; } }"
+      }, null, {
+        postPatchApply: function(rule, patchInfo, ref) {
+          if (patchInfo.action === VirtualStyleSheet.PATCH_DELETE) {
+            length = rule.rules.length;
+          }
+        }
+      });
+
+      rule.deleteRule(1);
+
+      expect(1).toEqual(length);
+    });
+
+    it("Didnt delete child rule if patch was rejected", function(){
+      var length;
+      var rule = new VirtualGroupingRule({
+        type: 4,
+        startOffset: 0,
+        endOffset: 70,
+        cssText: "@media print { .rule-1 { display: block; } .rule-2{ display: none; } }"
+      }, null, {
+        prePatchApply: function(rule, patchInfo, ref) {
+          if (patchInfo.action === VirtualStyleSheet.PATCH_DELETE) {
+            return VirtualStyleSheet.PATCH_REJECT;
+          }
+        }
+      });
+
+      rule.deleteRule(1);
+
+      expect(rule.rules.length).toEqual(2);
     });
   });
 });

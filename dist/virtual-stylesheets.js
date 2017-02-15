@@ -934,9 +934,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  }, {
 	    key: 'patch',
-	    value: function patch(patchInfo, ref) {
+	    value: function patch(patchInfo) {
 	      // Invoke pre patching hook
-	      if (this._opts.prePatchApply && this._opts.prePatchApply(this, patchInfo, ref) === _VirtualActions2.default.PATCH_REJECT) return;
+	      if (this._opts.prePatchApply && this._opts.prePatchApply(this, patchInfo) === _VirtualActions2.default.PATCH_REJECT) return;
 
 	      // Accept rule reparse as default postPatch behavior
 	      if (patchInfo.reparse === undefined) {
@@ -946,7 +946,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this._patchApply(patchInfo);
 
 	      // Invoke post patching hook
-	      if (this._opts.postPatchApply) this._opts.postPatchApply(this, patchInfo, ref);
+	      if (this._opts.postPatchApply) this._opts.postPatchApply(this, patchInfo);
 	    }
 
 	    /**
@@ -2391,7 +2391,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	          patchDelta = void 0,
 	          bounds = void 0,
 	          value = void 0,
-	          action = void 0;
+	          action = void 0,
+	          mutateFunc = void 0;
 
 	      // Try to get a token from ruleText
 	      tokens = _VirtualTokenizer2.default.tokenize(ruleText);
@@ -2434,19 +2435,109 @@ return /******/ (function(modules) { // webpackBootstrap
 	          action = _VirtualActions2.default.PATCH_REPLACE;
 	          start = bounds.startOffset;
 	          end = bounds.endOffset;
+
 	          value = "\n  " + rule.cssText + "\n";
+
 	          patchDelta = value.length - bounds.endOffset - bounds.startOffset;
 	          rule.startOffset = 3;
 	          rule.endOffset = 3 + rule.cssText.length;
 	        }
 
-	        // Add injected rule to list
-	        this.rules.insert(rule, index);
+	        // Create this.rules insert mutation
+	        mutateFunc = function (parentRule, rule, index) {
+	          function call() {
+	            parentRule.rules.insert(rule, index);
+	          }
+
+	          return call;
+	        }(this, rule, index);
 
 	        // Patch this rule with by inserting created one
 	        this.patch({
 	          action: action, start: start, end: end, value: value, patchDelta: patchDelta, reparse: false
-	        }, anchorRule);
+	        }, anchorRule, mutateFunc);
+
+	        // Update child rules
+	        this._patchChildRules({
+	          action: _VirtualActions2.default.PATCH_UPDATE, patchDelta: patchDelta
+	        }, index + 1);
+	      }
+	    }
+
+	    /**
+	     * Replace an existing VirtualRule at specified index with target ruleText
+	     * @param ruleText
+	     * @param index
+	     */
+
+	  }, {
+	    key: "replaceRule",
+	    value: function replaceRule(ruleText, index) {
+	      if (typeof ruleText !== "string") throw new TypeError("RuleText is not a string");
+	      if (typeof index !== "number") throw new TypeError("Index is not a number");
+	      if (index < 0) throw new Error("Index should be a positive number");
+	      if (this.rules && this.rules.length && index >= this.rules.length) throw new Error("Index is larger the child rules count");
+
+	      var tokens = void 0,
+	          rule = void 0,
+	          anchorRule = void 0,
+	          start = void 0,
+	          end = void 0,
+	          patchDelta = void 0,
+	          bounds = void 0,
+	          value = void 0,
+	          action = void 0,
+	          mutateFunc = void 0;
+
+	      // Try to get a token from ruleText
+	      tokens = _VirtualTokenizer2.default.tokenize(ruleText);
+
+	      // Throw an error if there are no tokens
+	      if (!tokens.length) throw SyntaxError("RuleText is not a CSS rule");
+
+	      rule = _VirtualRuleFactory2.default.createFromToken(tokens[0], this, this._opts);
+
+	      /*istanbul ignore else*/
+	      if (rule) {
+	        // Inject grouping rule to _patchApply function
+	        rule._patchApply = function (rule, _patchApply) {
+	          function call(patchInfo) {
+	            _patchApply.bind(rule)(patchInfo);
+	            rule.parentRule._patchParent.bind(rule)(patchInfo);
+	          }
+
+	          return call;
+	        }(rule, rule._patchApply);
+
+	        // Try to get anchor rule
+	        anchorRule = this.rules.get(index);
+
+	        // Get body block bounds
+	        bounds = this.getBody();
+
+	        // Calculate patch data
+	        action = _VirtualActions2.default.PATCH_REPLACE;
+	        start = bounds.startOffset + anchorRule.startOffset;
+	        end = bounds.startOffset + anchorRule.endOffset;
+	        value = rule.cssText;
+	        patchDelta = value.length - anchorRule.cssText.length;
+	        rule.startOffset = anchorRule.startOffset;
+	        rule.endOffset = anchorRule.startOffset + rule.cssText.length;
+
+	        // Create this.rules replace mutation
+	        mutateFunc = function (parentRule, rule, index) {
+	          function call() {
+	            parentRule.rules.remove(index);
+	            parentRule.rules.insert(rule, index);
+	          }
+
+	          return call;
+	        }(this, rule, index);
+
+	        // Patch this rule with by inserting created one
+	        this.patch({
+	          action: action, start: start, end: end, value: value, patchDelta: patchDelta, reparse: false
+	        }, anchorRule, mutateFunc);
 
 	        // Update child rules
 	        this._patchChildRules({
@@ -2473,7 +2564,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	          bounds = void 0,
 	          start = void 0,
 	          end = void 0,
-	          patchDelta = void 0;
+	          patchDelta = void 0,
+	          mutateFunc = void 0;
 
 	      // Get target rule
 	      rule = this.rules.get(index);
@@ -2482,8 +2574,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	      prevRule = this.rules.get(index - 1);
 	      nextRule = this.rules.get(index + 1);
 
-	      // Delete target rule from rules list
-	      this.rules.remove(index);
+	      // Create this.rules delete mutation
+	      mutateFunc = function (parentRule, index) {
+	        function call() {
+	          parentRule.rules.remove(index);
+	        }
+
+	        return call;
+	      }(this, index);
 
 	      // Get body block bounds
 	      bounds = this.getBody();
@@ -2497,12 +2595,39 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.patch({
 	        action: _VirtualActions2.default.PATCH_DELETE,
 	        start: start, end: end, patchDelta: patchDelta
-	      }, rule);
+	      }, rule, mutateFunc);
 
 	      // Update child rule
 	      this._patchChildRules({
 	        action: _VirtualActions2.default.PATCH_UPDATE, patchDelta: patchDelta
 	      });
+	    }
+
+	    /**
+	     * Patch current rule props with patchInfo
+	     * @param patchInfo
+	     * @param ref
+	     * @param mutateFunc
+	     */
+
+	  }, {
+	    key: "patch",
+	    value: function patch(patchInfo, ref, mutateFunc) {
+	      // Invoke pre patching hook
+	      if (this._opts.prePatchApply && this._opts.prePatchApply(this, patchInfo, ref) === _VirtualActions2.default.PATCH_REJECT) return;
+
+	      // Invoke this.rules mutation
+	      if (mutateFunc) mutateFunc();
+
+	      // Accept rule reparse as default postPatch behavior
+	      if (patchInfo.reparse === undefined) {
+	        patchInfo = Object.assign({}, patchInfo, { reparse: true });
+	      }
+
+	      this._patchApply(patchInfo);
+
+	      // Invoke post patching hook
+	      if (this._opts.postPatchApply) this._opts.postPatchApply(this, patchInfo, ref);
 	    }
 	  }]);
 

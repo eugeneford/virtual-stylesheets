@@ -166,9 +166,9 @@ export default class VirtualRule {
    * @param patchInfo
    * @param ref
    */
-  patch(patchInfo, ref) {
+  patch(patchInfo) {
     // Invoke pre patching hook
-    if (this._opts.prePatchApply && this._opts.prePatchApply(this, patchInfo, ref) === VirtualActions.PATCH_REJECT) return;
+    if (this._opts.prePatchApply && this._opts.prePatchApply(this, patchInfo) === VirtualActions.PATCH_REJECT) return;
 
     // Accept rule reparse as default postPatch behavior
     if (patchInfo.reparse === undefined) {
@@ -178,7 +178,7 @@ export default class VirtualRule {
     this._patchApply(patchInfo);
 
     // Invoke post patching hook
-    if (this._opts.postPatchApply) this._opts.postPatchApply(this, patchInfo, ref);
+    if (this._opts.postPatchApply) this._opts.postPatchApply(this, patchInfo);
   }
 
 

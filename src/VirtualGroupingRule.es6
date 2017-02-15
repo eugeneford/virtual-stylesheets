@@ -112,7 +112,7 @@ export default class VirtualGroupingRule extends VirtualRule {
     if (typeof index !== "number") throw new TypeError("Index is not a number");
     if (index < 0) throw new Error("Index should be a positive number");
 
-    let tokens, rule, anchorRule, start, end, patchDelta, bounds, value, action;
+    let tokens, rule, anchorRule, start, end, patchDelta, bounds, value, action, mutateFunc;
 
     // Try to get a token from ruleText
     tokens = VirtualTokenizer.tokenize(ruleText);
@@ -155,19 +155,98 @@ export default class VirtualGroupingRule extends VirtualRule {
         action = VirtualActions.PATCH_REPLACE;
         start = bounds.startOffset;
         end = bounds.endOffset;
+
         value = `\n  ${rule.cssText}\n`;
+
         patchDelta = value.length - bounds.endOffset - bounds.startOffset;
         rule.startOffset = 3;
         rule.endOffset = 3 + rule.cssText.length;
       }
 
-      // Add injected rule to list
-      this.rules.insert(rule, index);
+      // Create this.rules insert mutation
+      mutateFunc = (function(parentRule, rule, index) {
+        function call(){
+          parentRule.rules.insert(rule, index);
+        }
+
+        return call;
+      })(this, rule, index);
 
       // Patch this rule with by inserting created one
       this.patch({
         action, start, end, value, patchDelta, reparse: false
-      }, anchorRule);
+      }, anchorRule, mutateFunc);
+
+      // Update child rules
+      this._patchChildRules({
+        action: VirtualActions.PATCH_UPDATE, patchDelta
+      }, index + 1);
+    }
+  }
+
+  /**
+   * Replace an existing VirtualRule at specified index with target ruleText
+   * @param ruleText
+   * @param index
+   */
+  replaceRule(ruleText, index){
+    if (typeof ruleText !== "string") throw new TypeError("RuleText is not a string");
+    if (typeof index !== "number") throw new TypeError("Index is not a number");
+    if (index < 0) throw new Error("Index should be a positive number");
+    if (this.rules && this.rules.length && index >= this.rules.length) throw new Error("Index is larger the child rules count");
+
+    let tokens, rule, anchorRule, start, end, patchDelta, bounds, value, action, mutateFunc;
+
+    // Try to get a token from ruleText
+    tokens = VirtualTokenizer.tokenize(ruleText);
+
+    // Throw an error if there are no tokens
+    if (!tokens.length) throw SyntaxError("RuleText is not a CSS rule");
+
+    rule = VirtualRuleFactory.createFromToken(tokens[0], this, this._opts);
+
+    /*istanbul ignore else*/
+    if (rule) {
+      // Inject grouping rule to _patchApply function
+      rule._patchApply = (function(rule, _patchApply) {
+        function call(patchInfo){
+          _patchApply.bind(rule)(patchInfo);
+          rule.parentRule._patchParent.bind(rule)(patchInfo);
+        }
+
+        return call;
+      })(rule, rule._patchApply);
+
+      // Try to get anchor rule
+      anchorRule = this.rules.get(index);
+
+      // Get body block bounds
+      bounds = this.getBody();
+
+      // Calculate patch data
+      action = VirtualActions.PATCH_REPLACE;
+      start = bounds.startOffset + anchorRule.startOffset;
+      end = bounds.startOffset + anchorRule.endOffset;
+      value = rule.cssText;
+      patchDelta = value.length - anchorRule.cssText.length;
+      rule.startOffset = anchorRule.startOffset;
+      rule.endOffset = anchorRule.startOffset + rule.cssText.length;
+
+      // Create this.rules replace mutation
+      mutateFunc = (function(parentRule, rule, index) {
+        function call(){
+          parentRule.rules.remove(index);
+          parentRule.rules.insert(rule, index);
+        }
+
+        return call;
+      })(this, rule, index);
+
+
+      // Patch this rule with by inserting created one
+      this.patch({
+        action, start, end, value, patchDelta, reparse: false
+      }, anchorRule, mutateFunc);
 
       // Update child rules
       this._patchChildRules({
@@ -185,7 +264,7 @@ export default class VirtualGroupingRule extends VirtualRule {
     if (index < 0) throw new Error("Index should be a positive number");
     if (this.rules && this.rules.length && index >= this.rules.length) throw new Error("Index is larger the child rules count");
 
-    let rule, prevRule, nextRule, bounds, start, end, patchDelta;
+    let rule, prevRule, nextRule, bounds, start, end, patchDelta, mutateFunc;
 
     // Get target rule
     rule = this.rules.get(index);
@@ -194,8 +273,16 @@ export default class VirtualGroupingRule extends VirtualRule {
     prevRule = this.rules.get(index - 1);
     nextRule = this.rules.get(index + 1);
 
-    // Delete target rule from rules list
-    this.rules.remove(index);
+    // Create this.rules delete mutation
+    mutateFunc = (function(parentRule, index) {
+      function call(){
+        parentRule.rules.remove(index);
+      }
+
+      return call;
+    })(this, index);
+
+
 
     // Get body block bounds
     bounds = this.getBody();
@@ -209,11 +296,35 @@ export default class VirtualGroupingRule extends VirtualRule {
     this.patch({
       action: VirtualActions.PATCH_DELETE,
       start, end, patchDelta
-    }, rule);
+    }, rule, mutateFunc);
 
     // Update child rule
     this._patchChildRules({
       action: VirtualActions.PATCH_UPDATE, patchDelta
     })
+  }
+
+  /**
+   * Patch current rule props with patchInfo
+   * @param patchInfo
+   * @param ref
+   * @param mutateFunc
+   */
+  patch(patchInfo, ref, mutateFunc) {
+    // Invoke pre patching hook
+    if (this._opts.prePatchApply && this._opts.prePatchApply(this, patchInfo, ref) === VirtualActions.PATCH_REJECT) return;
+
+    // Invoke this.rules mutation
+    if (mutateFunc) mutateFunc();
+
+    // Accept rule reparse as default postPatch behavior
+    if (patchInfo.reparse === undefined) {
+      patchInfo = Object.assign({}, patchInfo, {reparse: true});
+    }
+
+    this._patchApply(patchInfo);
+
+    // Invoke post patching hook
+    if (this._opts.postPatchApply) this._opts.postPatchApply(this, patchInfo, ref);
   }
 }
