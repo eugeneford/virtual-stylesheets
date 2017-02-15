@@ -1512,7 +1512,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            style = void 0,
 	            i = void 0;
 
-	        // Get Rule body bounds (startOffset and endOffset) 
+	        // Get Rule body bounds (startOffset and endOffset)
 	        bounds = this.getBody();
 	        body = this.cssText.substring(bounds.startOffset, bounds.endOffset);
 
