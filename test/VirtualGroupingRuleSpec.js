@@ -500,7 +500,7 @@ describe("VirtualGroupingRule", function(){
       expect(rule.cssText).toEqual("@supports { @media print { .rule-1 { display: block; } body { width: 24px }\n.rule-2{ display: none; } } }");
       expect(rule.startOffset).toEqual(0);
       expect(rule.endOffset).toEqual(105);
-      expect(rule.rules.length).toEqual(1); 
+      expect(rule.rules.length).toEqual(1);
 
       expect(rule.rules.get(0).cssText).toEqual("@media print { .rule-1 { display: block; } body { width: 24px }\n.rule-2{ display: none; } }");
       expect(rule.rules.get(0).startOffset).toEqual(1);
