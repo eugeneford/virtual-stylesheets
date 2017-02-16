@@ -410,20 +410,24 @@ describe("VirtualGroupingRule", function(){
       var rule = new VirtualGroupingRule({
         type: 4,
         startOffset: 0,
-        endOffset: 16,
-        cssText: "@media print { }"
+        endOffset: 39,
+        cssText: "@media print { .test { width: 10px; } }"
       });
 
       rule.insertRule("body { width: 24px }", 10);
 
-      expect(rule.cssText).toEqual("@media print {\n  body { width: 24px }\n}");
+      expect(rule.cssText).toEqual("@media print { .test { width: 10px; } body { width: 24px } }");
       expect(rule.startOffset).toEqual(0);
-      expect(rule.endOffset).toEqual(39);
-      expect(rule.rules.length).toEqual(1);
+      expect(rule.endOffset).toEqual(60);
+      expect(rule.rules.length).toEqual(2);
 
-      expect(rule.rules.get(0).startOffset).toEqual(3);
+      expect(rule.rules.get(0).startOffset).toEqual(1);
       expect(rule.rules.get(0).endOffset).toEqual(23);
-      expect(rule.rules.get(0).cssText).toEqual("body { width: 24px }");
+      expect(rule.rules.get(0).cssText).toEqual(".test { width: 10px; }");
+
+      expect(rule.rules.get(1).startOffset).toEqual(24);
+      expect(rule.rules.get(1).endOffset).toEqual(44);
+      expect(rule.rules.get(1).cssText).toEqual("body { width: 24px }");
     });
 
     it("Successfully inserted new CSS rule into the middle of VirtualGroupingRule", function(){

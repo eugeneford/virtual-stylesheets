@@ -2404,7 +2404,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	          bounds = void 0,
 	          value = void 0,
 	          action = void 0,
-	          mutateFunc = void 0;
+	          mutateFunc = void 0,
+	          lastRule = void 0,
+	          prefix = void 0;
 
 	      // Try to get a token from ruleText
 	      tokens = _VirtualTokenizer2.default.tokenize(ruleText);
@@ -2435,7 +2437,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // Get body block bounds
 	        bounds = this.getBody();
 
-	        // Calculate patch data
+	        // Try to shift anchor rule
 	        if (anchorRule) {
 	          action = _VirtualActions2.default.PATCH_INSERT;
 	          start = bounds.startOffset + anchorRule.startOffset;
@@ -2443,17 +2445,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	          patchDelta = value.length;
 	          rule.startOffset = anchorRule.startOffset;
 	          rule.endOffset = anchorRule.startOffset + rule.cssText.length;
-	        } else {
-	          action = _VirtualActions2.default.PATCH_REPLACE;
-	          start = bounds.startOffset;
-	          end = bounds.endOffset;
-
-	          value = "\n  " + rule.cssText + "\n";
-
-	          patchDelta = value.length - bounds.endOffset - bounds.startOffset;
-	          rule.startOffset = 3;
-	          rule.endOffset = 3 + rule.cssText.length;
 	        }
+	        // Otherwise insert to body trail
+	        else if (this.rules.length) {
+	            lastRule = this.rules.get(this.rules.length - 1);
+	            action = _VirtualActions2.default.PATCH_INSERT;
+	            start = bounds.startOffset + lastRule.endOffset;
+	            prefix = this.cssText.substring(bounds.startOffset, bounds.startOffset + this.rules.get(0).startOffset);
+	            value = "" + prefix + rule.cssText;
+	            patchDelta = value.length;
+	            rule.startOffset = lastRule.endOffset + prefix.length;
+	            rule.endOffset = lastRule.endOffset + prefix.length + rule.cssText.length;
+	          }
+	          // Otherwise replace empty body with target rule
+	          else {
+	              action = _VirtualActions2.default.PATCH_REPLACE;
+	              start = bounds.startOffset;
+	              end = bounds.endOffset;
+
+	              value = "\n  " + rule.cssText + "\n";
+
+	              patchDelta = value.length - bounds.endOffset - bounds.startOffset;
+	              rule.startOffset = 3;
+	              rule.endOffset = 3 + rule.cssText.length;
+	            }
 
 	        // Create this.rules insert mutation
 	        mutateFunc = function (parentRule, rule, index) {

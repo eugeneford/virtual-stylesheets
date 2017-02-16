@@ -112,7 +112,7 @@ export default class VirtualGroupingRule extends VirtualRule {
     if (typeof index !== "number") throw new TypeError("Index is not a number");
     if (index < 0) throw new Error("Index should be a positive number");
 
-    let tokens, rule, anchorRule, start, end, patchDelta, bounds, value, action, mutateFunc;
+    let tokens, rule, anchorRule, start, end, patchDelta, bounds, value, action, mutateFunc, lastRule, prefix;
 
     // Try to get a token from ruleText
     tokens = VirtualTokenizer.tokenize(ruleText);
@@ -143,7 +143,7 @@ export default class VirtualGroupingRule extends VirtualRule {
       // Get body block bounds
       bounds = this.getBody();
 
-      // Calculate patch data
+      // Try to shift anchor rule
       if (anchorRule){
         action = VirtualActions.PATCH_INSERT;
         start = bounds.startOffset + anchorRule.startOffset;
@@ -151,7 +151,20 @@ export default class VirtualGroupingRule extends VirtualRule {
         patchDelta = value.length;
         rule.startOffset = anchorRule.startOffset;
         rule.endOffset = anchorRule.startOffset + rule.cssText.length;
-      } else {
+      }
+      // Otherwise insert to body trail
+      else if (this.rules.length) {
+        lastRule = this.rules.get(this.rules.length - 1);
+        action = VirtualActions.PATCH_INSERT;
+        start = bounds.startOffset + lastRule.endOffset;
+        prefix = this.cssText.substring(bounds.startOffset, bounds.startOffset + this.rules.get(0).startOffset);
+        value = `${prefix}${rule.cssText}`;
+        patchDelta = value.length;
+        rule.startOffset = lastRule.endOffset + prefix.length;
+        rule.endOffset = lastRule.endOffset + prefix.length + rule.cssText.length;
+      }
+      // Otherwise replace empty body with target rule
+      else {
         action = VirtualActions.PATCH_REPLACE;
         start = bounds.startOffset;
         end = bounds.endOffset;
