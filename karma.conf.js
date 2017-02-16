@@ -11,7 +11,7 @@ module.exports = function(config) {
     ],
     preprocessors: {
       'dist/virtual-stylesheets.js': ['coverage']
-    }, 
+    },
     reporters: ['kjhtml', 'coverage'],
     port: 9876,
     browsers: [],
