@@ -396,13 +396,13 @@ describe("VirtualGroupingRule", function(){
 
       rule.insertRule("body { width: 24px }", 0);
 
-      expect(rule.cssText).toEqual("@media print {\n  body { width: 24px }\n}");
+      expect(rule.cssText).toEqual("@media print {\nbody { width: 24px }\n}");
       expect(rule.startOffset).toEqual(0);
-      expect(rule.endOffset).toEqual(39);
+      expect(rule.endOffset).toEqual(37);
       expect(rule.rules.length).toEqual(1);
 
-      expect(rule.rules.get(0).startOffset).toEqual(3);
-      expect(rule.rules.get(0).endOffset).toEqual(23);
+      expect(rule.rules.get(0).startOffset).toEqual(1);
+      expect(rule.rules.get(0).endOffset).toEqual(21);
       expect(rule.rules.get(0).cssText).toEqual("body { width: 24px }");
     });
 
@@ -416,7 +416,7 @@ describe("VirtualGroupingRule", function(){
 
       rule.insertRule("body { width: 24px }", 10);
 
-      expect(rule.cssText).toEqual("@media print { .test { width: 10px; } body { width: 24px } }");
+      expect(rule.cssText).toEqual("@media print { .test { width: 10px; }\nbody { width: 24px } }");
       expect(rule.startOffset).toEqual(0);
       expect(rule.endOffset).toEqual(60);
       expect(rule.rules.length).toEqual(2);
@@ -440,7 +440,7 @@ describe("VirtualGroupingRule", function(){
 
       rule.insertRule("body { width: 24px }", 1);
 
-      expect(rule.cssText).toEqual("@media print { .rule-1 { display: block; } body { width: 24px } .rule-2{ display: none; } }");
+      expect(rule.cssText).toEqual("@media print { .rule-1 { display: block; } body { width: 24px }\n.rule-2{ display: none; } }");
       expect(rule.startOffset).toEqual(0);
       expect(rule.endOffset).toEqual(91);
       expect(rule.rules.length).toEqual(3);
@@ -469,7 +469,7 @@ describe("VirtualGroupingRule", function(){
       rule.insertRule("body { width: 24px }", 1);
       rule.rules.get(1).setSelector(".test ");
 
-      expect(rule.cssText).toEqual("@media print { .rule-1 { display: block; } .test { width: 24px } .rule-2{ display: none; } }");
+      expect(rule.cssText).toEqual("@media print { .rule-1 { display: block; } .test { width: 24px }\n.rule-2{ display: none; } }");
       expect(rule.startOffset).toEqual(0);
       expect(rule.endOffset).toEqual(92);
       expect(rule.rules.length).toEqual(3);
@@ -497,12 +497,12 @@ describe("VirtualGroupingRule", function(){
 
       rule.rules.get(0).insertRule("body { width: 24px }", 1);
 
-      expect(rule.cssText).toEqual("@supports { @media print { .rule-1 { display: block; } body { width: 24px } .rule-2{ display: none; } } }");
+      expect(rule.cssText).toEqual("@supports { @media print { .rule-1 { display: block; } body { width: 24px }\n.rule-2{ display: none; } } }");
       expect(rule.startOffset).toEqual(0);
       expect(rule.endOffset).toEqual(105);
-      expect(rule.rules.length).toEqual(1);
+      expect(rule.rules.length).toEqual(1); 
 
-      expect(rule.rules.get(0).cssText).toEqual("@media print { .rule-1 { display: block; } body { width: 24px } .rule-2{ display: none; } }");
+      expect(rule.rules.get(0).cssText).toEqual("@media print { .rule-1 { display: block; } body { width: 24px }\n.rule-2{ display: none; } }");
       expect(rule.rules.get(0).startOffset).toEqual(1);
       expect(rule.rules.get(0).endOffset).toEqual(92);
       expect(rule.rules.get(0).rules.length).toEqual(3);

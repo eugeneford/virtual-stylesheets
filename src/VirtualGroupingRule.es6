@@ -147,7 +147,7 @@ export default class VirtualGroupingRule extends VirtualRule {
       if (anchorRule){
         action = VirtualActions.PATCH_INSERT;
         start = bounds.startOffset + anchorRule.startOffset;
-        value = `${rule.cssText}${this.cssText.substring(bounds.startOffset, bounds.startOffset + this.rules.get(0).startOffset)}`;
+        value = `${rule.cssText}\n`;
         patchDelta = value.length;
         rule.startOffset = anchorRule.startOffset;
         rule.endOffset = anchorRule.startOffset + rule.cssText.length;
@@ -157,11 +157,10 @@ export default class VirtualGroupingRule extends VirtualRule {
         lastRule = this.rules.get(this.rules.length - 1);
         action = VirtualActions.PATCH_INSERT;
         start = bounds.startOffset + lastRule.endOffset;
-        prefix = this.cssText.substring(bounds.startOffset, bounds.startOffset + this.rules.get(0).startOffset);
-        value = `${prefix}${rule.cssText}`;
+        value = `\n${rule.cssText}`;
         patchDelta = value.length;
-        rule.startOffset = lastRule.endOffset + prefix.length;
-        rule.endOffset = lastRule.endOffset + prefix.length + rule.cssText.length;
+        rule.startOffset = 1 + lastRule.endOffset;
+        rule.endOffset = 1 + lastRule.endOffset + rule.cssText.length;
       }
       // Otherwise replace empty body with target rule
       else {
@@ -169,11 +168,11 @@ export default class VirtualGroupingRule extends VirtualRule {
         start = bounds.startOffset;
         end = bounds.endOffset;
 
-        value = `\n  ${rule.cssText}\n`;
+        value = `\n${rule.cssText}\n`;
 
         patchDelta = value.length - bounds.endOffset - bounds.startOffset;
-        rule.startOffset = 3;
-        rule.endOffset = 3 + rule.cssText.length;
+        rule.startOffset = 1;
+        rule.endOffset = 1 + rule.cssText.length;
       }
 
       // Create this.rules insert mutation
