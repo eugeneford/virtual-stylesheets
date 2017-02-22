@@ -2745,14 +2745,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	          hasAt = void 0,
 	          prevCode = void 0,
 	          startCode = cssText.charCodeAt(startIndex),
-	          quotesCode = void 0;
+	          quotesCode = void 0,
+	          commentOpened = void 0;
 
 	      if (startCode === ASTERISK || startCode === DOT_SIGN || CF_WORD(startCode) || startCode === HASH || startCode === OPEN_SQUARE || startCode === COLON) {
 	        while (index < cssText.length) {
 	          nextCode = cssText.charCodeAt(index);
 
+	          if (prevCode && prevCode === BACKSLASH && nextCode === ASTERISK) {
+	            commentOpened = true;
+	          }
+
 	          // Check if " or ' was spotted without escape \
-	          if (prevCode && prevCode !== SLASH && (nextCode === SINGLE_QUOTE || nextCode == DOUBLE_QUOTE)) {
+	          if (!commentOpened && prevCode && prevCode !== SLASH && (nextCode === SINGLE_QUOTE || nextCode == DOUBLE_QUOTE)) {
 	            if (!!quotesCode) {
 	              if (nextCode === quotesCode) quotesCode = undefined;
 	            } else {
@@ -2763,13 +2768,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	          length++;
 	          index++;
 
-	          if (!quotesCode && nextCode === AT_SIGN) hasAt = true;
-	          if (!quotesCode && fits && nextCode === OPEN_CURLY) {
+	          if (!commentOpened && !quotesCode && nextCode === AT_SIGN) hasAt = true;
+	          if (!commentOpened && !quotesCode && fits && nextCode === OPEN_CURLY) {
 	            fits = false;break;
 	          }
-	          if (!quotesCode && !fits && nextCode === OPEN_CURLY) fits = true;
-	          if (!quotesCode && !fits && nextCode === SEMICOLON) break;
-	          if (!quotesCode && nextCode === CLOSE_CURLY) break;
+	          if (!commentOpened && !quotesCode && !fits && nextCode === OPEN_CURLY) fits = true;
+	          if (!commentOpened && !quotesCode && !fits && nextCode === SEMICOLON) break;
+	          if (!commentOpened && !quotesCode && nextCode === CLOSE_CURLY) break;
+
+	          if (commentOpened && prevCode && prevCode === ASTERISK && nextCode === BACKSLASH) {
+	            commentOpened = false;
+	          }
 
 	          prevCode = nextCode;
 	        }
