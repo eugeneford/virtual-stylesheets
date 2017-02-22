@@ -142,7 +142,7 @@ export default class VirtualGroupingRule extends VirtualRule {
 
       // Get body block bounds
       bounds = this.getBody();
- 
+
       // Try to shift anchor rule
       if (anchorRule){
         action = VirtualActions.PATCH_INSERT;
