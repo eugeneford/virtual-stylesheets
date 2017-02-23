@@ -82,6 +82,18 @@ describe("Virtual Tokenizer", function() {
   });
 
   describe("getQualifiedRuleToken()", function() {
+    it("Correctly created a QUALIFIED_RULE_TOKEN from rule started with >", function(){
+      var tokenizer = VirtualTokenizer;
+      var cssText = `> .container { }`;
+      var token = tokenizer.getQualifiedRuleToken(cssText, 0);
+
+      expect(token).toEqual({
+        type: VirtualTokenizer.QUALIFIED_RULE_TOKEN,
+        startOffset: 0,
+        length: cssText.length
+      });
+    });
+
     it("Correctly created a QUALIFIED_RULE_TOKEN with comments within", function(){
       var tokenizer = VirtualTokenizer;
       var cssText = `.pswp__preloader--active .pswp__preloader__icn {\n        /* We use .gif in browsers that don't support CSS animation */\n        background: url(images/preloader.gif) 0 0 no-repeat;\n      }\n\n.pswp--css_animation .pswp__preloader--active {\n  opacity: 1;\n}`;

@@ -2698,6 +2698,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var OPEN_CURLY = '{'.charCodeAt(0);
 	var CLOSE_CURLY = '}'.charCodeAt(0);
 	var AT_SIGN = '@'.charCodeAt(0);
+	var RIGHT_ANGLE = '>'.charCodeAt(0);
 	var SINGLE_QUOTE = '\''.charCodeAt(0);
 	var DOUBLE_QUOTE = '\"'.charCodeAt(0);
 
@@ -2748,7 +2749,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          quotesCode = void 0,
 	          commentOpened = void 0;
 
-	      if (startCode === ASTERISK || startCode === DOT_SIGN || CF_WORD(startCode) || startCode === HASH || startCode === OPEN_SQUARE || startCode === COLON) {
+	      if (startCode === ASTERISK || startCode === DOT_SIGN || CF_WORD(startCode) || startCode === HASH || startCode === OPEN_SQUARE || startCode === COLON || startCode === RIGHT_ANGLE) {
 	        while (index < cssText.length) {
 	          nextCode = cssText.charCodeAt(index);
 

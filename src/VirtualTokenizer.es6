@@ -20,6 +20,7 @@ const OPEN_SQUARE =  '['.charCodeAt(0);
 const OPEN_CURLY =   '{'.charCodeAt(0);
 const CLOSE_CURLY =  '}'.charCodeAt(0);
 const AT_SIGN =      '@'.charCodeAt(0);
+const RIGHT_ANGLE =  '>'.charCodeAt(0);
 const SINGLE_QUOTE = '\''.charCodeAt(0);
 const DOUBLE_QUOTE = '\"'.charCodeAt(0);
 
@@ -56,7 +57,7 @@ class VirtualTokenizer {
     let index = startIndex, length = 0, fits, nextCode, hasAt, prevCode, startCode = cssText.charCodeAt(startIndex), quotesCode, commentOpened;
 
     if (startCode === ASTERISK || startCode === DOT_SIGN || CF_WORD(startCode)
-      || startCode === HASH || startCode === OPEN_SQUARE || startCode === COLON) {
+      || startCode === HASH || startCode === OPEN_SQUARE || startCode === COLON || startCode === RIGHT_ANGLE) {
       while (index < cssText.length) {
         nextCode = cssText.charCodeAt(index);
 
