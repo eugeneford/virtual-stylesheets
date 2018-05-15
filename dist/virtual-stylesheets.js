@@ -52,7 +52,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 
@@ -180,9 +180,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  VirtualStyleSheet: _VirtualStyleSheet2.default
 	};
 
-/***/ },
+/***/ }),
 /* 1 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	'use strict';
 
@@ -370,9 +370,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports.default = Grammar;
 
-/***/ },
+/***/ }),
 /* 2 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 
@@ -562,9 +562,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports.default = RuleFactory;
 
-/***/ },
+/***/ }),
 /* 3 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	"use strict";
 
@@ -598,9 +598,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  PATCH_REJECT: 1
 	};
 
-/***/ },
+/***/ }),
 /* 4 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 
@@ -725,9 +725,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports.default = VirtualList;
 
-/***/ },
+/***/ }),
 /* 5 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -1065,9 +1065,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports.default = VirtualRule;
 
-/***/ },
+/***/ }),
 /* 6 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 
@@ -1187,9 +1187,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports.default = VirtualCharsetRule;
 
-/***/ },
+/***/ }),
 /* 7 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 
@@ -1293,9 +1293,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports.default = VirtualStyleRule;
 
-/***/ },
+/***/ }),
 /* 8 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 
@@ -1389,7 +1389,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.patch({
 	        action: _VirtualActions2.default.PATCH_REPLACE,
 	        value: val, start: start, end: end,
-	        patchDelta: val.length - declaration.endOffset - declaration.startOffset
+	        patchDelta: val.length - (declaration.endOffset - declaration.startOffset)
 	      });
 	    }
 
@@ -1453,7 +1453,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.patch({
 	        action: _VirtualActions2.default.PATCH_REPLACE,
 	        start: start, end: end, value: val,
-	        patchDelta: val.length - end - start
+	        patchDelta: val.length - (end - start)
 	      });
 	    }
 
@@ -1698,9 +1698,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports.default = VirtualStyleDeclarationRule;
 
-/***/ },
+/***/ }),
 /* 9 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	"use strict";
 
@@ -1897,9 +1897,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports.default = VirtualStyleDeclarationParser;
 
-/***/ },
+/***/ }),
 /* 10 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 
@@ -2151,9 +2151,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports.default = VirtualImportRule;
 
-/***/ },
+/***/ }),
 /* 11 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 
@@ -2187,9 +2187,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports.default = VirtualViewportRule;
 
-/***/ },
+/***/ }),
 /* 12 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 
@@ -2223,9 +2223,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports.default = VirtualFontFaceRule;
 
-/***/ },
+/***/ }),
 /* 13 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 
@@ -2662,9 +2662,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports.default = VirtualGroupingRule;
 
-/***/ },
+/***/ }),
 /* 14 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	'use strict';
 
@@ -3034,9 +3034,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports.default = VirtualTokenizer;
 
-/***/ },
+/***/ }),
 /* 15 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 
@@ -3136,9 +3136,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports.default = VirtualMediaRule;
 
-/***/ },
+/***/ }),
 /* 16 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 
@@ -3244,9 +3244,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports.default = VirtualKeyframeRule;
 
-/***/ },
+/***/ }),
 /* 17 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 
@@ -3362,9 +3362,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports.default = VirtualKeyframesRule;
 
-/***/ },
+/***/ }),
 /* 18 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 
@@ -3464,9 +3464,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports.default = VirtualPageRule;
 
-/***/ },
+/***/ }),
 /* 19 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 
@@ -3740,9 +3740,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports.default = VirtualNamespaceRule;
 
-/***/ },
+/***/ }),
 /* 20 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 
@@ -3842,9 +3842,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports.default = VirtualSupportsRule;
 
-/***/ },
+/***/ }),
 /* 21 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 
@@ -3931,7 +3931,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports.default = VirtualStyleSheet;
 
-/***/ }
+/***/ })
 /******/ ])
 });
 ;

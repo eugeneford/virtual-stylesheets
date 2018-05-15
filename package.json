@@ -1,5 +1,5 @@
 {
-  "name": "virtual-stylesheets", 
+  "name": "virtual-stylesheets",
   "version": "0.8.11",
   "description": "A complex string based CSS managment library",
   "main": "dist/virtual-stylesheets.js",
@@ -9,7 +9,9 @@
   },
   "scripts": {
     "webpack": "webpack",
-    "watch": "webpack --watch"
+    "watch": "webpack --watch",
+    "test": "karma start --single-run",
+    "test-watch": "karma start"
   },
   "keywords": [
     "css",

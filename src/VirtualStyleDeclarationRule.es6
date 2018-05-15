@@ -43,7 +43,7 @@ export default class VirtualStyleDeclarationRule extends VirtualRule{
     this.patch({
       action: VirtualActions.PATCH_REPLACE,
       value: val, start, end,
-      patchDelta: val.length - declaration.endOffset - declaration.startOffset
+      patchDelta: val.length - (declaration.endOffset - declaration.startOffset)
     })
   }
 
@@ -96,7 +96,7 @@ export default class VirtualStyleDeclarationRule extends VirtualRule{
     this.patch({
       action: VirtualActions.PATCH_REPLACE,
       start, end, value: val,
-      patchDelta: val.length - end - start
+      patchDelta: val.length - (end - start)
     })
   }
 
